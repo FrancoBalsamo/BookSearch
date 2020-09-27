@@ -19,6 +19,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +34,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 public class TrantorDetalleLibro extends AppCompatActivity {
@@ -55,31 +62,30 @@ public class TrantorDetalleLibro extends AppCompatActivity {
         setContentView(R.layout.activity_trantor_detalle_libro);
         recyclerView = findViewById(R.id.recyclerView);
 
+        leer = (Button) findViewById(R.id.btnLeerTrantor);
+
         IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
         registerReceiver(downloadReceiver, filter);
 
         urlDescarga = getIntent().getStringExtra("descarga");
         titulo = getIntent().getStringExtra("titulo");
-        titulo = titulo.replace(" ", "-");
 
-        descargar =(Button)findViewById(R.id.btnDescargaTrantor);
-        leer = (Button)findViewById(R.id.btnLeerTrantor);
+        descargar = (Button) findViewById(R.id.btnDescargaTrantor);
 
         descargar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                descargarArchivo(urlDescarga, titulo, TrantorDetalleLibro.this);
+                descargarArchivo(urlDescarga, titulo + ".epub");
             }
         });
         leer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //ver();
-                if(verificarReadRa("org.readera", TrantorDetalleLibro.this)){
+                if (verificarReadRa("org.readera", TrantorDetalleLibro.this)) {
                     readEra();
-                }else {
-                     descargaReadEra();
+                } else {
+                    descargaReadEra();
                 }
             }
         });
@@ -93,7 +99,7 @@ public class TrantorDetalleLibro extends AppCompatActivity {
         content.execute();
     }
 
-    private class Content extends AsyncTask<Void,Void, ArrayList<TrantorBookDetail>> {
+    private class Content extends AsyncTask<Void, Void, ArrayList<TrantorBookDetail>> {
 
         @Override
         protected void onPreExecute() {
@@ -122,12 +128,12 @@ public class TrantorDetalleLibro extends AppCompatActivity {
                     Log.d("Items", "Descripcion: " + titulo);
 
                     Elements datos = doc.select("div.row");
-                    for(Element e1 : datos){
+                    for (Element e1 : datos) {
                         String imgUrl = e1.select("div.span4").select("img").attr("src");
                         String descripcion = e1.select("div.span8").select("p").text();
                         String descargaUrl = e1.select("div.span3").select("a.btn.btn-large.btn-inverse").attr("href");
                         String lectorUrl = e1.select("div.span3").select("a.btn.btn-large.btn-warning").attr("href");
-                        if(!isNullorEmpty(imgUrl) && !isNullorEmpty(descargaUrl) && !isNullorEmpty(lectorUrl)){
+                        if (!isNullorEmpty(imgUrl) && !isNullorEmpty(descargaUrl) && !isNullorEmpty(lectorUrl)) {
                             String autor = ""; //valor por defecto
                             String idioma = "";
                             Log.d("Items", "Descripcion: " + autor + "" + idioma);
@@ -136,18 +142,18 @@ public class TrantorDetalleLibro extends AppCompatActivity {
                             Element ultimo = e1.select("div.span8").select("dd").select("a").last();
                             autor = primero.text();
                             idioma = ultimo.text();
-                                trantorDetalleLibros.add(new TrantorBookDetail(titulo, imgUrl, "Autor/a: " + autor, "Idioma: [" + idioma + "]", descripcion));
-                            }
+                            trantorDetalleLibros.add(new TrantorBookDetail(titulo, imgUrl, "Autor/a: " + autor, "Idioma: [" + idioma + "]", descripcion));
                         }
                     }
-                }  catch (IOException e) {
+                }
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             return trantorDetalleLibros;
         }
     }
 
-    public static boolean isNullorEmpty(String s ) {
+    public static boolean isNullorEmpty(String s) {
         return s == null || s.trim().isEmpty();
     }
 
@@ -157,73 +163,68 @@ public class TrantorDetalleLibro extends AppCompatActivity {
         TrantorDetalleLibro.this.finish();
     }
 
-    public void descargarArchivo(String url, String archivo, Context context){
-        downloadManager = (DownloadManager)getSystemService(DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        request.setDescription("Este, como tantos otros archivos, se descargan en formato ePub.");
-
-        //Crear la carpeta
-        File folder = new File("Book Seach");
-        Log.d("", "descargarArchivo: " + folder);
-
-        //vamos a guardar el fichero (opcional). ver tip 5
-        request.setDestinationInExternalFilesDir(context, String.valueOf(folder),archivo + ".epub");
-
-
-        //iniciamos la descarga
-        id = downloadManager.enqueue(request);
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        registerReceiver(downloadReceiver, intentFilter);
     }
 
-    public void ver()
+    @Override
+    protected void onPause()
     {
+        super.onPause();
+        unregisterReceiver(downloadReceiver);
+    }
+
+    public void ver() {
         Intent intent = new Intent();
         intent.setAction(DownloadManager.ACTION_VIEW_DOWNLOADS);
         startActivity(intent);
     }
 
+    public void descargarArchivo(String url, String archivo){
+        downloadManager = (DownloadManager)getSystemService(DOWNLOAD_SERVICE);
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        request.setTitle("Descarga");
+        request.setDescription("Prueba del servicio Download Manager.");
+
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+        {
+            request.setDestinationInExternalFilesDir(this, Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "descarga",archivo);
+        }
+        id = downloadManager.enqueue(request);
+    }
+
     private BroadcastReceiver downloadReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent)
-        {
+        public void onReceive(Context context, Intent intent) {
             DownloadManager.Query query = new DownloadManager.Query();
             query.setFilterById(id, 0);
             Cursor cursor = downloadManager.query(query);
 
-            if(cursor.moveToFirst())
-            {
+            if (cursor.moveToFirst()) {
                 int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
                 int reason = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON));
 
-                if(status == DownloadManager.STATUS_SUCCESSFUL)
-                {
+                if (status == DownloadManager.STATUS_SUCCESSFUL) {
                     //podemos recuperar el fichero descargado
                     ParcelFileDescriptor file = null;
-                    try
-                    {
+                    try {
                         file = downloadManager.openDownloadedFile(id);
-                        Toast.makeText(TrantorDetalleLibro.this,"Descarga exitosa.",Toast.LENGTH_LONG).show();
+                        Toast.makeText(TrantorDetalleLibro.this, "Descarga exitosa.", Toast.LENGTH_LONG).show();
+                    } catch (FileNotFoundException ex) {
+                        Toast.makeText(TrantorDetalleLibro.this, "Exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
                     }
-                    catch (FileNotFoundException ex)
-                    {
-                        Toast.makeText(TrantorDetalleLibro.this,"Exception: " + ex.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                }
-
-                else if(status == DownloadManager.STATUS_FAILED)
-                {
-                    Toast.makeText(TrantorDetalleLibro.this,"Fallo: " + reason,Toast.LENGTH_LONG).show();
-                }
-                else if(status == DownloadManager.STATUS_PAUSED)
-                {
+                } else if (status == DownloadManager.STATUS_FAILED) {
+                    Toast.makeText(TrantorDetalleLibro.this, "Fallo: " + reason, Toast.LENGTH_LONG).show();
+                } else if (status == DownloadManager.STATUS_PAUSED) {
                     Toast.makeText(TrantorDetalleLibro.this, "Pausadi: " + reason, Toast.LENGTH_LONG).show();
-                }
-                else if(status == DownloadManager.STATUS_PENDING)
-                {
+                } else if (status == DownloadManager.STATUS_PENDING) {
                     Toast.makeText(TrantorDetalleLibro.this, "Pendiente: " + reason, Toast.LENGTH_LONG).show();
 
-                }
-                else if(status == DownloadManager.STATUS_RUNNING)
-                {
+                } else if (status == DownloadManager.STATUS_RUNNING) {
                     Toast.makeText(TrantorDetalleLibro.this, "Descargando: " + reason, Toast.LENGTH_LONG).show();
                 }
             }
@@ -242,13 +243,12 @@ public class TrantorDetalleLibro extends AppCompatActivity {
     }
 
 
-
-    private void descargaReadEra(){
+    private void descargaReadEra() {
         LayoutInflater li = LayoutInflater.from(TrantorDetalleLibro.this);
         View promptsView = li.inflate(R.layout.alert_descarga, null);
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TrantorDetalleLibro.this);
-        final Button cancelar = (Button)promptsView.findViewById(R.id.cancelar);
-        final Button aceptar = (Button)promptsView.findViewById(R.id.aceptar);
+        final Button cancelar = (Button) promptsView.findViewById(R.id.cancelar);
+        final Button aceptar = (Button) promptsView.findViewById(R.id.aceptar);
 
         alertDialogBuilder.setView(promptsView);
 
@@ -263,7 +263,7 @@ public class TrantorDetalleLibro extends AppCompatActivity {
             public void onClick(View v) {
                 alertDialog.dismiss();
                 Toast.makeText(TrantorDetalleLibro.this, "Cancelado", Toast.LENGTH_LONG).show();
-                }
+            }
         });
         aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,20 +271,21 @@ public class TrantorDetalleLibro extends AppCompatActivity {
                 Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=org.readera&hl=es_AR");
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 intent.setPackage("com.android.vending");
+                alertDialog.dismiss();
                 try {
                     startActivity(intent);
-                    } catch (ActivityNotFoundException e) {
+                } catch (ActivityNotFoundException e) {
                     //No encontró la aplicación, abre la versión web.
                     alertDialog.dismiss();
                     startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                    }
                 }
+            }
         });
     }
 
-    private void readEra(){
-        Intent read = new Intent(Intent.ACTION_VIEW);
-        read.setPackage("org.readera");
-        startActivity(read);
+    private void readEra() {
+        Intent intent = getPackageManager().getLaunchIntentForPackage("org.readera");
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        startActivity(intent);
     }
 }

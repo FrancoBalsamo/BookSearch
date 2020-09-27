@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="blanco">#FFF</color>
+    <color name="negro">#000</color>
+    <color name="tmoBanner">#F8F9FA</color>
+    <color name="tmoBotonBuscar">#51A351</color>
+    <color name="tmoGris">#6C757D</color>
+    <color name="tmoBg">#E0E0E0</color>
+    <color name="tmoAzul">#007BFF</color>
+    <color name="tmoTitulo">#2957BA</color>
+    <color name="trantorLeer">#FAA732</color>
+    <color name="trantorDesarga">#222222</color>
+    <color name="tmoManga">#606DB0</color>
+    <color name="tmoManhwa">#5F9762</color>
+    <color name="tmoManhua">#7B6963</color>
+    <color name="tmoNovela">#BE5A5A</color>
+    <color name="tmoOneShot">#D05A82</color>
+    <color name="tmoDou">#CF9540</color>
+    <color name="tmoOel">#945D9D</color>
+</resources>

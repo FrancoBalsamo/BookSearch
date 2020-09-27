@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/trantor_bkgd">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:orientation="horizontal"
+                android:background="@drawable/trantor_bkgd">
+                <LinearLayout
+                    android:layout_width="130dp"
+                    android:layout_height="130dp">
+                    <ImageView
+                        android:id="@+id/portadaLibro"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:layout_margin="8dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tituloLibro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="Title"
+                        android:textColor="@color/negro"
+                        android:textSize="17sp"/>
+                    <TextView
+                        android:id="@+id/tvAutor"
+                        android:layout_marginTop="15dp"
+                        android:layout_gravity="left"
+                        android:layout_marginStart="15sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Autor: "
+                        android:fontFamily="@font/timeless"
+                        android:textColor="@color/negro"
+                        android:textSize="15sp"
+                        android:layout_marginLeft="15sp" />
+                    <TextView
+                        android:id="@+id/tvIdioma"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="left"
+                        android:layout_marginStart="15sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Idioma: "
+                        android:fontFamily="@font/timeless"
+                        android:textColor="@color/negro"
+                        android:textSize="15sp"
+                        android:layout_marginLeft="15sp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginRight="15dp" />
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp">
+                <TextView
+                    android:id="@+id/tvDescripcionTrantor"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Descripción:: "
+                    android:fontFamily="@font/timeless"
+                    android:textColor="@color/negro"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

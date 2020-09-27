@@ -276,6 +276,7 @@ public class TrantorDetalleLibro extends AppCompatActivity {
                     startActivity(intent);
                     } catch (ActivityNotFoundException e) {
                     //No encontró la aplicación, abre la versión web.
+                    alertDialog.dismiss();
                     startActivity(new Intent(Intent.ACTION_VIEW, uri));
                     }
                 }

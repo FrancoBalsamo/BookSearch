@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -16,6 +20,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -70,7 +75,13 @@ public class TrantorDetalleLibro extends AppCompatActivity {
         leer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ver();
+                //ver();
+                if(verificarReadRa("org.readera", TrantorDetalleLibro.this)){
+                    Toast.makeText(TrantorDetalleLibro.this, "Existe", Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(TrantorDetalleLibro.this, "No Existe", Toast.LENGTH_LONG).show();
+                     descargaReadEra();
+                }
             }
         });
 
@@ -150,14 +161,14 @@ public class TrantorDetalleLibro extends AppCompatActivity {
     public void descargarArchivo(String url, String archivo, Context context){
         downloadManager = (DownloadManager)getSystemService(DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        request.setDescription("Este, como tantos otros archivos, se descargan en formato ePub. Recuerda tener una aplicación pertinente para poder leerlo.");
+        request.setDescription("Este, como tantos otros archivos, se descargan en formato ePub.");
 
         //Crear la carpeta
         File folder = new File("Book Seach");
         Log.d("", "descargarArchivo: " + folder);
 
         //vamos a guardar el fichero (opcional). ver tip 5
-        request.setDestinationInExternalFilesDir(TrantorDetalleLibro.this, String.valueOf(folder),archivo + ".epub");
+        request.setDestinationInExternalFilesDir(context, String.valueOf(folder),archivo + ".epub");
 
 
         //iniciamos la descarga
@@ -220,4 +231,54 @@ public class TrantorDetalleLibro extends AppCompatActivity {
         }
 
     };
+
+    private boolean verificarReadRa(String nombrePaquete, Context context) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            pm.getPackageInfo(nombrePaquete, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+
+
+    private void descargaReadEra(){
+        LayoutInflater li = LayoutInflater.from(TrantorDetalleLibro.this);
+        View promptsView = li.inflate(R.layout.alert_descarga, null);
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TrantorDetalleLibro.this);
+        final Button cancelar = (Button)promptsView.findViewById(R.id.cancelar);
+        final Button aceptar = (Button)promptsView.findViewById(R.id.aceptar);
+
+        alertDialogBuilder.setView(promptsView);
+
+        cancelar.setText("Cancelar");
+        aceptar.setText("Aceptar");
+
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+        cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+                Toast.makeText(TrantorDetalleLibro.this, "Cancelado", Toast.LENGTH_LONG).show();
+                }
+        });
+        aceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=org.readera&hl=es_AR");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                intent.setPackage("com.android.vending");
+                try {
+                    startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                    //No encontró la aplicación, abre la versión web.
+                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                    }
+                }
+        });
+    }
 }

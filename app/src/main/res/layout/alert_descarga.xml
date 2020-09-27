@@ -6,20 +6,20 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="145dp"
+        android:layout_height="135dp"
         android:background="@color/negro"
         android:layout_centerVertical="true"
         android:orientation="vertical">
         <LinearLayout
             android:id="@+id/alertas"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="73dp"
             android:orientation="vertical">
             <TextView
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/blanco"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="20dp"
                 android:text="¡Atención!"
                 android:textAlignment="center"
                 android:textSize="15sp"
@@ -28,8 +28,10 @@
                 android:layout_marginTop="5dp"
                 android:textColor="@color/blanco"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:text="Puede leer o dercargar este archivo."
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="No tienes instalada una aplicación para leer el formato de este archivo, ¿Deseas descargada la más recomendada de Google PlayStore?"
                 android:textAlignment="center"
                 android:id="@+id/tvDescripcion"
                 android:gravity="center_horizontal" />

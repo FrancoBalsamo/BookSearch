@@ -77,9 +77,8 @@ public class TrantorDetalleLibro extends AppCompatActivity {
             public void onClick(View v) {
                 //ver();
                 if(verificarReadRa("org.readera", TrantorDetalleLibro.this)){
-                    Toast.makeText(TrantorDetalleLibro.this, "Existe", Toast.LENGTH_LONG).show();
+                    readEra();
                 }else {
-                    Toast.makeText(TrantorDetalleLibro.this, "No Existe", Toast.LENGTH_LONG).show();
                      descargaReadEra();
                 }
             }
@@ -281,5 +280,11 @@ public class TrantorDetalleLibro extends AppCompatActivity {
                     }
                 }
         });
+    }
+
+    private void readEra(){
+        Intent read = new Intent(Intent.ACTION_VIEW);
+        read.setPackage("org.readera");
+        startActivity(read);
     }
 }

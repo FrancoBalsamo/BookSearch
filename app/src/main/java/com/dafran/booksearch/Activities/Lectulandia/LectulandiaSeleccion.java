@@ -143,7 +143,7 @@ public class LectulandiaSeleccion extends AppCompatActivity {
 
     public void descargarArchivo(String url, String archivo){
         downloadManager = (DownloadManager)getSystemService(DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse("https://www.lectulandia.co" + url));
         request.setTitle(archivo);
         request.setDescription("Descargando gracias a DownloadManager.");
 

@@ -76,6 +76,7 @@ public class TrantorDetalleLibro extends AppCompatActivity {
         descargar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Las descargas no estan disponibles por el momento.", Toast.LENGTH_LONG).show();
 //                descargarArchivo(urlDescarga, titulo + ".epub");
 //                descargaTemporal(TrantorDetalleLibro.this, urlDescarga);
             }

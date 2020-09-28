@@ -69,6 +69,7 @@ public class PaginasSQL implements Serializable {
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(PaginasTabla.TABLA_PAGINA_SQL);
             db.execSQL("INSERT INTO " + PaginasTabla.TABLA_PAGINAS + "(" + PaginasTabla.PAGINA_NOMBRE + ") VALUES ('Trantor.is')" );
+            db.execSQL("INSERT INTO " + PaginasTabla.TABLA_PAGINAS + "(" + PaginasTabla.PAGINA_NOMBRE + ") VALUES ('Lectulandia')" );
             db.execSQL("INSERT INTO " + PaginasTabla.TABLA_PAGINAS + "(" + PaginasTabla.PAGINA_NOMBRE + ") VALUES ('TMOnline')" );
         }
         @Override

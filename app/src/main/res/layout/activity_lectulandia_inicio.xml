@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.TMO.TMOnline"
+    tools:context=".Activities.Lectulandia.LectulandiaInicio"
     android:background="@color/tmoBg">
     <LinearLayout
         android:orientation="vertical"
@@ -13,39 +13,19 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="115dp"
             android:orientation="vertical"
-            android:background="@color/tmoBg">
+            android:background="@color/lectulandiaBanner">
 
             <LinearLayout
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="41dp"
                 android:layout_gravity="center_horizontal">
-                <TextView
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:textSize="25sp"
-                    android:id="@+id/tvTu"
-                    android:fontFamily="@font/tu"/>
-                <TextView
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:textSize="25sp"
-                    android:id="@+id/tvManga"
-                    android:fontFamily="@font/manga"/>
-                <TextView
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:textSize="25sp"
-                    android:id="@+id/tvOnline"
-                    android:fontFamily="@font/online"/>
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/lectulandia"/>
             </LinearLayout>
 
             <LinearLayout
@@ -55,7 +35,6 @@
                 android:orientation="horizontal"
                 android:layout_gravity="center_horizontal">
                 <EditText
-                    android:layout_marginRight="5dp"
                     android:paddingStart="15sp"
                     android:textColor="@color/blanco"
                     android:hint="Buscar..."
@@ -63,15 +42,17 @@
                     android:layout_width="180dp"
                     android:layout_height="50dp"
                     android:background="@drawable/tmo_sinfoco"
-                    android:id="@+id/etBuscar"
+                    android:id="@+id/etLectorBuscar"
                     android:paddingLeft="15sp" />
+
                 <Button
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/lectorBtn"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:textColor="@color/blanco"
-                    android:id="@+id/btnBusqueda"
-                    android:background="@drawable/tmo_boton"
-                    android:foreground="@drawable/ic_search"/>
+                    android:background="@color/blanco"
+                    android:foreground="@drawable/ic_search_negro"
+                    android:textColor="@color/blanco" />
             </LinearLayout>
         </LinearLayout>
 
@@ -79,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="591dp">
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/recyclerViewLector"
                 android:layout_width="match_parent"
                 android:layout_height="591dp" />
         </LinearLayout>
@@ -87,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <com.google.android.gms.ads.AdView
-                android:id="@+id/adView"
+                android:id="@+id/adViewLector"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"

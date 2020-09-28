@@ -1,4 +1,4 @@
-package com.dafran.booksearch.Activities.TMO;
+package com.dafran.booksearch.Activities.Lectulandia;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -9,15 +9,19 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dafran.booksearch.Activities.Trantor.TrantorActivity;
+import com.dafran.booksearch.Adaptador.LectulandiaAdapters.LectulandiaInicioAdaptador;
+import com.dafran.booksearch.Adaptador.TrantorAdapter.TrantorAdapter;
 import com.dafran.booksearch.Clases.Conexion;
-import com.dafran.booksearch.Clases.TMOClases.TMOItems;
+import com.dafran.booksearch.Clases.Lectulandia.LectuPrincipalClase;
+import com.dafran.booksearch.Clases.Trantor.TrantorItems;
 import com.dafran.booksearch.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -33,62 +37,63 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class TMOnline extends AppCompatActivity {
+public class LectulandiaInicio extends AppCompatActivity {
     Button buscar;
     EditText textoBusqueda;
+
     AdView adView;
-    TextView tu, manga, online;
 
     private RecyclerView recyclerView;
-    private com.dafran.booksearch.Adaptador.TMOAdapters.TMOnline adapter;
-    private ArrayList<TMOItems> tmoItems = new ArrayList<>();
+    private LectulandiaInicioAdaptador adapter;
+    private ArrayList<LectuPrincipalClase> lectuPrincipalClaseArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_t_m_online);
-
-        titulo();
+        setContentView(R.layout.activity_lectulandia_inicio);
 
         recyclerView = findViewById(R.id.recyclerView);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new com.dafran.booksearch.Adaptador.TMOAdapters.TMOnline(tmoItems, TMOnline.this);
+        adapter = new LectulandiaInicioAdaptador(lectuPrincipalClaseArrayList, this);
         recyclerView.setAdapter(adapter);
 
         textoBusqueda = (EditText)findViewById(R.id.etBuscar);
-        buscar = (Button)findViewById(R.id.btnBusqueda);
 
         textoBusqueda.clearFocus();
+
+        //CargaInicio cargaInicio = new CargaInicio();
+        //cargaInicio.execute();
 
         textoBusqueda.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(textoBusqueda.requestFocus()){
-                    textoBusqueda.setBackgroundResource(R.drawable.tmo_confoco);
-                    textoBusqueda.setTextColor(ContextCompat.getColor(TMOnline.this, R.color.negro));
+                    textoBusqueda.setBackgroundResource(R.drawable.trantor_confoco);
+                    textoBusqueda.setTextColor(ContextCompat.getColor(LectulandiaInicio.this, R.color.negro));
                 }else{
-                    textoBusqueda.setBackgroundResource(R.drawable.tmo_sinfoco);
+                    textoBusqueda.setBackgroundResource(R.drawable.trantor_sinfoco);
                 }
             }
         });
+
+        buscar = (Button)findViewById(R.id.btnBusqueda);
 
         buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hideKeyboardFrom(getApplicationContext(), textoBusqueda);
-
-                if(new Conexion().isOnline(TMOnline.this)){
+                if(new Conexion().isOnline(LectulandiaInicio.this)){
                     if(TextUtils.isEmpty(textoBusqueda.getText())){
-                        Toast.makeText(TMOnline.this, "Debe ingresar el nombre del libro.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LectulandiaInicio.this, "Debe ingresar el nombre del libro.", Toast.LENGTH_LONG).show();
                         textoBusqueda.setFocusable(true);
                     }else{
-                        Content content = new Content();
-                        content.execute();
+                        BuscandoDato buscandoDato = new BuscandoDato();
+                        buscandoDato.execute();
                     }
                 }else {
-                    Toast.makeText(TMOnline.this, "Se requiere conexión a internet.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LectulandiaInicio.this, "Se requiere conexión a internet.", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -96,7 +101,7 @@ public class TMOnline extends AppCompatActivity {
         bannerBookSearh();
     }
 
-    private class Content extends AsyncTask<Void,Void, ArrayList<TMOItems>> {
+    private class BuscandoDato extends AsyncTask<Void,Void, ArrayList<LectuPrincipalClase>> {
 
         @Override
         protected void onPreExecute() {
@@ -104,7 +109,7 @@ public class TMOnline extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<TMOItems> items) {
+        protected void onPostExecute(ArrayList<LectuPrincipalClase> items) {
             super.onPostExecute(items);
             //Actualizar información
             adapter.updateData(items);
@@ -112,28 +117,32 @@ public class TMOnline extends AppCompatActivity {
         }
 
         @Override
-        protected ArrayList<TMOItems> doInBackground(Void... voids) {
-            tmoItems.clear();
-
+        protected ArrayList<LectuPrincipalClase> doInBackground(Void... voids) {
+            lectuPrincipalClaseArrayList.clear();
             String texto = textoBusqueda.getText().toString();
-            String arreglo = texto.replace(' ', '+');
-            String url = "https://lectortmo.com/library?_page=1&title=" + arreglo;
+            texto = texto.replaceAll(" ", "+");
+            String url = "https://www.lectulandia.co/search/" + texto;
+            Log.d("", "doInBackground: "+url);;
             try {
                 Document doc = Jsoup.connect(url).get();
-
-                Elements data = doc.select("div.row>.element");
+                Elements data = doc.select("article");
+                Log.d("", "doInBackground: " + doc);
                 for (Element e : data) {
-                    String title = e.select("h4").attr("title"); // nombre del manhwa
-                    String imgUrl = e.select("style").first().html().split("url\\('")[1].split("'\\)")[0]; // imagen del manga
-                    String detailUrl = e.select("a").attr("href").trim();
-                    String tipo = e.select("span.book-type.badge").text();
+                    String titulo = e.select("div.span1").select("img").attr("alt");
+                    String imgUrl = e.select("div.span1").select("img").attr("src");
+                    String urlLink = e.select("div.span1").select("a").attr("href");
 
-                    tmoItems.add(new TMOItems(imgUrl, title, detailUrl, tipo));
+                    if(!isNullorEmpty(titulo) && !isNullorEmpty(imgUrl)){
+                        imgUrl = "https://trantor.is" + imgUrl; //Add basepath
+                        urlLink =  "https://trantor.is" + urlLink; //Add basepath
+                        lectuPrincipalClaseArrayList.add(new LectuPrincipalClase(imgUrl, titulo, urlLink));
+                        Log.d("items", "titulo: " + titulo + " img: " + imgUrl  + " urlDescarga: " + urlLink);
+                    }
                 }
             }  catch (IOException e) {
                 e.printStackTrace();
             }
-            return tmoItems;
+            return lectuPrincipalClaseArrayList;
         }
     }
 
@@ -147,7 +156,7 @@ public class TMOnline extends AppCompatActivity {
     }
 
     private void bannerBookSearh(){
-        MobileAds.initialize(TMOnline.this, new OnInitializationCompleteListener() {
+        MobileAds.initialize(LectulandiaInicio.this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) { }
         });
@@ -159,20 +168,6 @@ public class TMOnline extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        TMOnline.this.finish();
-    }
-
-    private void titulo(){
-        tu = (TextView)findViewById(R.id.tvTu);
-        manga = (TextView)findViewById(R.id.tvManga);
-        online = (TextView)findViewById(R.id.tvOnline);
-
-        tu.setText("TU");
-        manga.setText("MANGA");
-        online.setText("ONLINE");
-
-        tu.setTextColor(ContextCompat.getColor(TMOnline.this, R.color.tmoTitulo));
-        manga.setTextColor(ContextCompat.getColor(TMOnline.this, R.color.tmoTitulo));
-        online.setTextColor(ContextCompat.getColor(TMOnline.this, R.color.tmoTitulo));
+        LectulandiaInicio.this.finish();
     }
 }

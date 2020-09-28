@@ -10,12 +10,13 @@ public class TrantorBookDetail {
     private String urlLector;
 
     public TrantorBookDetail(String titulo, String urlImage, String autor,
-                             String idioma, String descripcion) {
+                             String idioma, String descripcion, String lector) {
         this.titulo = titulo;
         this.urlImage = urlImage;
         this.autor = autor;
         this.idioma = idioma;
         this.descripcion = descripcion;
+        this.urlLector = lector;
     }
 
     public String getTitulo() {

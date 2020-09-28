@@ -18,24 +18,24 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class TMOAdapter extends RecyclerView.Adapter<TMOAdapter.ViewHolder> {
+public class TMOnline extends RecyclerView.Adapter<TMOnline.ViewHolder> {
     private ArrayList<TMOItems> tmoItems;
     private Context context;
 
-    public TMOAdapter(ArrayList<TMOItems> tmoItems, Context context) {
+    public TMOnline(ArrayList<TMOItems> tmoItems, Context context) {
         this.tmoItems = tmoItems;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public TMOAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TMOnline.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.vista_recycler, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TMOAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TMOnline.ViewHolder holder, int position) {
         TMOItems tmOnline = this.tmoItems.get(position);
         holder.textView.setText(tmOnline.getNombre());
         Picasso.get().load(tmOnline.getImgUrl()).into(holder.imageView);

@@ -17,7 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".Activities.Trantor.TrantorDetalleLibro"></activity>
+        <activity android:name=".Activities.Lectulandia.LectulandiaInicio"></activity>
+        <activity android:name=".Activities.BookFi.BookFiBuscar" />
+        <activity android:name=".Activities.Trantor.TrantorLector" />
+        <activity android:name=".Activities.Trantor.TrantorDetalleLibro" />
         <activity android:name=".Activities.TMO.TMOLector" />
         <activity android:name=".Activities.TMO.TMODatosSeleccionActivity" />
         <activity android:name=".Activities.TMO.TMOnline" />

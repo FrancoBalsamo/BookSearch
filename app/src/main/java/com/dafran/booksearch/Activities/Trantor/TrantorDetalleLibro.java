@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
@@ -75,21 +76,10 @@ public class TrantorDetalleLibro extends AppCompatActivity {
         descargar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                descargarArchivo(urlDescarga, titulo + ".epub");
+//                descargarArchivo(urlDescarga, titulo + ".epub");
+//                descargaTemporal(TrantorDetalleLibro.this, urlDescarga);
             }
         });
-        leer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //ver();
-                if (verificarReadRa("org.readera", TrantorDetalleLibro.this)) {
-                    readEra();
-                } else {
-                    descargaReadEra();
-                }
-            }
-        });
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(TrantorDetalleLibro.this));
         adapter = new TrantorBookAdapter(trantorDetalleLibros, TrantorDetalleLibro.this);
@@ -132,7 +122,7 @@ public class TrantorDetalleLibro extends AppCompatActivity {
                         String imgUrl = e1.select("div.span4").select("img").attr("src");
                         String descripcion = e1.select("div.span8").select("p").text();
                         String descargaUrl = e1.select("div.span3").select("a.btn.btn-large.btn-inverse").attr("href");
-                        String lectorUrl = e1.select("div.span3").select("a.btn.btn-large.btn-warning").attr("href");
+                        final String lectorUrl = e1.select("div.span3").select("a.btn.btn-large.btn-warning").attr("href");
                         if (!isNullorEmpty(imgUrl) && !isNullorEmpty(descargaUrl) && !isNullorEmpty(lectorUrl)) {
                             String autor = ""; //valor por defecto
                             String idioma = "";
@@ -142,7 +132,16 @@ public class TrantorDetalleLibro extends AppCompatActivity {
                             Element ultimo = e1.select("div.span8").select("dd").select("a").last();
                             autor = primero.text();
                             idioma = ultimo.text();
-                            trantorDetalleLibros.add(new TrantorBookDetail(titulo, imgUrl, "Autor/a: " + autor, "Idioma: [" + idioma + "]", descripcion));
+                            leer.setOnClickListener(new View.OnClickListener() {
+                                @SuppressLint("WrongThread")
+                                @Override
+                                public void onClick(View v) {
+                                    Intent alLector = new Intent(TrantorDetalleLibro.this, TrantorLector.class);
+                                    alLector.putExtra("lectorurl", "https://trantor.is" + lectorUrl);
+                                    startActivity(alLector);
+                                }
+                            });
+                            trantorDetalleLibros.add(new TrantorBookDetail(titulo, imgUrl, "Autor/a: " + autor, "Idioma: [" + idioma + "]", descripcion,lectorUrl));
                         }
                     }
                 }
@@ -287,5 +286,9 @@ public class TrantorDetalleLibro extends AppCompatActivity {
         Intent intent = getPackageManager().getLaunchIntentForPackage("org.readera");
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         startActivity(intent);
+    }
+
+    private void descargaTemporal(Context context, String url){
+        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
 }

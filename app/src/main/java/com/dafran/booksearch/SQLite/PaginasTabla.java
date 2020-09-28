@@ -1,7 +1,7 @@
 package com.dafran.booksearch.SQLite;
 
 public class PaginasTabla {
-    public static final String DB_NAME = "booksearch.db";//nombre de la bd
+    public static final String DB_NAME = "booksearch0.db";//nombre de la bd
     public static final int DB_VERSION = 1;//version
 
 

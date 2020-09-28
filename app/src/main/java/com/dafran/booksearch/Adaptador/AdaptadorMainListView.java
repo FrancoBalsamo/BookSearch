@@ -54,6 +54,9 @@ public class AdaptadorMainListView extends BaseAdapter {
             iv.setBackgroundResource(R.drawable.trantor);
         }
         if(array.get(position).getId()==2){
+            iv.setBackgroundResource(R.drawable.lectulandia);
+        }
+        if(array.get(position).getId()==3){
             iv.setBackgroundResource(R.drawable.tmo);
         }
         marca.setText(array.get(position).getPagina());

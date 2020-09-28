@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dafran.booksearch.Activities.Lectulandia.LectulandiaInicio;
 import com.dafran.booksearch.Activities.TMO.TMOnline;
 import com.dafran.booksearch.Activities.Trantor.TrantorActivity;
 import com.dafran.booksearch.Adaptador.AdaptadorMainListView;
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
                     aTrantorIs();
                     Toast.makeText(getApplicationContext(), "Esta página recibe muchas solicitudes diariamiente, por lo que puede tardar em cargar. Por favor, ¡Se paciente!", Toast.LENGTH_LONG).show();
                 } else if(array.get(position).getId() == 2){
+                    aLectulandia();
+                }else if(array.get(position).getId() == 3){
                     aTMOnline();
                 }
             }
@@ -70,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
     private void aTrantorIs(){
         Intent trantor = new Intent(MainActivity.this, TrantorActivity.class);
         startActivity(trantor);
+    }
+
+    private void aLectulandia(){
+        Intent lectulandia = new Intent(MainActivity.this, LectulandiaInicio.class);
+        startActivity(lectulandia);
     }
 
     private void aTMOnline(){

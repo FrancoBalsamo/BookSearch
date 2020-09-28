@@ -98,58 +98,6 @@ public class TrantorActivity extends AppCompatActivity {
         bannerBookSearh();
     }
 
-    private class CargaInicio extends AsyncTask<Void,Void, ArrayList<TrantorItems>> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<TrantorItems> items) {
-            super.onPostExecute(items);
-            //Actualizar información
-            adapter.updateData(items);
-            adapter.notifyDataSetChanged();
-        }
-
-        @Override
-        protected ArrayList<TrantorItems> doInBackground(Void... voids) {
-            trantorItems.clear();
-            String url = "https://trantor.is";
-            try {
-                Document doc = Jsoup.connect(url).get();
-
-                Elements data = doc.select("div.row");
-                for (Element e : data) {
-                    String cantidadLibros = e.select("p").text();
-                    Log.d("", "doInBackground: " + cantidadLibros);
-
-                    Elements dato = doc.select("li.span2");
-                    Log.d("", "doInBackground: " + dato);
-
-                    String imgUrl = dato.select("img").attr("src");
-                    Log.d("", "doInBackground: " + imgUrl);
-
-                    String detailUrl = e.select("div.span1").select("a").attr("href");
-                    Log.d("", "doInBackground: " + detailUrl);
-                    String urlDescarga = e.select("div.span3").select("a").attr("href");
-
-                    if(!isNullorEmpty(cantidadLibros) && !isNullorEmpty(imgUrl)){
-                        imgUrl = "https://trantor.is" + imgUrl; //Add basepath
-                        detailUrl =  "https://trantor.is" + detailUrl; //Add basepath
-                        urlDescarga =  "https://trantor.is" + urlDescarga; //Add basepath
-                        trantorItems.add(new TrantorItems(imgUrl, cantidadLibros, detailUrl, urlDescarga));
-                        Log.d("items", "cantidadLibros: " + cantidadLibros + " img: " + imgUrl  + " urlDescarga: " + urlDescarga);
-                    }
-                }
-            }  catch (IOException e) {
-                e.printStackTrace();
-            }
-            return trantorItems;
-        }
-    }
-
     private class BuscandoDato extends AsyncTask<Void,Void, ArrayList<TrantorItems>> {
 
         @Override
@@ -168,10 +116,13 @@ public class TrantorActivity extends AppCompatActivity {
         @Override
         protected ArrayList<TrantorItems> doInBackground(Void... voids) {
             trantorItems.clear();
-            String url = "https://trantor.is/search/?q=" + textoBusqueda.getText().toString();
+            String texto = textoBusqueda.getText().toString();
+            texto = texto.replaceAll(" ", "+");
+            String url = "https://trantor.is/search/?q=" + texto;
+            Log.d("", "doInBackground: "+url);;
             try {
                 Document doc = Jsoup.connect(url).get();
-
+                Log.d("", "doInBackground: "+doc);;
                 Elements data = doc.select("div.row");
                 for (Element e : data) {
                     String title = e.select("div.span1").select("img").attr("alt");

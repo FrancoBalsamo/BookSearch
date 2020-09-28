@@ -53,6 +53,9 @@ public class LectulandiaSeleccion extends AppCompatActivity {
         lectulandiaSeleccionLibroAdaptador = new LectulandiaSeleccionLibroAdaptador(lectulandiaSeleccionItemsClaseArrayList, this);
         recyclerView.setAdapter(lectulandiaSeleccionLibroAdaptador);
 
+        BuscandoDato buscandoDato = new BuscandoDato();
+        buscandoDato.execute();
+
         bannerBookSearh();
     }
 
@@ -81,17 +84,17 @@ public class LectulandiaSeleccion extends AppCompatActivity {
             Log.d("", "doInBackground: "+ datoUrl + "-" + datoImagen + "-" + datoTitulo);
             try {
                 Document doc = Jsoup.connect(datoUrl).get();
-                Elements data = doc.select("article");
-                Log.d("", "doInBackground: " + doc);
+                Elements data = doc.select("div>.content-area");
                 for (Element e : data) {
-                    String imgUrl = e.select("article").select("img").attr("src");
-                    String titulo = e.select("article").select("img").attr("title");
-                    String urlLink = e.select("article").select("a").attr("href");
-                    Log.d("", "doInBackground: " + urlLink);
-                    if(!isNullorEmpty(titulo) && !isNullorEmpty(imgUrl)){
-                        urlLink =  "https://www.lectulandia.co" + urlLink;
-                        lectulandiaSeleccionItemsClaseArrayList.add(new LectulandiaSeleccionItemsClase("", "", "", imgUrl, titulo, urlLink));
-                        Log.d("items", "titulo: " + titulo + " img: " + imgUrl  + " urlDescarga: " + urlLink);
+                    String autor = e.getElementById("autor").select("a").text();
+                    String generos = e.getElementById("genero").select("a").text();
+                    String sinopsis = e.getElementById("sinopsis").select("span").text();
+                    String linkPdf = "";
+                    if(e.getElementById("downloadContainer").select("a").size() > 0){
+                        linkPdf = e.getElementById("downloadContainer").select("a").get(1).attr("href");
+                        Log.d("", "doInBackground: "+ linkPdf);
+                        lectulandiaSeleccionItemsClaseArrayList.add(new LectulandiaSeleccionItemsClase(datoTitulo, datoImagen, autor,
+                                generos, sinopsis, linkPdf));
                     }
                 }
             }  catch (IOException e) {
@@ -99,15 +102,6 @@ public class LectulandiaSeleccion extends AppCompatActivity {
             }
             return lectulandiaSeleccionItemsClaseArrayList;
         }
-    }
-
-    public static void hideKeyboardFrom(Context context, View view) {
-        InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    public static boolean isNullorEmpty(String s ) {
-        return s == null || s.trim().isEmpty();
     }
 
     private void bannerBookSearh(){

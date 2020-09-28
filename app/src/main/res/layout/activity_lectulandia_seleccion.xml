@@ -32,12 +32,25 @@
         </LinearLayout>
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="591dp">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvLEctuSeleccion"
                 android:layout_width="match_parent"
-                android:layout_height="591dp" />
+                android:layout_height="550dp" />
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+                <Button
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:text="Descargar"
+                    android:textColor="@color/blanco"
+                    android:background="@color/lectulandiaBotonDescarga"/>
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.dafran.booksearch.Adaptador.LectulandiaAdapters;
 
 import android.content.Context;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class LectulandiaSeleccionLibroAdaptador extends RecyclerView.Adapter<Lec
             generos = view.findViewById(R.id.tvGenerosLectus);
             sinopsis = view.findViewById(R.id.tvSinopsisLectu);
             view.setOnClickListener(this);
+            sinopsis.setMovementMethod(new ScrollingMovementMethod());
         }
 
         @Override

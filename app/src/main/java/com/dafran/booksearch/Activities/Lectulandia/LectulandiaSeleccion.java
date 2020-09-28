@@ -1,16 +1,23 @@
 package com.dafran.booksearch.Activities.Lectulandia;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.dafran.booksearch.Adaptador.LectulandiaAdapters.LectulandiaInicioAdaptador;
 import com.dafran.booksearch.Adaptador.LectulandiaAdapters.LectulandiaSeleccionLibroAdaptador;
+import com.dafran.booksearch.Clases.Conexion;
 import com.dafran.booksearch.Clases.Lectulandia.LectuPrincipalClase;
 import com.dafran.booksearch.Clases.Lectulandia.LectulandiaSeleccionItemsClase;
 import com.dafran.booksearch.R;
@@ -38,6 +45,15 @@ public class LectulandiaSeleccion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lectulandia_seleccion);
+
+        recyclerView = findViewById(R.id.rvLEctuSeleccion);
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        lectulandiaSeleccionLibroAdaptador = new LectulandiaSeleccionLibroAdaptador(lectulandiaSeleccionItemsClaseArrayList, this);
+        recyclerView.setAdapter(lectulandiaSeleccionLibroAdaptador);
+
+        bannerBookSearh();
     }
 
     private class BuscandoDato extends AsyncTask<Void,Void, ArrayList<LectulandiaSeleccionItemsClase>> {
@@ -99,7 +115,7 @@ public class LectulandiaSeleccion extends AppCompatActivity {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) { }
         });
-        adView = (AdView)findViewById(R.id.adViewLector);
+        adView = (AdView)findViewById(R.id.adViewLectuSeleccion);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
     }

@@ -60,11 +60,9 @@ public class LectulandiaInicio extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         textoBusqueda = (EditText)findViewById(R.id.etLectorBuscar);
-
         textoBusqueda.clearFocus();
 
         buscar = (Button)findViewById(R.id.lectorBtn);
-
         buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,13 +111,12 @@ public class LectulandiaInicio extends AppCompatActivity {
                 Elements data = doc.select("article");
                 Log.d("", "doInBackground: " + doc);
                 for (Element e : data) {
-                    String titulo = e.select("div.span1").select("img").attr("alt");
-                    String imgUrl = e.select("div.span1").select("img").attr("src");
-                    String urlLink = e.select("div.span1").select("a").attr("href");
-
+                    String imgUrl = e.select("article").select("img").attr("src");
+                    String titulo = e.select("article").select("img").attr("title");
+                    String urlLink = e.select("article").select("a").attr("href");
+                    Log.d("", "doInBackground: " + urlLink);
                     if(!isNullorEmpty(titulo) && !isNullorEmpty(imgUrl)){
-                        imgUrl = "https://trantor.is" + imgUrl; //Add basepath
-                        urlLink =  "https://trantor.is" + urlLink; //Add basepath
+                        urlLink =  "https://www.lectulandia.co" + urlLink;
                         lectuPrincipalClaseArrayList.add(new LectuPrincipalClase(imgUrl, titulo, urlLink));
                         Log.d("items", "titulo: " + titulo + " img: " + imgUrl  + " urlDescarga: " + urlLink);
                     }

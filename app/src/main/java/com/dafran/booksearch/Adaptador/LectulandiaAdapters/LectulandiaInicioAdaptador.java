@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dafran.booksearch.Activities.Lectulandia.LectulandiaSeleccion;
 import com.dafran.booksearch.Activities.TMO.TMODatosSeleccionActivity;
 import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnline;
 ;
@@ -64,14 +66,14 @@ public class LectulandiaInicioAdaptador extends RecyclerView.Adapter<Lectulandia
         public void onClick(View view) {
             int itemPosition = getAdapterPosition();
 
-//            String url = String.valueOf(Uri.parse(lectuPrincipalClases.get(itemPosition).getDetalleUrl()));
-//            String nombreSeleccion = String.valueOf(lectuPrincipalClases.get(itemPosition).getNombre());
-//            String tipo = String.valueOf(lectuPrincipalClases.get(itemPosition).getTipo());
-//            Intent pasarDatoUrl = new Intent(context, TMODatosSeleccionActivity.class);
-//            pasarDatoUrl.putExtra("valor", url);
-//            pasarDatoUrl.putExtra("nombre", nombreSeleccion);
-//            pasarDatoUrl.putExtra("tipo", tipo);
-//            context.startActivity(pasarDatoUrl);
+            String url = String.valueOf(Uri.parse(lectuPrincipalClases.get(itemPosition).getUrlLink()));
+            String imagen = String.valueOf(Uri.parse(lectuPrincipalClases.get(itemPosition).getImagenUrl()));
+            String titulo = String.valueOf(Uri.parse(lectuPrincipalClases.get(itemPosition).getTitulo()));
+            Intent pasarDatoUrl = new Intent(context, LectulandiaSeleccion.class);
+            pasarDatoUrl.putExtra("url", url);
+            pasarDatoUrl.putExtra("imagen", imagen);
+            pasarDatoUrl.putExtra("titulo", titulo);
+            context.startActivity(pasarDatoUrl);
         }
     }
 

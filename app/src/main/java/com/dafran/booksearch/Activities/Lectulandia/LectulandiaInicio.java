@@ -52,14 +52,14 @@ public class LectulandiaInicio extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lectulandia_inicio);
 
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerViewLector);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new LectulandiaInicioAdaptador(lectuPrincipalClaseArrayList, this);
         recyclerView.setAdapter(adapter);
 
-        textoBusqueda = (EditText)findViewById(R.id.etBuscar);
+        textoBusqueda = (EditText)findViewById(R.id.etLectorBuscar);
 
         textoBusqueda.clearFocus();
 
@@ -78,7 +78,7 @@ public class LectulandiaInicio extends AppCompatActivity {
             }
         });
 
-        buscar = (Button)findViewById(R.id.btnBusqueda);
+        buscar = (Button)findViewById(R.id.lectorBtn);
 
         buscar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +160,7 @@ public class LectulandiaInicio extends AppCompatActivity {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) { }
         });
-        adView = (AdView)findViewById(R.id.adView);
+        adView = (AdView)findViewById(R.id.adViewLector);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
     }

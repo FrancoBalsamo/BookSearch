@@ -35,6 +35,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -107,11 +108,12 @@ public class LectulandiaSeleccion extends AppCompatActivity {
                     if(e.getElementById("downloadContainer").select("a").size() > 0){
                         linkPdf = e.getElementById("downloadContainer").select("a").get(1).attr("href");
                         Log.d("", "doInBackground: "+ linkPdf);
-                        final String finalLinkPdf = linkPdf;
+                        final String finalLinkPdf1 = linkPdf;
                         btn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                descargarArchivo(finalLinkPdf, datoTitulo);
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.lectulandia.co"+finalLinkPdf1));
+                                startActivity(intent);
                             }
                         });
                         lectulandiaSeleccionItemsClaseArrayList.add(new LectulandiaSeleccionItemsClase(datoTitulo, datoImagen, autor,

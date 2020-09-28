@@ -36,7 +36,7 @@
                 android:layout_gravity="center_horizontal">
                 <EditText
                     android:paddingStart="15sp"
-                    android:textColor="@color/blanco"
+                    android:textColor="@color/negro"
                     android:hint="Buscar..."
                     android:textColorHint="@color/tmoGris"
                     android:layout_width="180dp"

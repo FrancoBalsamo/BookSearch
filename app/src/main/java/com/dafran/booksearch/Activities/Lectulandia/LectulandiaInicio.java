@@ -63,21 +63,6 @@ public class LectulandiaInicio extends AppCompatActivity {
 
         textoBusqueda.clearFocus();
 
-        //CargaInicio cargaInicio = new CargaInicio();
-        //cargaInicio.execute();
-
-        textoBusqueda.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(textoBusqueda.requestFocus()){
-                    textoBusqueda.setBackgroundResource(R.drawable.trantor_confoco);
-                    textoBusqueda.setTextColor(ContextCompat.getColor(LectulandiaInicio.this, R.color.negro));
-                }else{
-                    textoBusqueda.setBackgroundResource(R.drawable.trantor_sinfoco);
-                }
-            }
-        });
-
         buscar = (Button)findViewById(R.id.lectorBtn);
 
         buscar.setOnClickListener(new View.OnClickListener() {

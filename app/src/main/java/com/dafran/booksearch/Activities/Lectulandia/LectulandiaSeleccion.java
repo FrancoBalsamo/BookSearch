@@ -4,9 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.dafran.booksearch.Activities.Trantor.TrantorDetalleLibro;
 import com.dafran.booksearch.Adaptador.LectulandiaAdapters.LectulandiaInicioAdaptador;
 import com.dafran.booksearch.Adaptador.LectulandiaAdapters.LectulandiaSeleccionLibroAdaptador;
 import com.dafran.booksearch.Clases.Conexion;
@@ -32,11 +40,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class LectulandiaSeleccion extends AppCompatActivity {
+    private long id;
     AdView adView;
+    Button btn;
+    private DownloadManager downloadManager;
 
     private RecyclerView recyclerView;
     private LectulandiaSeleccionLibroAdaptador lectulandiaSeleccionLibroAdaptador;
@@ -47,6 +60,7 @@ public class LectulandiaSeleccion extends AppCompatActivity {
         setContentView(R.layout.activity_lectulandia_seleccion);
 
         recyclerView = findViewById(R.id.rvLEctuSeleccion);
+        btn = (Button)findViewById(R.id.DEscargarLEctulandia);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -79,7 +93,7 @@ public class LectulandiaSeleccion extends AppCompatActivity {
             lectulandiaSeleccionItemsClaseArrayList.clear();
             String datoUrl = getIntent().getStringExtra("url");
             String datoImagen = getIntent().getStringExtra("imagen");
-            String datoTitulo = getIntent().getStringExtra("titulo");
+            final String datoTitulo = getIntent().getStringExtra("titulo");
 
             Log.d("", "doInBackground: "+ datoUrl + "-" + datoImagen + "-" + datoTitulo);
             try {
@@ -93,6 +107,13 @@ public class LectulandiaSeleccion extends AppCompatActivity {
                     if(e.getElementById("downloadContainer").select("a").size() > 0){
                         linkPdf = e.getElementById("downloadContainer").select("a").get(1).attr("href");
                         Log.d("", "doInBackground: "+ linkPdf);
+                        final String finalLinkPdf = linkPdf;
+                        btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                descargarArchivo(finalLinkPdf, datoTitulo);
+                            }
+                        });
                         lectulandiaSeleccionItemsClaseArrayList.add(new LectulandiaSeleccionItemsClase(datoTitulo, datoImagen, autor,
                                 generos, sinopsis, linkPdf));
                     }
@@ -119,4 +140,52 @@ public class LectulandiaSeleccion extends AppCompatActivity {
         super.onBackPressed();
         LectulandiaSeleccion.this.finish();
     }
+
+    public void descargarArchivo(String url, String archivo){
+        downloadManager = (DownloadManager)getSystemService(DOWNLOAD_SERVICE);
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        request.setTitle(archivo);
+        request.setDescription("Descargando gracias a DownloadManager.");
+
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+        {
+            request.setDestinationInExternalFilesDir(this, Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "descarga",archivo+".pdf");
+        }
+        id = downloadManager.enqueue(request);
+    }
+
+    private BroadcastReceiver downloadReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            DownloadManager.Query query = new DownloadManager.Query();
+            query.setFilterById(id, 0);
+            Cursor cursor = downloadManager.query(query);
+
+            if (cursor.moveToFirst()) {
+                int status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS));
+                int reason = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON));
+
+                if (status == DownloadManager.STATUS_SUCCESSFUL) {
+                    //podemos recuperar el fichero descargado
+                    ParcelFileDescriptor file = null;
+                    try {
+                        file = downloadManager.openDownloadedFile(id);
+                        Toast.makeText(LectulandiaSeleccion.this, "Descarga exitosa.", Toast.LENGTH_LONG).show();
+                    } catch (FileNotFoundException ex) {
+                        Toast.makeText(LectulandiaSeleccion.this, "Exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else if (status == DownloadManager.STATUS_FAILED) {
+                    Toast.makeText(LectulandiaSeleccion.this, "Fallo: " + reason, Toast.LENGTH_LONG).show();
+                } else if (status == DownloadManager.STATUS_PAUSED) {
+                    Toast.makeText(LectulandiaSeleccion.this, "Pausadi: " + reason, Toast.LENGTH_LONG).show();
+                } else if (status == DownloadManager.STATUS_PENDING) {
+                    Toast.makeText(LectulandiaSeleccion.this, "Pendiente: " + reason, Toast.LENGTH_LONG).show();
+
+                } else if (status == DownloadManager.STATUS_RUNNING) {
+                    Toast.makeText(LectulandiaSeleccion.this, "Descargando: " + reason, Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
+    };
 }

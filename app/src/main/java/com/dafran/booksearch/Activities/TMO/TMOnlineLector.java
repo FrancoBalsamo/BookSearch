@@ -8,13 +8,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.dafran.booksearch.Adaptador.TMOAdapters.TMODatoSeleccionAdapter;
 import com.dafran.booksearch.Adaptador.TMOAdapters.TMOLectorAdapter;
-import com.dafran.booksearch.Clases.TMOClases.TMODatosSeleccion;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
 import com.dafran.booksearch.R;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -23,9 +20,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import okhttp3.Response;
-
-public class TMOLector extends AppCompatActivity {
+public class TMOnlineLector extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TMOLectorAdapter adapter;
     private ArrayList<TMOLectorClase> tmoLectorClases = new ArrayList<>();
@@ -34,7 +29,7 @@ public class TMOLector extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_t_m_o_lector);
+        setContentView(R.layout.activity_tmonline_lector);
 
         url = getIntent().getStringExtra("url");
 
@@ -42,7 +37,7 @@ public class TMOLector extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TMOLectorAdapter(tmoLectorClases, TMOLector.this);
+        adapter = new TMOLectorAdapter(tmoLectorClases, TMOnlineLector.this);
         recyclerView.setAdapter(adapter);
 
         Content content = new Content();
@@ -108,6 +103,6 @@ public class TMOLector extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        TMOLector.this.finish();
+        TMOnlineLector.this.finish();
     }
 }

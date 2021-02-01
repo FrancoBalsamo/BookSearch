@@ -22,8 +22,8 @@
         <activity android:name=".Activities.BookFi.BookFiBuscar" />
         <activity android:name=".Activities.Trantor.TrantorLector" />
         <activity android:name=".Activities.Trantor.TrantorDetalleLibro" />
-        <activity android:name=".Activities.TMO.TMOLector" />
-        <activity android:name=".Activities.TMO.TMODatosSeleccionActivity" />
+        <activity android:name=".Activities.TMO.TMOnlineLector" />
+        <activity android:name=".Activities.TMO.TMOnlineCapitulosSeleccion" />
         <activity android:name=".Activities.TMO.TMOnline" />
         <activity android:name=".Activities.Trantor.TrantorActivity" />
         <activity android:name=".MainActivity">

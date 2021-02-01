@@ -8,14 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dafran.booksearch.Activities.Lectulandia.LectulandiaSeleccion;
-import com.dafran.booksearch.Activities.TMO.TMODatosSeleccionActivity;
-import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnline;
 ;
 import com.dafran.booksearch.Clases.Lectulandia.LectuPrincipalClase;
 import com.dafran.booksearch.R;

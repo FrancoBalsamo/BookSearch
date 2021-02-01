@@ -1,7 +1,5 @@
 package com.dafran.booksearch.Clases.TMOClases;
 
-import com.dafran.booksearch.Activities.TMO.TMOLector;
-
 public class TMOLectorClase {
     private String img;
     private String urlRedireccionada;

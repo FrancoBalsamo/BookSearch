@@ -8,12 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dafran.booksearch.Activities.TMO.TMOLector;
+import com.dafran.booksearch.Activities.TMO.TMOnlineLector;
 import com.dafran.booksearch.Clases.TMOClases.TMODatosSeleccion;
 import com.dafran.booksearch.R;
 
@@ -63,7 +62,7 @@ public class TMODatoSeleccionAdapter extends RecyclerView.Adapter<TMODatoSelecci
                     int itemPosition = getAdapterPosition();
                     String url = String.valueOf(Uri.parse(tmoItems.get(itemPosition).getUrlCapitulo()));
                     //Toast.makeText(context, "La url es: " + url, Toast.LENGTH_LONG).show();
-                    Intent lectorTmo = new Intent(context, TMOLector.class);
+                    Intent lectorTmo = new Intent(context, TMOnlineLector.class);
                     lectorTmo.putExtra("url", url);
                     context.startActivity(lectorTmo);
                 }

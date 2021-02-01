@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.dafran.booksearch.Activities.TMO.TMODatosSeleccionActivity;
+import com.dafran.booksearch.Activities.TMO.TMOnlineCapitulosSeleccion;
 import com.dafran.booksearch.Clases.TMOClases.TMOItems;
 import com.dafran.booksearch.R;
 import com.squareup.picasso.Picasso;
@@ -65,7 +65,7 @@ public class TMOnline extends RecyclerView.Adapter<TMOnline.ViewHolder> {
             String url = String.valueOf(Uri.parse(tmoItems.get(itemPosition).getDetalleUrl()));
             String nombreSeleccion = String.valueOf(tmoItems.get(itemPosition).getNombre());
             String tipo = String.valueOf(tmoItems.get(itemPosition).getTipo());
-            Intent pasarDatoUrl = new Intent(context, TMODatosSeleccionActivity.class);
+            Intent pasarDatoUrl = new Intent(context, TMOnlineCapitulosSeleccion.class);
             pasarDatoUrl.putExtra("valor", url);
             pasarDatoUrl.putExtra("nombre", nombreSeleccion);
             pasarDatoUrl.putExtra("tipo", tipo);

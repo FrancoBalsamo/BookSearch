@@ -9,12 +9,16 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dafran.booksearch.Adaptador.TMOAdapters.TMODatoSeleccionAdapter;
+import com.dafran.booksearch.Clases.SeguirManga;
 import com.dafran.booksearch.Clases.TMOClases.TMODatosSeleccion;
 import com.dafran.booksearch.R;
+import com.dafran.booksearch.SQLite.PaginasSQL;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -34,6 +38,12 @@ public class TMODatosSeleccionActivity extends AppCompatActivity {
     TextView tu, manga, online, tvTituloSeleccion;
     private String tipo= "";
 
+    private String nombreManga;
+    private String contador;
+    private String urlFinal;
+
+    ImageView seguirDato;
+
     private RecyclerView recyclerView;
     private TMODatoSeleccionAdapter adapter;
     private ArrayList<TMODatosSeleccion> tmoDatosSeleccions = new ArrayList<>();
@@ -42,10 +52,12 @@ public class TMODatosSeleccionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_t_m_o_datos_seleccion);
-        String nombre = getIntent().getStringExtra("nombre");
+        nombreManga = getIntent().getStringExtra("nombre");
         tipo = getIntent().getStringExtra("tipo");
 
         LinearLayout ll = (LinearLayout)findViewById(R.id.linearColores);
+
+        seguirDato = (ImageView)findViewById(R.id.seguirDato);
 
         if(tipo.contains("MANGA")){
             ll.setBackgroundColor(getResources().getColor(R.color.tmoManga));
@@ -63,8 +75,15 @@ public class TMODatosSeleccionActivity extends AppCompatActivity {
             ll.setBackgroundColor(getResources().getColor(R.color.tmoOel));
         }
 
+        seguirDato.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                seguirMetodoDato();
+            }
+        });
+
         tvTituloSeleccion = (TextView)findViewById(R.id.tvTituloSeleccion);
-        tvTituloSeleccion.setText(nombre);
+        tvTituloSeleccion.setText(nombreManga);
 
         recyclerView = findViewById(R.id.recyclerView);
 
@@ -78,6 +97,16 @@ public class TMODatosSeleccionActivity extends AppCompatActivity {
 
         titulo();
         bannerBookSearh();
+    }
+
+    private void seguirMetodoDato(){
+        PaginasSQL psql = new PaginasSQL(TMODatosSeleccionActivity.this);
+        SeguirManga sm = new SeguirManga();
+        sm.setNombre(nombreManga);
+        sm.setUrl(urlFinal);
+        sm.setContador(contador);
+        sm.setValorSeguir(1);
+        psql.guardar(sm);//guardamos
     }
 
     private class Content extends AsyncTask<Void,Void, ArrayList<TMODatosSeleccion>> {
@@ -98,6 +127,7 @@ public class TMODatosSeleccionActivity extends AppCompatActivity {
         @Override
         protected ArrayList<TMODatosSeleccion> doInBackground(Void... voids) {
             String url = getIntent().getStringExtra("valor");
+            urlFinal = url;
 
             tmoDatosSeleccions.clear();
             try {
@@ -105,13 +135,14 @@ public class TMODatosSeleccionActivity extends AppCompatActivity {
                 Log.d("", "doInBackground: "+ doc);
 
                 Elements data = doc.select("li.list-group-item.p-0.bg-light.upload-link");
-                Log.d("items", "total: " + data.size());
+
                 for (Element e1 : data) {
                     String numeroCap = "";
                     String urlMan = "";
                     if(e1.select("div.col-10.text-truncate").size() > 0){
                         numeroCap = e1.select("a").get(0).text();
                         numeroCap = numeroCap.replaceAll("\\<.*?\\>", "").trim();
+                        contador = numeroCap;
                         if(e1.select("div.col-2.col-sm-1.text-right").size() > 0 ){
                             urlMan = e1.select("a.btn.btn-default.btn-sm").get(0).attr("href");
                             if(urlMan.contains("/paginated")){

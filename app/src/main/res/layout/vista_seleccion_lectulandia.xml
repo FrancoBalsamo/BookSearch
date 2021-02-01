@@ -52,7 +52,7 @@
                     android:textSize="15sp"/>
             </LinearLayout>
             <LinearLayout
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -65,17 +65,29 @@
                     android:textColor="@color/negro"
                     android:textSize="15sp"/>
             </LinearLayout>
-            <TextView
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:id="@+id/tvSinopsisLectu"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:fillViewport="true"
-                android:scrollbars = "vertical"
-                android:textColor="@color/negro"
-                android:textSize="15sp"/>
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal">
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:scrollbars="vertical"
+                    android:fillViewport="true" >
+                    <TextView
+                        android:textColor="@color/negro"
+                        android:id="@+id/tvSinopsisLectu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="15sp"/>
+                </ScrollView>
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

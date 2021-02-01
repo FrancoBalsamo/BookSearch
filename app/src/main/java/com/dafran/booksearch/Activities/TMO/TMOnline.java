@@ -39,6 +39,8 @@ public class TMOnline extends AppCompatActivity {
     AdView adView;
     TextView tu, manga, online;
 
+    String urlFinal;
+
     private RecyclerView recyclerView;
     private com.dafran.booksearch.Adaptador.TMOAdapters.TMOnline adapter;
     private ArrayList<TMOItems> tmoItems = new ArrayList<>();

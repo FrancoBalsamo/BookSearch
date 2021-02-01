@@ -4,7 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+import android.widget.ZoomControls;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
@@ -42,6 +45,7 @@ public class TMOLectorAdapter extends RecyclerView.Adapter<TMOLectorAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView iv;
+        ZoomControls zc;
 
         public ViewHolder(@NonNull View view) {
             super(view);

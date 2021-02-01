@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.dafran.booksearch.Clases.Paginas;
+import com.dafran.booksearch.Clases.SeguirManga;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,11 +37,28 @@ public class PaginasSQL implements Serializable {
         cv.put(PaginasTabla.PAGINA_NOMBRE, p.getPagina());
         return cv;
     }
+
+    private ContentValues mapaSiguiendo(SeguirManga sm){
+        ContentValues cv = new ContentValues();
+        cv.put(PaginasTabla.ID_ELEMENTO, sm.getId());
+        cv.put(PaginasTabla.NOMBRE_MANGA, sm.getNombre());
+        cv.put(PaginasTabla.CONTADOR_CAPITULOS, sm.getContador());
+        cv.put(PaginasTabla.BIT_SEGUIR_NO, sm.getValorSeguir());
+        return cv;
+    }
+
     public long guardar(Paginas p) {
         this.openWriteableDB();
         long rowID = db.insert(PaginasTabla.TABLA_PAGINAS, null, paginasMapa(p));
         this.closeDB();
         return rowID;
+    }
+
+    public long guardar(SeguirManga sm){
+        this.openWriteableDB();
+        long filaID = db.insert(PaginasTabla.TABLA_SEGUIR, null, mapaSiguiendo(sm));
+        this.closeDB();
+        return filaID;
     }
 
     public ArrayList llenar_AL() {
@@ -67,10 +85,7 @@ public class PaginasSQL implements Serializable {
         }
         @Override
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL(PaginasTabla.TABLA_PAGINA_SQL);
-            db.execSQL("INSERT INTO " + PaginasTabla.TABLA_PAGINAS + "(" + PaginasTabla.PAGINA_NOMBRE + ") VALUES ('Trantor.is')" );
-            db.execSQL("INSERT INTO " + PaginasTabla.TABLA_PAGINAS + "(" + PaginasTabla.PAGINA_NOMBRE + ") VALUES ('Lectulandia')" );
-            db.execSQL("INSERT INTO " + PaginasTabla.TABLA_PAGINAS + "(" + PaginasTabla.PAGINA_NOMBRE + ") VALUES ('TMOnline')" );
+            db.execSQL(PaginasTabla.TABLA_PARA_SEGUIR);
         }
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) { }

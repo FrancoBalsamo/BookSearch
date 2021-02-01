@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -14,19 +15,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
-
-import com.dafran.booksearch.Activities.Trantor.TrantorDetalleLibro;
-import com.dafran.booksearch.Adaptador.LectulandiaAdapters.LectulandiaInicioAdaptador;
 import com.dafran.booksearch.Adaptador.LectulandiaAdapters.LectulandiaSeleccionLibroAdaptador;
-import com.dafran.booksearch.Clases.Conexion;
-import com.dafran.booksearch.Clases.Lectulandia.LectuPrincipalClase;
 import com.dafran.booksearch.Clases.Lectulandia.LectulandiaSeleccionItemsClase;
 import com.dafran.booksearch.R;
 import com.google.android.gms.ads.AdRequest;
@@ -34,8 +27,6 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -89,6 +80,7 @@ public class LectulandiaSeleccion extends AppCompatActivity {
             lectulandiaSeleccionLibroAdaptador.notifyDataSetChanged();
         }
 
+        @SuppressLint("WrongThread")
         @Override
         protected ArrayList<LectulandiaSeleccionItemsClase> doInBackground(Void... voids) {
             lectulandiaSeleccionItemsClaseArrayList.clear();

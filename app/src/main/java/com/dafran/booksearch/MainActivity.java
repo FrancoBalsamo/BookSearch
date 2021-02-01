@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tv;
     ListView lv;
     AdView adView;
+    ImageView ivTMO;
 
     ArrayList<Paginas> array = new ArrayList<Paginas>();
     PaginasSQL psql = new PaginasSQL(MainActivity.this);
@@ -46,28 +47,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         tv = (TextView)findViewById(R.id.bookTV);
-        lv = (ListView)findViewById(R.id.lvElecciones);
+
 
         tv.setText("Book Search");
         tv.setTypeface(ResourcesCompat.getFont(MainActivity.this, R.font.saowttregular));
 
-        array = psql.llenar_AL();
-
-        lv.setAdapter(new AdaptadorMainListView(MainActivity.this, array));
-
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ivTMO = (ImageView)findViewById(R.id.ivTMO);
+        ivTMO.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(array.get(position).getId() == 1){
-                    aTrantorIs();
-                    Toast.makeText(getApplicationContext(), "Esta página recibe muchas solicitudes diariamiente, por lo que puede tardar em cargar. Por favor, ¡Se paciente!", Toast.LENGTH_LONG).show();
-                } else if(array.get(position).getId() == 2){
-                    aLectulandia();
-                }else if(array.get(position).getId() == 3){
-                    aTMOnline();
-                }
+            public void onClick(View v) {
+                aTMOnline();
             }
         });
+
+
     }
 
     private void aTrantorIs(){

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.TMO.TMOnlineCapitulosSeleccion"
+    tools:context=".Activities.TMO.TMOnlineMangaSeleccion"
     android:orientation="vertical"
     android:background="@color/tmoBg">
 
@@ -31,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:textSize="25sp"
-                    android:id="@+id/tvTuSeleccionManga"
+                    android:id="@+id/tvMangaSeleccionTu"
                     android:fontFamily="@font/tu"/>
                 <TextView
                     android:layout_marginTop="10dp"
@@ -47,7 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:textSize="25sp"
-                    android:id="@+id/tvOnlineSeleccionManga"
+                    android:id="@+id/tvMangaSeleccionOnline"
                     android:fontFamily="@font/online"/>
             </LinearLayout>
 
@@ -75,12 +75,27 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp">
-            <ImageView
-                android:layout_width="60dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <Button
+                android:gravity="center"
+                android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:id="@+id/seguirDato"
-                android:background="@drawable/seguir"/>
+                android:text="SEGUIR"
+                android:fontFamily="@font/manga"
+                android:textColor="@color/tmoAzul"
+                android:background="@color/tmoBg"/>
+            <Button
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:id="@+id/dejarDato"
+                android:text="DEJAR"
+                android:fontFamily="@font/manga"
+                android:textColor="@color/tmoRojo"
+                android:background="@color/tmoBg"/>
         </LinearLayout>
 
         <LinearLayout

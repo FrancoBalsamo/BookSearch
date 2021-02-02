@@ -36,11 +36,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class TMOnline extends AppCompatActivity {
-    Button buscar;
-    EditText textoBusqueda;
-    AdView adView;
-    TextView tu, manga, online;
-    ImageView lista;
+    private Button buscar;
+    private EditText textoBusqueda;
+    private AdView adView;
+    private TextView tu, manga, online;
+    private Button lista;
     private RecyclerView rvCapitulosSeleccion;
     private com.dafran.booksearch.Adaptador.TMOAdapters.TMOnline adapter;
     private ArrayList<TMOItems> tmoItems = new ArrayList<>();
@@ -53,7 +53,7 @@ public class TMOnline extends AppCompatActivity {
         titulo();
 
         rvCapitulosSeleccion = findViewById(R.id.rvCapitulosSeleccion);
-        lista = (ImageView)findViewById(R.id.btnAbrirLista);
+        lista = (Button)findViewById(R.id.btnAbrirLista);
 
         rvCapitulosSeleccion.setHasFixedSize(true);
         rvCapitulosSeleccion.setLayoutManager(new LinearLayoutManager(this));
@@ -173,9 +173,9 @@ public class TMOnline extends AppCompatActivity {
     }
 
     private void titulo(){
-        tu = (TextView)findViewById(R.id.tvTuSeleccionManga);
-        manga = (TextView)findViewById(R.id.tvMangaSeleccionManga);
-        online = (TextView)findViewById(R.id.tvOnlineSeleccionManga);
+        tu = (TextView)findViewById(R.id.tvMangaListaTu);
+        manga = (TextView)findViewById(R.id.tvMangaListaManga);
+        online = (TextView)findViewById(R.id.tvMangaListaOnline);
 
         tu.setText("TU");
         manga.setText("MANGA");
@@ -187,7 +187,7 @@ public class TMOnline extends AppCompatActivity {
     }
 
     private void abrirLista(){
-        Intent abrir = new Intent(TMOnline.this, Siguiendo.class);
+        Intent abrir = new Intent(TMOnline.this, TMOnlineMangasSiguiendo.class);
         startActivity(abrir);
     }
 }

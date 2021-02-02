@@ -28,7 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:textSize="25sp"
-                    android:id="@+id/tvTuSeleccionManga"
+                    android:id="@+id/tvMangaListaTu"
                     android:fontFamily="@font/tu"/>
                 <TextView
                     android:layout_marginTop="10dp"
@@ -36,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:textSize="25sp"
-                    android:id="@+id/tvMangaSeleccionManga"
+                    android:id="@+id/tvMangaListaManga"
                     android:fontFamily="@font/manga"/>
                 <TextView
                     android:layout_marginTop="10dp"
@@ -44,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:textSize="25sp"
-                    android:id="@+id/tvOnlineSeleccionManga"
+                    android:id="@+id/tvMangaListaOnline"
                     android:fontFamily="@font/online"/>
             </LinearLayout>
 
@@ -80,15 +80,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp">
-            <ImageView
-                android:layout_width="60dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center">
+            <Button
+                android:gravity="center"
+                android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:id="@+id/btnAbrirLista"
-                android:background="@drawable/seguir"/>
+                android:text="SIGUIENDO"
+                android:fontFamily="@font/manga"
+                android:textColor="@color/tmoAzul"
+                android:background="@color/tmoBg"/>
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <androidx.recyclerview.widget.RecyclerView

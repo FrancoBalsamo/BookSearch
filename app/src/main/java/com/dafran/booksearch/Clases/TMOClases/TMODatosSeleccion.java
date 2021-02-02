@@ -3,7 +3,7 @@ package com.dafran.booksearch.Clases.TMOClases;
 public class TMODatosSeleccion {
     private String numeroCapitulo;
     private String urlCapitulo;
-    private String tipo;
+    private String urlImagen;
 
     public String getNumeroCapitulo() {
         return numeroCapitulo;
@@ -21,8 +21,17 @@ public class TMODatosSeleccion {
         this.urlCapitulo = urlCapitulo;
     }
 
-    public TMODatosSeleccion(String numeroCapitulo, String urlCapitulo) {
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
+    }
+
+    public TMODatosSeleccion(String numeroCapitulo, String urlCapitulo, String urlImagen) {
         this.numeroCapitulo = numeroCapitulo;
         this.urlCapitulo = urlCapitulo;
+        this.urlImagen = urlImagen;
     }
 }

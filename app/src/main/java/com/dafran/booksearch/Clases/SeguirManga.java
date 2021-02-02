@@ -4,6 +4,7 @@ public class SeguirManga {
     private int id;
     private String nombre;
     private String url;
+    private String urlImagen;
     private String contador;
     private int valorSeguir;
 
@@ -47,12 +48,21 @@ public class SeguirManga {
         this.valorSeguir = valorSeguir;
     }
 
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
+    }
+
     public SeguirManga(){}
 
-    public SeguirManga(int id, String nombre, String url, String contador, int valorSeguir) {
+    public SeguirManga(int id, String nombre, String url, String urlImagen,String contador, int valorSeguir) {
         this.id = id;
         this.nombre = nombre;
         this.url = url;
+        this.urlImagen = urlImagen;
         this.contador = contador;
         this.valorSeguir = valorSeguir;
     }

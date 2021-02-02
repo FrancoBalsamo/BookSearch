@@ -61,7 +61,6 @@ public class TMOnlineMangaSeleccionAdaptador extends RecyclerView.Adapter<TMOnli
                 public void onClick(View v) {
                     int itemPosition = getAdapterPosition();
                     String url = String.valueOf(Uri.parse(tmoItems.get(itemPosition).getUrlCapitulo()));
-                    //Toast.makeText(context, "La url es: " + url, Toast.LENGTH_LONG).show();
                     Intent lectorTmo = new Intent(context, TMOnlineLector.class);
                     lectorTmo.putExtra("url", url);
                     context.startActivity(lectorTmo);

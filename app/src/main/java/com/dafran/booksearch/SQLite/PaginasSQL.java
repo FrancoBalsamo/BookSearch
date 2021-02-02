@@ -34,8 +34,9 @@ public class PaginasSQL implements Serializable {
 
     private ContentValues mapaSiguiendo(SeguirManga sm){
         ContentValues cv = new ContentValues();
-        cv.put(PaginasTabla.ID_ELEMENTO, sm.getId());
         cv.put(PaginasTabla.NOMBRE_MANGA, sm.getNombre());
+        cv.put(PaginasTabla.URL_MANGA, sm.getUrl());
+        cv.put(PaginasTabla.URL_IMAGEN, sm.getUrlImagen());
         cv.put(PaginasTabla.CONTADOR_CAPITULOS, sm.getContador());
         cv.put(PaginasTabla.BIT_SEGUIR_NO, sm.getValorSeguir());
         return cv;
@@ -58,17 +59,18 @@ public class PaginasSQL implements Serializable {
     public ArrayList llenarListaMangas(int valor) {
         ArrayList list = new ArrayList<>();
         this.openReadableDB();
-        String[] campos = new String[]{PaginasTabla.ID_ELEMENTO, PaginasTabla.NOMBRE_MANGA, PaginasTabla.URL_MANGA, PaginasTabla.CONTADOR_CAPITULOS, PaginasTabla.BIT_SEGUIR_NO};
+        String[] campos = new String[]{PaginasTabla.ID_ELEMENTO, PaginasTabla.NOMBRE_MANGA, PaginasTabla.URL_MANGA, PaginasTabla.URL_IMAGEN, PaginasTabla.CONTADOR_CAPITULOS, PaginasTabla.BIT_SEGUIR_NO};
         String where = PaginasTabla.BIT_SEGUIR_NO + " = " + valor + ";";
-        Cursor c = db.query(PaginasTabla.TABLA_SEGUIR, campos, null, null, null, null, null);
+        Cursor c = db.query(PaginasTabla.TABLA_SEGUIR, campos, where, null, null, null, null);
         try {
             while (c.moveToNext()) {
                 SeguirManga sm = new SeguirManga();
                 sm.setId(c.getInt(0));
                 sm.setNombre(c.getString(1));
                 sm.setUrl(c.getString(2));
-                sm.setContador(c.getString(3));
-                sm.setValorSeguir(c.getInt(4));
+                sm.setUrlImagen(c.getString(3));
+                sm.setContador(c.getString(4));
+                sm.setValorSeguir(c.getInt(5));
                 list.add(sm);
             }
         } finally { c.close(); }

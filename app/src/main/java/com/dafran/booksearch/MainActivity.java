@@ -6,17 +6,13 @@ import androidx.core.content.res.ResourcesCompat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dafran.booksearch.Activities.Lectulandia.LectulandiaInicio;
-import com.dafran.booksearch.Activities.TMO.Siguiendo;
 import com.dafran.booksearch.Activities.TMO.TMOnline;
 import com.dafran.booksearch.Activities.Trantor.TrantorActivity;
-import com.dafran.booksearch.Adaptador.AdaptadorMainListView;
 import com.dafran.booksearch.Clases.Paginas;
 import com.dafran.booksearch.SQLite.PaginasSQL;
 import com.google.android.gms.ads.AdRequest;

@@ -35,7 +35,7 @@
                 android:id="@+id/ivTMO"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:background="@drawable/portadatmo"/>
+                android:background="@drawable/logotmo"/>
         </LinearLayout>
 
 

@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.dafran.booksearch.Clases.SeguirManga;
 import com.dafran.booksearch.Clases.TMOClases.TMODatosSeleccion;
 import com.dafran.booksearch.R;
 import com.dafran.booksearch.SQLite.PaginasSQL;
+import com.dafran.booksearch.SQLite.PaginasTabla;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -42,7 +44,8 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TMOnlineMangaSeleccionAdaptador adapter;
     private ArrayList<TMODatosSeleccion> tmoDatosSeleccions = new ArrayList<>();
-    private SeguirManga seguirManga;
+    private ArrayList<SeguirManga> seguirMangaArrayList = new ArrayList<>();
+    private SeguirManga seguirManga = new SeguirManga();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +53,14 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         setContentView(R.layout.activity_tmonline_manga_seleccion);
         nombreManga = getIntent().getStringExtra("nombre");
         tipo = getIntent().getStringExtra("tipo");
-        seguirManga = (SeguirManga) getIntent().getExtras().getSerializable("sm");
         final String urlImagen = getIntent().getStringExtra("urlImagen");
 
         LinearLayout ll = (LinearLayout)findViewById(R.id.linearColores);
 
         seguirDato = (Button)findViewById(R.id.seguirDato);
         dejarDato = (Button)findViewById(R.id.dejarDato);
+
+        String consulta = "SELECT * FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + "='" + nombreManga + "''";
 
         if(tipo.contains("MANGA")){
             ll.setBackgroundColor(getResources().getColor(R.color.tmoManga));
@@ -114,16 +118,13 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         sm.setUrlImagen(urlImagen);
         sm.setContador(cont+"");
         sm.setValorSeguir(1);
-        psql.guardar(sm);//guardamos
-
-        Log.d("SQLSAVE", "seguirMetodoDato: " + sm);
+        psql.validar(sm, this, nombreManga);
     }
 
     private void dejarMetodoDaato(){
         PaginasSQL paginasSQL = new PaginasSQL(TMOnlineMangaSeleccion.this);
-        int valor = 2;
-        seguirManga.setValorSeguir(valor);
-        paginasSQL.actualizar(seguirManga);
+        seguirManga.setValorSeguir(0);
+        paginasSQL.validar(seguirManga, TMOnlineMangaSeleccion.this, nombreManga);
     }
 
     private class Content extends AsyncTask<Void,Void, ArrayList<TMODatosSeleccion>> {

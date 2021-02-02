@@ -28,7 +28,7 @@ public class TMOnlineMangasSiguiendo extends AppCompatActivity {
         titulo();
 
         lv = (ListView)findViewById(R.id.lvListaMangas);
-        seguirMangaArrayList = new PaginasSQL(TMOnlineMangasSiguiendo.this).llenarListaMangas(1);
+        seguirMangaArrayList = new PaginasSQL(TMOnlineMangasSiguiendo.this).llenarListaMangas();
         lv.setAdapter(new TMOnlineListaSeleccionAdaptador(seguirMangaArrayList, TMOnlineMangasSiguiendo.this));
 
     }

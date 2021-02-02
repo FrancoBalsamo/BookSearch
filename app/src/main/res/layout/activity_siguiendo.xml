@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.TMO.TMOnlineCapitulosSeleccion"
+    tools:context=".Activities.TMO.Siguiendo"
     android:orientation="vertical"
     android:background="@color/tmoBg">
 
@@ -73,24 +73,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp">
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:id="@+id/seguirDato"
-                android:background="@drawable/seguir"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCapitulosSeleccion"
+            <ListView
+                android:id="@+id/lvListaMangas"
                 android:layout_width="match_parent"
-                android:layout_height="500dp" />
+                android:layout_height="591dp" />
         </LinearLayout>
 
         <LinearLayout

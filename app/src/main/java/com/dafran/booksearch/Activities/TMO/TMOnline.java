@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,10 +40,8 @@ public class TMOnline extends AppCompatActivity {
     EditText textoBusqueda;
     AdView adView;
     TextView tu, manga, online;
-
-    String urlFinal;
-
-    private RecyclerView recyclerView;
+    ImageView lista;
+    private RecyclerView rvCapitulosSeleccion;
     private com.dafran.booksearch.Adaptador.TMOAdapters.TMOnline adapter;
     private ArrayList<TMOItems> tmoItems = new ArrayList<>();
 
@@ -52,12 +52,13 @@ public class TMOnline extends AppCompatActivity {
 
         titulo();
 
-        recyclerView = findViewById(R.id.recyclerView);
+        rvCapitulosSeleccion = findViewById(R.id.rvCapitulosSeleccion);
+        lista = (ImageView)findViewById(R.id.btnAbrirLista);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        rvCapitulosSeleccion.setHasFixedSize(true);
+        rvCapitulosSeleccion.setLayoutManager(new LinearLayoutManager(this));
         adapter = new com.dafran.booksearch.Adaptador.TMOAdapters.TMOnline(tmoItems, TMOnline.this);
-        recyclerView.setAdapter(adapter);
+        rvCapitulosSeleccion.setAdapter(adapter);
 
         textoBusqueda = (EditText)findViewById(R.id.etBuscar);
         buscar = (Button)findViewById(R.id.btnBusqueda);
@@ -92,6 +93,13 @@ public class TMOnline extends AppCompatActivity {
                 }else {
                     Toast.makeText(TMOnline.this, "Se requiere conexión a internet.", Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        lista.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abrirLista();
             }
         });
 
@@ -165,9 +173,9 @@ public class TMOnline extends AppCompatActivity {
     }
 
     private void titulo(){
-        tu = (TextView)findViewById(R.id.tvTu);
-        manga = (TextView)findViewById(R.id.tvManga);
-        online = (TextView)findViewById(R.id.tvOnline);
+        tu = (TextView)findViewById(R.id.tvTuSeleccionManga);
+        manga = (TextView)findViewById(R.id.tvMangaSeleccionManga);
+        online = (TextView)findViewById(R.id.tvOnlineSeleccionManga);
 
         tu.setText("TU");
         manga.setText("MANGA");
@@ -176,5 +184,10 @@ public class TMOnline extends AppCompatActivity {
         tu.setTextColor(ContextCompat.getColor(TMOnline.this, R.color.tmoTitulo));
         manga.setTextColor(ContextCompat.getColor(TMOnline.this, R.color.tmoTitulo));
         online.setTextColor(ContextCompat.getColor(TMOnline.this, R.color.tmoTitulo));
+    }
+
+    private void abrirLista(){
+        Intent abrir = new Intent(TMOnline.this, Siguiendo.class);
+        startActivity(abrir);
     }
 }

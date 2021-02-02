@@ -7,13 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dafran.booksearch.Adaptador.TMOAdapters.TMODatoSeleccionAdapter;
+import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnlineMangaSeleccionAdaptador;
 import com.dafran.booksearch.Clases.SeguirManga;
 import com.dafran.booksearch.Clases.TMOClases.TMODatosSeleccion;
 import com.dafran.booksearch.R;
@@ -36,15 +35,14 @@ public class TMOnlineCapitulosSeleccion extends AppCompatActivity {
     AdView adView;
     TextView tu, manga, online, tvTituloSeleccion;
     private String tipo= "";
-
+    private int cont;
     private String nombreManga;
-    private String contador;
     private String urlFinal;
 
     ImageView seguirDato;
 
     private RecyclerView recyclerView;
-    private TMODatoSeleccionAdapter adapter;
+    private TMOnlineMangaSeleccionAdaptador adapter;
     private ArrayList<TMODatosSeleccion> tmoDatosSeleccions = new ArrayList<>();
 
     @Override
@@ -84,11 +82,11 @@ public class TMOnlineCapitulosSeleccion extends AppCompatActivity {
         tvTituloSeleccion = (TextView)findViewById(R.id.tvTituloSeleccion);
         tvTituloSeleccion.setText(nombreManga);
 
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.rvCapitulosSeleccion);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TMODatoSeleccionAdapter(tmoDatosSeleccions, TMOnlineCapitulosSeleccion.this);
+        adapter = new TMOnlineMangaSeleccionAdaptador(tmoDatosSeleccions, TMOnlineCapitulosSeleccion.this);
         recyclerView.setAdapter(adapter);
 
         Content content = new Content();
@@ -103,7 +101,7 @@ public class TMOnlineCapitulosSeleccion extends AppCompatActivity {
         SeguirManga sm = new SeguirManga();
         sm.setNombre(nombreManga);
         sm.setUrl(urlFinal);
-        sm.setContador(contador);
+        sm.setContador(cont+"");
         sm.setValorSeguir(1);
         psql.guardar(sm);//guardamos
     }
@@ -121,18 +119,18 @@ public class TMOnlineCapitulosSeleccion extends AppCompatActivity {
             //Actualizar información
             adapter.updateData(items);
             adapter.notifyDataSetChanged();
+
+            items.size();
+            cont = items.size();
         }
 
         @Override
         protected ArrayList<TMODatosSeleccion> doInBackground(Void... voids) {
             String url = getIntent().getStringExtra("valor");
             urlFinal = url;
-
             tmoDatosSeleccions.clear();
             try {
                 Document doc = Jsoup.connect(url).get();
-                Log.d("", "doInBackground: "+ doc);
-
                 Elements data = doc.select("li.list-group-item.p-0.bg-light.upload-link");
 
                 for (Element e1 : data) {
@@ -141,7 +139,6 @@ public class TMOnlineCapitulosSeleccion extends AppCompatActivity {
                     if(e1.select("div.col-10.text-truncate").size() > 0){
                         numeroCap = e1.select("a").get(0).text();
                         numeroCap = numeroCap.replaceAll("\\<.*?\\>", "").trim();
-                        contador = numeroCap;
                         if(e1.select("div.col-2.col-sm-1.text-right").size() > 0 ){
                             urlMan = e1.select("a.btn.btn-default.btn-sm").get(0).attr("href");
                             if(urlMan.contains("/paginated")){
@@ -161,11 +158,11 @@ public class TMOnlineCapitulosSeleccion extends AppCompatActivity {
     }
 
     private void titulo(){
-        tu = (TextView)findViewById(R.id.tvTu);
-        manga = (TextView)findViewById(R.id.tvManga);
-        online = (TextView)findViewById(R.id.tvOnline);
+        tu = (TextView)findViewById(R.id.tvTuSeleccionManga);
+        manga = (TextView)findViewById(R.id.tvMangaSeleccionManga);
+        online = (TextView)findViewById(R.id.tvOnlineSeleccionManga);
 
-        tu.setText("TU");
+        tu.setText(""+cont);
         manga.setText("MANGA");
         online.setText("ONLINE");
 

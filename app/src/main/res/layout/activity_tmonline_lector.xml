@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/rvCapitulosSeleccion"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
     </LinearLayout>

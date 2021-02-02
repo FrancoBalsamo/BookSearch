@@ -18,24 +18,24 @@ import com.dafran.booksearch.R;
 
 import java.util.ArrayList;
 
-public class TMODatoSeleccionAdapter extends RecyclerView.Adapter<TMODatoSeleccionAdapter.ViewHolder> {
+public class TMOnlineMangaSeleccionAdaptador extends RecyclerView.Adapter<TMOnlineMangaSeleccionAdaptador.ViewHolder> {
     private ArrayList<TMODatosSeleccion> tmoItems;
     private Context context;
 
-    public TMODatoSeleccionAdapter(ArrayList<TMODatosSeleccion> tmoItems, Context context) {
+    public TMOnlineMangaSeleccionAdaptador(ArrayList<TMODatosSeleccion> tmoItems, Context context) {
         this.tmoItems = tmoItems;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public TMODatoSeleccionAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TMOnlineMangaSeleccionAdaptador.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adaptador_manga, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TMODatoSeleccionAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TMOnlineMangaSeleccionAdaptador.ViewHolder holder, int position) {
         TMODatosSeleccion tmoDatosSeleccion = this.tmoItems.get(position);
         holder.textView.setText(tmoDatosSeleccion.getNumeroCapitulo());
     }

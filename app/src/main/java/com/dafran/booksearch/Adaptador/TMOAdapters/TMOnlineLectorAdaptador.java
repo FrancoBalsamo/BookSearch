@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.ZoomControls;
 
@@ -16,24 +15,24 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class TMOLectorAdapter extends RecyclerView.Adapter<TMOLectorAdapter.ViewHolder> {
+public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLectorAdaptador.ViewHolder> {
     private ArrayList<TMOLectorClase> tmoLectorClases;
     private Context context;
 
-    public TMOLectorAdapter(ArrayList<TMOLectorClase> tmoItems, Context context) {
+    public TMOnlineLectorAdaptador(ArrayList<TMOLectorClase> tmoItems, Context context) {
         this.tmoLectorClases = tmoItems;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public TMOLectorAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TMOnlineLectorAdaptador.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adaptador_lectortmo, parent, false);
-        return new TMOLectorAdapter.ViewHolder(view);
+        return new TMOnlineLectorAdaptador.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TMOLectorAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TMOnlineLectorAdaptador.ViewHolder holder, int position) {
         TMOLectorClase tmoLectorClase = this.tmoLectorClases.get(position);
         Picasso.get().load(tmoLectorClase.getImg()).into(holder.iv);
     }

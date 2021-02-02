@@ -28,7 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:textSize="25sp"
-                    android:id="@+id/tvTu"
+                    android:id="@+id/tvTuSeleccionManga"
                     android:fontFamily="@font/tu"/>
                 <TextView
                     android:layout_marginTop="10dp"
@@ -36,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:textSize="25sp"
-                    android:id="@+id/tvManga"
+                    android:id="@+id/tvMangaSeleccionManga"
                     android:fontFamily="@font/manga"/>
                 <TextView
                     android:layout_marginTop="10dp"
@@ -44,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:textSize="25sp"
-                    android:id="@+id/tvOnline"
+                    android:id="@+id/tvOnlineSeleccionManga"
                     android:fontFamily="@font/online"/>
             </LinearLayout>
 
@@ -77,13 +77,27 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="591dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/btnAbrirLista"
+                android:background="@drawable/seguir"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+                android:id="@+id/rvCapitulosSeleccion"
                 android:layout_width="match_parent"
-                android:layout_height="591dp" />
+                android:layout_height="500dp" />
         </LinearLayout>
         <LinearLayout
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <com.google.android.gms.ads.AdView

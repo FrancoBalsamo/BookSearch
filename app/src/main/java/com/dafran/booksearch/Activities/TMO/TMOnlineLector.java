@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.dafran.booksearch.Adaptador.TMOAdapters.TMOLectorAdapter;
+import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnlineLectorAdaptador;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
 import com.dafran.booksearch.R;
 
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class TMOnlineLector extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private TMOLectorAdapter adapter;
+    private TMOnlineLectorAdaptador adapter;
     private ArrayList<TMOLectorClase> tmoLectorClases = new ArrayList<>();
     private String url = "";
 
@@ -33,11 +33,11 @@ public class TMOnlineLector extends AppCompatActivity {
 
         url = getIntent().getStringExtra("url");
 
-        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.rvCapitulosSeleccion);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TMOLectorAdapter(tmoLectorClases, TMOnlineLector.this);
+        adapter = new TMOnlineLectorAdaptador(tmoLectorClases, TMOnlineLector.this);
         recyclerView.setAdapter(adapter);
 
         Content content = new Content();

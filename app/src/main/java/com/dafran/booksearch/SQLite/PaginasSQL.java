@@ -45,29 +45,22 @@ public class PaginasSQL implements Serializable {
         return cv;
     }
 
-    private long guardar(SeguirManga sm){
+    public long guardar(SeguirManga sm, Context actividad){
+        this.openWriteableDB();
         long filaID = db.insert(PaginasTabla.TABLA_SEGUIR, null, mapaSiguiendo(sm));
         this.closeDB();
+        Toast.makeText(actividad, "Has dejado de seguir este manga, ya no se mostrará en tu lista.", Toast.LENGTH_SHORT).show();
         return filaID;
     }
 
-    public void validar(SeguirManga sm, Context actividad, String nommbre){
-        Cursor cursor = db.rawQuery("SELECT * FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + "='" + nommbre + "''", null);
-        if (cursor.moveToNext()) {
-            actualizar(sm, actividad, nommbre);
-        } else {
-            guardar(sm);
-        }
-    }
-
-    private void actualizar(SeguirManga sm, Context actividad, String nommbre) {
+    public void actualizar(SeguirManga sm, Context actividad, String nommbre) {
         this.openWriteableDB();
             ContentValues cv = new ContentValues();
             cv.put(PaginasTabla.BIT_SEGUIR_NO, sm.getValorSeguir());
             String[] whereArgs = {String.valueOf(nommbre)};
             db.update(PaginasTabla.TABLA_SEGUIR, cv, PaginasTabla.NOMBRE_MANGA + " = ?" , whereArgs);
             db.close();
-            Toast.makeText(actividad, "Modificado", Toast.LENGTH_SHORT).show();
+            Toast.makeText(actividad, "Has dejado de seguir este manga, ya no se mostrará en tu lista.", Toast.LENGTH_SHORT).show();
     }
 
     public ArrayList llenarListaMangas() {

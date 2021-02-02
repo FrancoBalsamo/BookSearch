@@ -16,7 +16,7 @@ public class TMOnlineListaSeleccionAdaptador extends BaseAdapter {
     private Context context;
     ArrayList<SeguirManga> seguirMangaArrayList;
 
-    private TMOnlineListaSeleccionAdaptador(ArrayList<SeguirManga>seguirMangaArrayList, Context context){
+    public TMOnlineListaSeleccionAdaptador(ArrayList<SeguirManga>seguirMangaArrayList, Context context){
         this.seguirMangaArrayList = seguirMangaArrayList;
         this.context = context;
     }

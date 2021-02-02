@@ -31,12 +31,6 @@ public class PaginasSQL implements Serializable {
             db.close();
         }
     }
-    private ContentValues paginasMapa(Paginas p) {
-        ContentValues cv = new ContentValues();
-        cv.put(PaginasTabla.PAGINA_ID, p.getId());
-        cv.put(PaginasTabla.PAGINA_NOMBRE, p.getPagina());
-        return cv;
-    }
 
     private ContentValues mapaSiguiendo(SeguirManga sm){
         ContentValues cv = new ContentValues();
@@ -47,13 +41,6 @@ public class PaginasSQL implements Serializable {
         return cv;
     }
 
-    public long guardar(Paginas p) {
-        this.openWriteableDB();
-        long rowID = db.insert(PaginasTabla.TABLA_PAGINAS, null, paginasMapa(p));
-        this.closeDB();
-        return rowID;
-    }
-
     public long guardar(SeguirManga sm){
         this.openWriteableDB();
         long filaID = db.insert(PaginasTabla.TABLA_SEGUIR, null, mapaSiguiendo(sm));
@@ -61,17 +48,28 @@ public class PaginasSQL implements Serializable {
         return filaID;
     }
 
-    public ArrayList llenar_AL() {
+    public void actualizar(SeguirManga sm) {
+        this.openWriteableDB();
+        String where = PaginasTabla.ID_ELEMENTO + " = ?";
+        db.update(PaginasTabla.TABLA_SEGUIR, mapaSiguiendo(sm), where, new String[]{String.valueOf(sm.getId())});
+        db.close();
+    }
+
+    public ArrayList llenarListaMangas(int valor) {
         ArrayList list = new ArrayList<>();
         this.openReadableDB();
-        String[] campos = new String[]{PaginasTabla.PAGINA_ID, PaginasTabla.PAGINA_NOMBRE};
-        Cursor c = db.query(PaginasTabla.TABLA_PAGINAS, campos, null, null, null, null, null);
+        String[] campos = new String[]{PaginasTabla.ID_ELEMENTO, PaginasTabla.NOMBRE_MANGA, PaginasTabla.URL_MANGA, PaginasTabla.CONTADOR_CAPITULOS, PaginasTabla.BIT_SEGUIR_NO};
+        String where = PaginasTabla.BIT_SEGUIR_NO + " = " + valor + ";";
+        Cursor c = db.query(PaginasTabla.TABLA_SEGUIR, campos, null, null, null, null, null);
         try {
             while (c.moveToNext()) {
-                Paginas p = new Paginas();
-                p.setId(c.getInt(0));
-                p.setPagina(c.getString(1));
-                list.add(p);
+                SeguirManga sm = new SeguirManga();
+                sm.setId(c.getInt(0));
+                sm.setNombre(c.getString(1));
+                sm.setUrl(c.getString(2));
+                sm.setContador(c.getString(3));
+                sm.setValorSeguir(c.getInt(4));
+                list.add(sm);
             }
         } finally { c.close(); }
         this.closeDB();

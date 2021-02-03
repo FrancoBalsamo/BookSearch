@@ -75,14 +75,14 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         seguirDato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                seguirMetodoDato();
+                seguirMetodoDato(urlImagen);
             }
         });
 
         dejarDato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dejarMetodoDaato();
+                dejarMetodoDaato(nombreManga);
             }
         });
 
@@ -103,28 +103,22 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         bannerBookSearh();
     }
 
-//    private void seguirMetodoDato(String urlImagen){
-//        String url = getIntent().getStringExtra("valor");
-//        PaginasSQL psql = new PaginasSQL(TMOnlineMangaSeleccion.this);
-//        SeguirManga sm = new SeguirManga();
-//        sm.setNombre(nombreManga);
-//        sm.setUrl(url);
-//        sm.setUrlImagen(urlImagen);
-//        sm.setContador(cont+"");
-//        sm.setValorSeguir(1);
-//        psql.guardar(sm, TMOnlineMangaSeleccion.this);
-//    }
-
-    private void seguirMetodoDato(){
+    private void seguirMetodoDato(String urlImagen){
         PaginasSQL psql = new PaginasSQL(TMOnlineMangaSeleccion.this);
+        String url = getIntent().getStringExtra("valor");
         SeguirManga sm = new SeguirManga();
+        sm.setNombre(nombreManga);
+        sm.setUrl(url);
+        sm.setUrlImagen(urlImagen);
+        sm.setContador(cont+"");
+        sm.setValorSeguir(1);
         psql.validarGuardado(TMOnlineMangaSeleccion.this, nombreManga, sm);
     }
 
-    private void dejarMetodoDaato(){
+    private void dejarMetodoDaato(String nombre){
         PaginasSQL paginasSQL = new PaginasSQL(TMOnlineMangaSeleccion.this);
-        seguirManga.setValorSeguir(0);
-        paginasSQL.actualizar(seguirManga, TMOnlineMangaSeleccion.this);
+        //seguirManga.setValorSeguir(0);
+        paginasSQL.validarUpdate(TMOnlineMangaSeleccion.this, nombre, seguirManga);
     }
 
     private class Content extends AsyncTask<Void,Void, ArrayList<TMODatosSeleccion>> {

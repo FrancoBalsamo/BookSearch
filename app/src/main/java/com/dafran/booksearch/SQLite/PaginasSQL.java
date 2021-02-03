@@ -48,7 +48,6 @@ public class PaginasSQL implements Serializable {
     public long guardar(SeguirManga sm, Context actividad){
         this.openWriteableDB();
         long filaID = db.insert(PaginasTabla.TABLA_SEGUIR, null, mapaSiguiendo(sm));
-        Toast.makeText(actividad, "Has comenzado a seguir este manga.", Toast.LENGTH_SHORT).show();
         this.closeDB();
         return filaID;
     }
@@ -60,7 +59,6 @@ public class PaginasSQL implements Serializable {
         String[] whereArgs = {String.valueOf(sm.getId())};
         db.update(PaginasTabla.TABLA_SEGUIR, cv, PaginasTabla.ID_ELEMENTO + " = ?" , whereArgs);
         db.close();
-        Toast.makeText(actividad, "Has dejado de seguir este manga, ya no se mostrará en tu lista.", Toast.LENGTH_SHORT).show();
     }
 
     public boolean validarGuardado(Context actividad, String nombre, SeguirManga sm){
@@ -78,6 +76,27 @@ public class PaginasSQL implements Serializable {
         }else if(cursor1.getCount() > 0){
             cursor.close();
             Toast.makeText(actividad, "Ya estas siguiendo este manga.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
+    public boolean validarUpdate(Context actividad, String nombre, SeguirManga sm){
+        this.openWriteableDB();
+        String[] nom = {String.valueOf(nombre)};
+        String consulta = "SELECT * FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + " = ?" ;
+        String consulta2 = "SELECT * FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + " = ? " + "AND " + PaginasTabla.BIT_SEGUIR_NO + " = 1";
+        Cursor cursor = db.rawQuery(consulta, nom);
+        Cursor cursor1 = db.rawQuery(consulta2, nom);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            Toast.makeText(actividad, "No sigues este manga.", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(cursor1.getCount() > 0){
+            cursor.close();
+            actualizar(sm, actividad);
+            Toast.makeText(actividad, "Has dejado de seguir este manga, ya no aparecerá en tu lista.", Toast.LENGTH_SHORT).show();
             return false;
         }
         cursor.close();

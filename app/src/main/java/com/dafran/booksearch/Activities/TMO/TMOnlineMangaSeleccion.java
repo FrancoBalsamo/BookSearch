@@ -5,10 +5,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -19,7 +17,6 @@ import com.dafran.booksearch.Clases.SeguirManga;
 import com.dafran.booksearch.Clases.TMOClases.TMODatosSeleccion;
 import com.dafran.booksearch.R;
 import com.dafran.booksearch.SQLite.PaginasSQL;
-import com.dafran.booksearch.SQLite.PaginasTabla;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -59,8 +56,6 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         seguirDato = (Button)findViewById(R.id.seguirDato);
         dejarDato = (Button)findViewById(R.id.dejarDato);
 
-        String consulta = "SELECT * FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + "='" + nombreManga + "''";
-
         if(tipo.contains("MANGA")){
             ll.setBackgroundColor(getResources().getColor(R.color.tmoManga));
         }else if(tipo.contains("MANHWA")){
@@ -80,7 +75,7 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         seguirDato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                seguirMetodoDato(urlImagen);
+                seguirMetodoDato();
             }
         });
 
@@ -108,22 +103,28 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         bannerBookSearh();
     }
 
-    private void seguirMetodoDato(String urlImagen){
-        String url = getIntent().getStringExtra("valor");
+//    private void seguirMetodoDato(String urlImagen){
+//        String url = getIntent().getStringExtra("valor");
+//        PaginasSQL psql = new PaginasSQL(TMOnlineMangaSeleccion.this);
+//        SeguirManga sm = new SeguirManga();
+//        sm.setNombre(nombreManga);
+//        sm.setUrl(url);
+//        sm.setUrlImagen(urlImagen);
+//        sm.setContador(cont+"");
+//        sm.setValorSeguir(1);
+//        psql.guardar(sm, TMOnlineMangaSeleccion.this);
+//    }
+
+    private void seguirMetodoDato(){
         PaginasSQL psql = new PaginasSQL(TMOnlineMangaSeleccion.this);
         SeguirManga sm = new SeguirManga();
-        sm.setNombre(nombreManga);
-        sm.setUrl(url);
-        sm.setUrlImagen(urlImagen);
-        sm.setContador(cont+"");
-        sm.setValorSeguir(1);
-        psql.guardar(sm, TMOnlineMangaSeleccion.this);
+        psql.validarGuardado(TMOnlineMangaSeleccion.this, nombreManga, sm);
     }
 
     private void dejarMetodoDaato(){
         PaginasSQL paginasSQL = new PaginasSQL(TMOnlineMangaSeleccion.this);
         seguirManga.setValorSeguir(0);
-        paginasSQL.actualizar(seguirManga, TMOnlineMangaSeleccion.this, nombreManga);
+        paginasSQL.actualizar(seguirManga, TMOnlineMangaSeleccion.this);
     }
 
     private class Content extends AsyncTask<Void,Void, ArrayList<TMODatosSeleccion>> {

@@ -35,6 +35,8 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
     private Button seguirDato, dejarDato;
     private RecyclerView recyclerView;
     private TMOnlineMangaSeleccionAdaptador adapter;
+    private String url = "";
+    private String tipoManga = "";
     private ArrayList<TMODatosSeleccion> tmoDatosSeleccions = new ArrayList<>();
 
     @Override
@@ -98,8 +100,6 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
 
     private void seguirMetodoDato(String urlImagen){
         PaginasSQL psql = new PaginasSQL(TMOnlineMangasSiguiendoSeleccion.this);
-        String url = getIntent().getStringExtra("valor");
-        String tipoManga = getIntent().getStringExtra("tipo");
         SeguirManga sm = new SeguirManga();
         sm.setNombre(nombreManga);
         sm.setUrl(url);

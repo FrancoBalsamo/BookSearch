@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -36,6 +37,8 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
     private TextView tu, manga, online, tvTituloSeleccion;
     private int cont;
     private String nombreManga;
+    private String url = "";
+    private String coloresSeleccion = "";
     private Button seguirDato, dejarDato;
     private RecyclerView recyclerView;
     private TMOnlineMangaSeleccionAdaptador adapter;
@@ -46,7 +49,8 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tmonline_manga_seleccion);
         nombreManga = getIntent().getStringExtra("nombre");
-        final String tipo = getIntent().getStringExtra("tipo");
+        coloresSeleccion = getIntent().getStringExtra("tipo");
+        url = getIntent().getStringExtra("valor");
         final String urlImagen = getIntent().getStringExtra("urlImagen");
 
         LinearLayout ll = (LinearLayout)findViewById(R.id.linearColores);
@@ -54,26 +58,26 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         seguirDato = (Button)findViewById(R.id.seguirDato);
         dejarDato = (Button)findViewById(R.id.dejarDato);
 
-        if(tipo.contains("MANGA")){
+        if(coloresSeleccion.contains("MANGA")){
             ll.setBackgroundColor(getResources().getColor(R.color.tmoManga));
-        }else if(tipo.contains("MANHWA")){
+        }else if(coloresSeleccion.contains("MANHWA")){
             ll.setBackgroundColor(getResources().getColor(R.color.tmoManhwa));
-        }else if(tipo.contains("MANHUA")){
+        }else if(coloresSeleccion.contains("MANHUA")){
             ll.setBackgroundColor(getResources().getColor(R.color.tmoManhua));
-        }else if(tipo.contains("NOVELA")){
+        }else if(coloresSeleccion.contains("NOVELA")){
             ll.setBackgroundColor(getResources().getColor(R.color.tmoNovela));
-        }else if(tipo.contains("ONE SHOT")){
+        }else if(coloresSeleccion.contains("ONE SHOT")){
             ll.setBackgroundColor(getResources().getColor(R.color.tmoOneShot));
-        }else if(tipo.contains("DOUJINSHI")){
+        }else if(coloresSeleccion.contains("DOUJINSHI")){
             ll.setBackgroundColor(getResources().getColor(R.color.tmoDou));
-        }else if(tipo.contains("OEL")){
+        }else if(coloresSeleccion.contains("OEL")){
             ll.setBackgroundColor(getResources().getColor(R.color.tmoOel));
         }
 
         seguirDato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                seguirMetodoDato(urlImagen);
+                seguirMetodoDato(urlImagen, url);
             }
         });
 
@@ -101,17 +105,15 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         bannerBookSearh();
     }
 
-    private void seguirMetodoDato(String urlImagen){
+    private void seguirMetodoDato(String imagen, String direccion){
         PaginasSQL psql = new PaginasSQL(TMOnlineMangaSeleccion.this);
-        String url = getIntent().getStringExtra("valor");
-        String tipoManga = getIntent().getStringExtra("tipo");
         SeguirManga sm = new SeguirManga();
         sm.setNombre(nombreManga);
-        sm.setUrl(url);
-        sm.setUrlImagen(urlImagen);
+        sm.setUrl(direccion);
+        sm.setUrlImagen(imagen);
         sm.setContador(cont+"");
         sm.setValorSeguir(1);
-        sm.setTipo(tipoManga);
+        sm.setTipo("MANGA");
         psql.guardar(sm);
     }
 

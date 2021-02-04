@@ -41,7 +41,6 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TMOnlineMangaSeleccionAdaptador adapter;
     private ArrayList<TMODatosSeleccion> tmoDatosSeleccions = new ArrayList<>();
-    private SeguirManga seguirManga = new SeguirManga();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +81,7 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         dejarDato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dejarMetodoDaato(nombreManga);
+                dejarMetodoDaato();
             }
         });
 
@@ -115,10 +114,11 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         psql.validarGuardado(TMOnlineMangaSeleccion.this, nombreManga, sm);
     }
 
-    private void dejarMetodoDaato(String nombre){
+    private void dejarMetodoDaato(){
         PaginasSQL paginasSQL = new PaginasSQL(TMOnlineMangaSeleccion.this);
-        //seguirManga.setValorSeguir(0);
-        paginasSQL.validarUpdate(TMOnlineMangaSeleccion.this, nombre, seguirManga);
+        SeguirManga sm = new SeguirManga();
+        sm.setValorSeguir(0);
+        paginasSQL.validarUpdate(TMOnlineMangaSeleccion.this, nombreManga, sm);
     }
 
     private class Content extends AsyncTask<Void,Void, ArrayList<TMODatosSeleccion>> {

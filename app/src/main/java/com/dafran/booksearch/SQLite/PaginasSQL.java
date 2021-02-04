@@ -45,19 +45,28 @@ public class PaginasSQL implements Serializable {
         return cv;
     }
 
-    public long guardar(SeguirManga sm, Context actividad){
+    public long guardar(SeguirManga sm){
         this.openWriteableDB();
         long filaID = db.insert(PaginasTabla.TABLA_SEGUIR, null, mapaSiguiendo(sm));
         this.closeDB();
         return filaID;
     }
 
-    public void actualizar(SeguirManga sm, Context actividad) {
+    public void actualizar(SeguirManga sm, String id) {//este es para pasar el manga a no visible
         this.openWriteableDB();
         ContentValues cv = new ContentValues();
         cv.put(PaginasTabla.BIT_SEGUIR_NO, sm.getValorSeguir());
-        String[] whereArgs = {String.valueOf(sm.getId())};
-        db.update(PaginasTabla.TABLA_SEGUIR, cv, PaginasTabla.ID_ELEMENTO + " = ?" , whereArgs);
+        String[] idValor = {String.valueOf(id)};
+        db.update(PaginasTabla.TABLA_SEGUIR, cv, PaginasTabla.ID_ELEMENTO + " = ?" , idValor);
+        db.close();
+    }
+
+    public void actualizarCero(String id) {//esto es para que cuando el manga no sea visible, su estado vuelva a 1 para ser visible
+        this.openWriteableDB();
+        ContentValues cv = new ContentValues();
+        cv.put(PaginasTabla.BIT_SEGUIR_NO, 1);
+        String[] idValor = {String.valueOf(id)};
+        db.update(PaginasTabla.TABLA_SEGUIR, cv, PaginasTabla.ID_ELEMENTO + " = ?" , idValor);
         db.close();
     }
 
@@ -66,38 +75,55 @@ public class PaginasSQL implements Serializable {
         String[] nom = {String.valueOf(nombre)};
         String consulta = "SELECT * FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + " = ?" ;
         String consulta2 = "SELECT * FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + " = ? " + "AND " + PaginasTabla.BIT_SEGUIR_NO + " = 1";
+        String consulta3 = "SELECT * FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + " = ? " + "AND " + PaginasTabla.BIT_SEGUIR_NO + " = 0";
+        String consulta4 = "SELECT " + PaginasTabla.ID_ELEMENTO + " FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + " = ? " + "AND " + PaginasTabla.BIT_SEGUIR_NO + " = 0";
         Cursor cursor = db.rawQuery(consulta, nom);
         Cursor cursor1 = db.rawQuery(consulta2, nom);
+        Cursor cursor3 = db.rawQuery(consulta3, nom);
+        Cursor cursor4 = db.rawQuery(consulta4, nom);
         if(cursor.getCount() <= 0){
             cursor.close();
-            guardar(sm, actividad);
+            guardar(sm);
             Toast.makeText(actividad, "Has comenzado a seguir este manga, aparecerá en tu lista.", Toast.LENGTH_SHORT).show();
             return false;
         }else if(cursor1.getCount() > 0){
-            cursor.close();
+            cursor1.close();
             Toast.makeText(actividad, "Ya estas siguiendo este manga.", Toast.LENGTH_SHORT).show();
             return false;
+        }else if(cursor3.getCount() > 0){
+            cursor3.close();
+            if(cursor4.moveToFirst()){
+                String id = cursor4.getString(cursor4.getColumnIndex(PaginasTabla.ID_ELEMENTO));
+                actualizarCero(id);
+                Toast.makeText(actividad, "Añadido nuevamente a tu lista.", Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
         cursor.close();
         return true;
     }
 
-    public boolean validarUpdate(Context actividad, String nombre, SeguirManga sm){
+    public boolean validarUpdate(Context actividad, String nombre, SeguirManga sm){//meétodo para validar el estado no visible del manga
         this.openWriteableDB();
         String[] nom = {String.valueOf(nombre)};
         String consulta = "SELECT * FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + " = ?" ;
         String consulta2 = "SELECT * FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + " = ? " + "AND " + PaginasTabla.BIT_SEGUIR_NO + " = 1";
+        String consulta3 = "SELECT " + PaginasTabla.ID_ELEMENTO + " FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + " = ? " + "AND " + PaginasTabla.BIT_SEGUIR_NO + " = 1";
         Cursor cursor = db.rawQuery(consulta, nom);
         Cursor cursor1 = db.rawQuery(consulta2, nom);
+        Cursor cursor2 = db.rawQuery(consulta3, nom);
         if(cursor.getCount() <= 0){
             cursor.close();
             Toast.makeText(actividad, "No sigues este manga.", Toast.LENGTH_SHORT).show();
             return false;
         }else if(cursor1.getCount() > 0){
-            cursor.close();
-            actualizar(sm, actividad);
-            Toast.makeText(actividad, "Has dejado de seguir este manga, ya no aparecerá en tu lista.", Toast.LENGTH_SHORT).show();
-            return false;
+            cursor1.close();
+            if(cursor2.moveToFirst()){
+                String id = cursor2.getString(cursor2.getColumnIndex(PaginasTabla.ID_ELEMENTO));
+                actualizar(sm, id);
+                Toast.makeText(actividad, "Has dejado de seguir este manga.", Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
         cursor.close();
         return true;

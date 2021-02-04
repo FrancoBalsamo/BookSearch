@@ -3,7 +3,10 @@ package com.dafran.booksearch.Activities.TMO;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +34,17 @@ public class TMOnlineMangasSiguiendo extends AppCompatActivity {
         seguirMangaArrayList = new PaginasSQL(TMOnlineMangasSiguiendo.this).llenarListaMangas();
         lv.setAdapter(new TMOnlineListaSeleccionAdaptador(seguirMangaArrayList, TMOnlineMangasSiguiendo.this));
 
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(TMOnlineMangasSiguiendo.this, TMOnlineMangasSiguiendoSeleccion.class);
+                intent.putExtra("nombre", seguirMangaArrayList.get(position).getNombre());
+                intent.putExtra("url", seguirMangaArrayList.get(position).getUrl());
+                intent.putExtra("tipo", seguirMangaArrayList.get(position).getTipo());
+                intent.putExtra("urlImagen", seguirMangaArrayList.get(position).getUrlImagen());
+                startActivity(intent);
+            }
+        });
     }
 
     private void titulo(){

@@ -11,17 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnlineMangaSeleccionAdaptador;
 import com.dafran.booksearch.Clases.SeguirManga;
 import com.dafran.booksearch.Clases.TMOClases.TMODatosSeleccion;
 import com.dafran.booksearch.R;
 import com.dafran.booksearch.SQLite.PaginasSQL;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -31,11 +27,11 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class TMOnlineMangaSeleccion extends AppCompatActivity {
-    private AdView adView;
+public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
     private TextView tu, manga, online, tvTituloSeleccion;
     private int cont;
     private String nombreManga;
+    private String tipo = "";
     private Button seguirDato, dejarDato;
     private RecyclerView recyclerView;
     private TMOnlineMangaSeleccionAdaptador adapter;
@@ -44,15 +40,17 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tmonline_manga_seleccion);
+        setContentView(R.layout.activity_t_m_online_mangas_siguiendo_seleccion);
+
+        titulo();
         nombreManga = getIntent().getStringExtra("nombre");
-        final String tipo = getIntent().getStringExtra("tipo");
-        final String urlImagen = getIntent().getStringExtra("urlImagen");
+        tipo = getIntent().getStringExtra("tipo");
+        final String imgUrl = getIntent().getStringExtra("urlImagen");
 
-        LinearLayout ll = (LinearLayout)findViewById(R.id.linearColores);
+        LinearLayout ll = (LinearLayout)findViewById(R.id.linearColoresDeSeleccion);
 
-        seguirDato = (Button)findViewById(R.id.seguirDato);
-        dejarDato = (Button)findViewById(R.id.dejarDato);
+        seguirDato = (Button)findViewById(R.id.seguirDatoListaSeleccion);
+        dejarDato = (Button)findViewById(R.id.dejarDatoListaSeleccion);
 
         if(tipo.contains("MANGA")){
             ll.setBackgroundColor(getResources().getColor(R.color.tmoManga));
@@ -73,7 +71,7 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         seguirDato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                seguirMetodoDato(urlImagen);
+                seguirMetodoDato(imgUrl);
             }
         });
 
@@ -84,25 +82,22 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
             }
         });
 
-        tvTituloSeleccion = (TextView)findViewById(R.id.tvTituloSeleccion);
+        tvTituloSeleccion = (TextView)findViewById(R.id.tvTituloSeleccionLista);
         tvTituloSeleccion.setText(nombreManga);
 
-        recyclerView = findViewById(R.id.rvCapitulosSeleccion);
+        recyclerView = findViewById(R.id.rvCapitulosListaSeleccion);
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TMOnlineMangaSeleccionAdaptador(tmoDatosSeleccions, TMOnlineMangaSeleccion.this);
+        adapter = new TMOnlineMangaSeleccionAdaptador(tmoDatosSeleccions, TMOnlineMangasSiguiendoSeleccion.this);
         recyclerView.setAdapter(adapter);
 
-        Content content = new Content();
-        content.execute();
-
-        titulo();
-        bannerBookSearh();
+        CargarRecyclerViewConDatosDeLaLista cargarRecyclerViewConDatosDeLaLista = new CargarRecyclerViewConDatosDeLaLista();
+        cargarRecyclerViewConDatosDeLaLista.execute();
     }
 
     private void seguirMetodoDato(String urlImagen){
-        PaginasSQL psql = new PaginasSQL(TMOnlineMangaSeleccion.this);
+        PaginasSQL psql = new PaginasSQL(TMOnlineMangasSiguiendoSeleccion.this);
         String url = getIntent().getStringExtra("valor");
         String tipoManga = getIntent().getStringExtra("tipo");
         SeguirManga sm = new SeguirManga();
@@ -112,17 +107,37 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         sm.setContador(cont+"");
         sm.setValorSeguir(1);
         sm.setTipo(tipoManga);
-        psql.guardar(sm);
+        psql.validarGuardado(TMOnlineMangasSiguiendoSeleccion.this, nombreManga, sm);
     }
 
     private void dejarMetodoDaato(){
-        PaginasSQL paginasSQL = new PaginasSQL(TMOnlineMangaSeleccion.this);
+        PaginasSQL paginasSQL = new PaginasSQL(TMOnlineMangasSiguiendoSeleccion.this);
         SeguirManga sm = new SeguirManga();
         sm.setValorSeguir(0);
-        paginasSQL.validarUpdate(TMOnlineMangaSeleccion.this, nombreManga, sm);
+        paginasSQL.validarUpdate(TMOnlineMangasSiguiendoSeleccion.this, nombreManga, sm);
     }
 
-    private class Content extends AsyncTask<Void,Void, ArrayList<TMODatosSeleccion>> {
+    private void titulo(){
+        tu = (TextView)findViewById(R.id.tvMangaSeleccionTuLista);
+        manga = (TextView)findViewById(R.id.tvMangaSeleccionMangaLista);
+        online = (TextView)findViewById(R.id.tvMangaSeleccionOnlineLista);
+
+        tu.setText("TU");
+        manga.setText("MANGA");
+        online.setText("ONLINE");
+
+        tu.setTextColor(ContextCompat.getColor(TMOnlineMangasSiguiendoSeleccion.this, R.color.tmoTitulo));
+        manga.setTextColor(ContextCompat.getColor(TMOnlineMangasSiguiendoSeleccion.this, R.color.tmoTitulo));
+        online.setTextColor(ContextCompat.getColor(TMOnlineMangasSiguiendoSeleccion.this, R.color.tmoTitulo));
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        TMOnlineMangasSiguiendoSeleccion.this.finish();
+    }
+
+    private class CargarRecyclerViewConDatosDeLaLista extends AsyncTask<Void,Void, ArrayList<TMODatosSeleccion>> {
 
         @Override
         protected void onPreExecute() {
@@ -142,7 +157,7 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
 
         @Override
         protected ArrayList<TMODatosSeleccion> doInBackground(Void... voids) {
-            String url = getIntent().getStringExtra("valor");
+            String url = getIntent().getStringExtra("url");
             tmoDatosSeleccions.clear();
             try {
                 Document doc = Jsoup.connect(url).get();
@@ -169,35 +184,5 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
             }
             return tmoDatosSeleccions;
         }
-    }
-
-    private void titulo(){
-        tu = (TextView)findViewById(R.id.tvMangaSeleccionTu);
-        manga = (TextView)findViewById(R.id.tvMangaSeleccionManga);
-        online = (TextView)findViewById(R.id.tvMangaSeleccionOnline);
-
-        tu.setText("TU");
-        manga.setText("MANGA");
-        online.setText("ONLINE");
-
-        tu.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccion.this, R.color.tmoTitulo));
-        manga.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccion.this, R.color.tmoTitulo));
-        online.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccion.this, R.color.tmoTitulo));
-    }
-
-    private void bannerBookSearh(){
-        MobileAds.initialize(TMOnlineMangaSeleccion.this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) { }
-        });
-        adView = (AdView)findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        TMOnlineMangaSeleccion.this.finish();
     }
 }

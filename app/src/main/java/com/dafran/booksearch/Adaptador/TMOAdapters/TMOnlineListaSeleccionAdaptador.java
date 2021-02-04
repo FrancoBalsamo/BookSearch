@@ -49,7 +49,7 @@ public class TMOnlineListaSeleccionAdaptador extends BaseAdapter {
         ImageView caratula = rowView.findViewById(R.id.ivListaMangas);
         SeguirManga sm  = this.seguirMangaArrayList.get(position);
         Picasso.get().load(sm.getUrlImagen()).into(caratula);
-        nombreManga.setText(sm.getNombre());
+        nombreManga.setText(sm.getNombre() + "/" + sm.getTipo());
         return rowView;
     }
 }

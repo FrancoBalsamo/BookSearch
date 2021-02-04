@@ -42,6 +42,7 @@ public class PaginasSQL implements Serializable {
         cv.put(PaginasTabla.URL_IMAGEN, sm.getUrlImagen());
         cv.put(PaginasTabla.CONTADOR_CAPITULOS, sm.getContador());
         cv.put(PaginasTabla.BIT_SEGUIR_NO, sm.getValorSeguir());
+        cv.put(PaginasTabla.TIPO_MANGA, sm.getTipo());
         return cv;
     }
 

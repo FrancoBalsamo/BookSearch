@@ -4,7 +4,7 @@ import java.net.URL;
 
 public class PaginasTabla {
     //public static final String DB_NAME = "bd_00.db";//nombre de la bd
-    public static final String DB_NAME = "bd_01.db";
+    public static final String DB_NAME = "bd_03.db";
     public static final int DB_VERSION = 1;//version
 
     //TABLA
@@ -17,6 +17,7 @@ public class PaginasTabla {
     public static final String URL_IMAGEN = "urlImagen";
     public static final String CONTADOR_CAPITULOS = "cantidadCapitulos";
     public static final String BIT_SEGUIR_NO = "valorSiguiendo";
+    public static final String TIPO_MANGA = "tipoManga";
 
     public static final String TABLA_PARA_SEGUIR =
             "CREATE TABLE " + TABLA_SEGUIR + "(" +
@@ -25,5 +26,6 @@ public class PaginasTabla {
                     URL_MANGA + " TEXT NOT NULL, " +
                     URL_IMAGEN + " TEXT NOT NULL, " +
                     CONTADOR_CAPITULOS + " TEXT NOT NULL, " +
-                    BIT_SEGUIR_NO + " INTEGER);";
+                    BIT_SEGUIR_NO + " INTEGER, " +
+                    TIPO_MANGA + " TEXT NOT NULL);";
 }

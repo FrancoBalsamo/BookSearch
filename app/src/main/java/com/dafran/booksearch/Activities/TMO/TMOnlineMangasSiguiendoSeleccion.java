@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -32,11 +33,10 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
     private int cont;
     private String nombreManga;
     private String tipo = "";
+    private String url = "";
     private Button seguirDato, dejarDato;
     private RecyclerView recyclerView;
     private TMOnlineMangaSeleccionAdaptador adapter;
-    private String url = "";
-    private String tipoManga = "";
     private ArrayList<TMODatosSeleccion> tmoDatosSeleccions = new ArrayList<>();
 
     @Override
@@ -47,6 +47,7 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
         titulo();
         nombreManga = getIntent().getStringExtra("nombre");
         tipo = getIntent().getStringExtra("tipo");
+        url = getIntent().getStringExtra("url");
         final String imgUrl = getIntent().getStringExtra("urlImagen");
 
         LinearLayout ll = (LinearLayout)findViewById(R.id.linearColoresDeSeleccion);
@@ -73,7 +74,7 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
         seguirDato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                seguirMetodoDato(imgUrl);
+                seguirMetodoDato(TMOnlineMangasSiguiendoSeleccion.this, imgUrl, url);
             }
         });
 
@@ -98,16 +99,16 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
         cargarRecyclerViewConDatosDeLaLista.execute();
     }
 
-    private void seguirMetodoDato(String urlImagen){
+    private void seguirMetodoDato(Context actividad, String imagen, String direccion){
         PaginasSQL psql = new PaginasSQL(TMOnlineMangasSiguiendoSeleccion.this);
         SeguirManga sm = new SeguirManga();
         sm.setNombre(nombreManga);
-        sm.setUrl(url);
-        sm.setUrlImagen(urlImagen);
+        sm.setUrl(direccion);
+        sm.setUrlImagen(imagen);
         sm.setContador(cont+"");
         sm.setValorSeguir(1);
-        sm.setTipo(tipoManga);
-        psql.validarGuardado(TMOnlineMangasSiguiendoSeleccion.this, nombreManga, sm);
+        sm.setTipo(tipo);
+        psql.validarGuardado(actividad, nombreManga, sm);
     }
 
     private void dejarMetodoDaato(){

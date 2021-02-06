@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -77,7 +78,7 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         seguirDato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                seguirMetodoDato(urlImagen, url);
+                seguirMetodoDato(TMOnlineMangaSeleccion.this, urlImagen, url);
             }
         });
 
@@ -105,7 +106,7 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         bannerBookSearh();
     }
 
-    private void seguirMetodoDato(String imagen, String direccion){
+    private void seguirMetodoDato(Context actividad, String imagen, String direccion){
         PaginasSQL psql = new PaginasSQL(TMOnlineMangaSeleccion.this);
         SeguirManga sm = new SeguirManga();
         sm.setNombre(nombreManga);
@@ -114,7 +115,7 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         sm.setContador(cont+"");
         sm.setValorSeguir(1);
         sm.setTipo(coloresSeleccion);
-        psql.guardar(sm);
+        psql.validarGuardado(actividad, nombreManga, sm);
     }
 
     private void dejarMetodoDaato(){

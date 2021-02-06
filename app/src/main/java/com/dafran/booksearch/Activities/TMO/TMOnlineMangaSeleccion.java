@@ -103,7 +103,6 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         content.execute();
 
         titulo();
-        bannerBookSearh();
     }
 
     private void seguirMetodoDato(Context actividad, String imagen, String direccion){
@@ -186,16 +185,6 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         tu.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccion.this, R.color.tmoTitulo));
         manga.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccion.this, R.color.tmoTitulo));
         online.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccion.this, R.color.tmoTitulo));
-    }
-
-    private void bannerBookSearh(){
-        MobileAds.initialize(TMOnlineMangaSeleccion.this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) { }
-        });
-        adView = (AdView)findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
     }
 
     @Override

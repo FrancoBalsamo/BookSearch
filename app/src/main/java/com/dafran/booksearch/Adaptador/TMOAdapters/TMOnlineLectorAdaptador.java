@@ -1,10 +1,14 @@
 package com.dafran.booksearch.Adaptador.TMOAdapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ZoomControls;
 
 import androidx.annotation.NonNull;
@@ -12,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
 import com.dafran.booksearch.R;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
@@ -32,7 +37,7 @@ public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLector
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TMOnlineLectorAdaptador.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final TMOnlineLectorAdaptador.ViewHolder holder, int position) {
         TMOLectorClase tmoLectorClase = this.tmoLectorClases.get(position);
         Picasso.get().load(tmoLectorClase.getImg()).into(holder.iv);
     }
@@ -44,7 +49,6 @@ public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLector
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView iv;
-        ZoomControls zc;
 
         public ViewHolder(@NonNull View view) {
             super(view);
@@ -54,7 +58,6 @@ public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLector
 
         @Override
         public void onClick(View view) {
-            //context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(tmoItems.get(itemPosition).getUrlCapitulo())));
         }
     }
 

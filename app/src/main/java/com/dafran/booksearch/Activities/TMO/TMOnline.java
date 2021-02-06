@@ -102,8 +102,6 @@ public class TMOnline extends AppCompatActivity {
                 abrirLista();
             }
         });
-
-        bannerBookSearh();
     }
 
     private class Content extends AsyncTask<Void,Void, ArrayList<TMOItems>> {
@@ -150,26 +148,6 @@ public class TMOnline extends AppCompatActivity {
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    public static boolean isNullorEmpty(String s ) {
-        return s == null || s.trim().isEmpty();
-    }
-
-    private void bannerBookSearh(){
-        MobileAds.initialize(TMOnline.this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) { }
-        });
-        adView = (AdView)findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        TMOnline.this.finish();
     }
 
     private void titulo(){

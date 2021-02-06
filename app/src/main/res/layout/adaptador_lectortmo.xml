@@ -11,7 +11,7 @@
     android:background="@color/blanco">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/blanco">
@@ -19,9 +19,7 @@
             android:layout_gravity="center_horizontal"
             android:id="@+id/ivPaginas"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:scaleType="center"/>
     </LinearLayout>
-
-
 </androidx.cardview.widget.CardView>

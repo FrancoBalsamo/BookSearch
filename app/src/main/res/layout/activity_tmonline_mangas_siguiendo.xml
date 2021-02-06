@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Activities.TMO.TMOnlineMangasSiguiendo"
     android:orientation="vertical"
-    android:background="@color/tmoBg">
+    android:background="@color/blanco">
 
     <LinearLayout
         android:id="@+id/linearColores"

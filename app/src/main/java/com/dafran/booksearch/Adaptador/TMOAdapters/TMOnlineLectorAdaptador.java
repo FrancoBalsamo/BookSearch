@@ -39,7 +39,11 @@ public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLector
     @Override
     public void onBindViewHolder(@NonNull final TMOnlineLectorAdaptador.ViewHolder holder, int position) {
         TMOLectorClase tmoLectorClase = this.tmoLectorClases.get(position);
-        Picasso.get().load(tmoLectorClase.getImg()).into(holder.iv);
+        Picasso.get()
+                .load(tmoLectorClase.getImg())
+                .fit()
+                .centerCrop()
+                .into(holder.iv);
     }
 
     @Override

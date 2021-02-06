@@ -133,7 +133,7 @@ public class PaginasSQL implements Serializable {
     public ArrayList llenarListaMangas() {
         ArrayList list = new ArrayList<>();
         this.openReadableDB();
-        String[] campos = new String[]{PaginasTabla.ID_ELEMENTO, PaginasTabla.NOMBRE_MANGA, PaginasTabla.URL_MANGA, PaginasTabla.URL_IMAGEN, PaginasTabla.CONTADOR_CAPITULOS, PaginasTabla.BIT_SEGUIR_NO};
+        String[] campos = new String[]{PaginasTabla.ID_ELEMENTO, PaginasTabla.NOMBRE_MANGA, PaginasTabla.URL_MANGA, PaginasTabla.URL_IMAGEN, PaginasTabla.CONTADOR_CAPITULOS, PaginasTabla.BIT_SEGUIR_NO,PaginasTabla.TIPO_MANGA};
         String where = PaginasTabla.BIT_SEGUIR_NO + " = 1";
         Cursor c = db.query(PaginasTabla.TABLA_SEGUIR, campos, where, null, null, null, null);
         try {
@@ -145,6 +145,7 @@ public class PaginasSQL implements Serializable {
                 sm.setUrlImagen(c.getString(3));
                 sm.setContador(c.getString(4));
                 sm.setValorSeguir(c.getInt(5));
+                sm.setTipo(c.getString(6));
                 list.add(sm);
             }
         } finally { c.close(); }

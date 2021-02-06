@@ -4,11 +4,11 @@ import java.net.URL;
 
 public class PaginasTabla {
     //public static final String DB_NAME = "bd_00.db";//nombre de la bd
-    public static final String DB_NAME = "bd_05.db";
+    public static final String DB_NAME = "bd_06.db";
     public static final int DB_VERSION = 2;//version
 
     //TABLA
-    public static final String TABLA_SEGUIR = "siguiendo";
+    public static final String TABLA_SEGUIR = "listaMangas";
 
     //Columnas
     public static final String ID_ELEMENTO = "idElementoManga";

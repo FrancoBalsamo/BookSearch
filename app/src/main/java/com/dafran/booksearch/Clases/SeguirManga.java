@@ -67,8 +67,7 @@ public class SeguirManga {
 
     public SeguirManga(){}
 
-    public SeguirManga(int id, String nombre, String url, String urlImagen,String contador, int valorSeguir, String tipo) {
-        this.id = id;
+    public SeguirManga(String nombre, String url, String urlImagen,String contador, int valorSeguir, String tipo) {
         this.nombre = nombre;
         this.url = url;
         this.urlImagen = urlImagen;

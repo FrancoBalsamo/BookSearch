@@ -113,7 +113,7 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         sm.setUrlImagen(imagen);
         sm.setContador(cont+"");
         sm.setValorSeguir(1);
-        sm.setTipo("MANGA");
+        sm.setTipo(coloresSeleccion);
         psql.guardar(sm);
     }
 

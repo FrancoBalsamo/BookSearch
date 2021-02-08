@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,11 @@ import android.widget.ZoomControls;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
 import com.dafran.booksearch.R;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -39,11 +43,8 @@ public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLector
     @Override
     public void onBindViewHolder(@NonNull final TMOnlineLectorAdaptador.ViewHolder holder, int position) {
         TMOLectorClase tmoLectorClase = this.tmoLectorClases.get(position);
-        Picasso.get()
-                .load(tmoLectorClase.getImg())
-                .fit()
-                .centerCrop()
-                .into(holder.iv);
+        Picasso.get().load(tmoLectorClase.getImg()).into(holder.iv);
+        //Glide.with(context).load(tmoLectorClase.getImg()).into(holder.iv);
     }
 
     @Override

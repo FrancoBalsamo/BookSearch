@@ -6,6 +6,8 @@ import android.graphics.drawable.Drawable;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,19 +16,19 @@ import android.widget.ZoomControls;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
 import com.dafran.booksearch.R;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
-public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLectorAdaptador.ViewHolder> {
+public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLectorAdaptador.ViewHolder>{
     private ArrayList<TMOLectorClase> tmoLectorClases;
     private Context context;
+    PhotoViewAttacher mAttacher;
 
     public TMOnlineLectorAdaptador(ArrayList<TMOLectorClase> tmoItems, Context context) {
         this.tmoLectorClases = tmoItems;
@@ -58,9 +60,10 @@ public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLector
         public ViewHolder(@NonNull View view) {
             super(view);
             iv = view.findViewById(R.id.ivPaginas);
+            mAttacher = new PhotoViewAttacher(iv);
             view.setOnClickListener(this);
+            mAttacher.update();
         }
-
         @Override
         public void onClick(View view) {
         }

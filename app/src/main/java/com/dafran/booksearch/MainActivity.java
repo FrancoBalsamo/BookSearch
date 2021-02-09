@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,12 +26,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     TextView tv;
-    ListView lv;
     AdView adView;
     ImageView ivTMO;
-
-    ArrayList<Paginas> array = new ArrayList<Paginas>();
-    PaginasSQL psql = new PaginasSQL(MainActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +41,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         tv = (TextView)findViewById(R.id.bookTV);
-
-
         tv.setText("Book Search");
-        tv.setTypeface(ResourcesCompat.getFont(MainActivity.this, R.font.saowttregular));
+        tv.setTypeface(ResourcesCompat.getFont(MainActivity.this, R.font.roboto_regular));
+        tv.setTextColor(getResources().getColor(R.color.negro));
 
         ivTMO = (ImageView)findViewById(R.id.ivTMO);
         ivTMO.setOnClickListener(new View.OnClickListener() {
@@ -56,8 +52,6 @@ public class MainActivity extends AppCompatActivity {
                 aTMOnline();
             }
         });
-
-
     }
 
     private void aTrantorIs(){

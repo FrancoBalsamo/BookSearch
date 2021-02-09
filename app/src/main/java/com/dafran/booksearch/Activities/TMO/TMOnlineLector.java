@@ -11,6 +11,7 @@ import android.util.Log;
 import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnlineLectorAdaptador;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
 import com.dafran.booksearch.R;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

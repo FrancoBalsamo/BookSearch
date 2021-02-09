@@ -5,6 +5,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,9 +26,8 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    TextView tv;
     AdView adView;
-    ImageView ivTMO;
+    ImageView ivLogoBookShearch, ivTMO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +40,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        tv = (TextView)findViewById(R.id.bookTV);
-        tv.setText("Book Search");
-        tv.setTypeface(ResourcesCompat.getFont(MainActivity.this, R.font.roboto_regular));
-        tv.setTextColor(getResources().getColor(R.color.negro));
-
         ivTMO = (ImageView)findViewById(R.id.ivTMO);
         ivTMO.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) { }
         });
-        adView = (AdView)findViewById(R.id.adView);
+        adView = (AdView)findViewById(R.id.adViewUnicoMain);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
     }

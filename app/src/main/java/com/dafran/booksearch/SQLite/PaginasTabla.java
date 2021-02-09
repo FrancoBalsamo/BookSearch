@@ -4,8 +4,8 @@ import java.net.URL;
 
 public class PaginasTabla {
    // public static final String DB_NAME = "bd_Final.db";
-    public static final String DB_NAME = "bd_06.db";
-    public static final int DB_VERSION = 2;//version
+    public static final String DB_NAME = "bd_001.db";
+    public static final int DB_VERSION = 1;//version
 
     //TABLA SIGUIENDO
     public static final String TABLA_SEGUIR = "listaMangas";
@@ -35,8 +35,13 @@ public class PaginasTabla {
     //Columnas
     public static final String ID_ = "id_";
     public static final String NOMBRE = "nombreManga";
+    public static final String BIT_LEIDO = "bitLeido";
     public static final String ULTIMO_LEIDO = "ultimoLeido";
 
- public static final String TABLA_PARA_CONTROL_LEIDO =
-         "CREATE TABLE " + TABLA_CAPITULO_LEIDO + "(" +"";
+    public static final String TABLA_CAPITULO_LEIDO_SQL =
+         "CREATE TABLE " + TABLA_CAPITULO_LEIDO + "(" +
+                 ID_ + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                 NOMBRE + " TEXT NOT NULL, " +
+                 BIT_LEIDO + " INTEGER, " +
+                 ULTIMO_LEIDO + " TEXT NOT NULL);";
 }

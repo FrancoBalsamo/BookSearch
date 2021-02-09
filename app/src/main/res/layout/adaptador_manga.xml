@@ -37,20 +37,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:gravity="right"
-            tools:ignore="MissingConstraints">
+            android:gravity="right">
             <LinearLayout
-                android:orientation="vertical"
-                android:gravity="center_vertical"
-                android:layout_width="70dp"
-                android:layout_height="match_parent"
-                tools:ignore="MissingConstraints">
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_width="130dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:id="@+id/leido"
+                    android:layout_marginRight="5dp"/>
                 <Button
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:id="@+id/btnLeerTmo"
                     android:background="@drawable/ic_leer"
-                    tools:ignore="MissingConstraints"/>
+                    android:layout_marginLeft="5dp"/>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

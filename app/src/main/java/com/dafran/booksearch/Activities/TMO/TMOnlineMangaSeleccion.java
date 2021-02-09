@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -19,11 +18,6 @@ import com.dafran.booksearch.Clases.SeguirManga;
 import com.dafran.booksearch.Clases.TMOClases.TMODatosSeleccion;
 import com.dafran.booksearch.R;
 import com.dafran.booksearch.SQLite.PaginasSQL;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -34,10 +28,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class TMOnlineMangaSeleccion extends AppCompatActivity {
-    private AdView adView;
     private TextView tu, manga, online, tvTituloSeleccion;
     private int cont;
     private String nombreManga;
+    private String numero_capitulo;
     private String url = "";
     private String coloresSeleccion = "";
     private Button seguirDato, dejarDato;
@@ -96,13 +90,14 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TMOnlineMangaSeleccionAdaptador(tmoDatosSeleccions, TMOnlineMangaSeleccion.this);
+        adapter = new TMOnlineMangaSeleccionAdaptador(tmoDatosSeleccions, TMOnlineMangaSeleccion.this, nombreManga, numero_capitulo);
         recyclerView.setAdapter(adapter);
 
         Content content = new Content();
         content.execute();
 
         titulo();
+        actualizarAutomaticamenteCantidadCapitulos(TMOnlineMangaSeleccion.this);
     }
 
     private void seguirMetodoDato(Context actividad, String imagen, String direccion){
@@ -121,7 +116,14 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         PaginasSQL paginasSQL = new PaginasSQL(TMOnlineMangaSeleccion.this);
         SeguirManga sm = new SeguirManga();
         sm.setValorSeguir(0);
-        paginasSQL.validarUpdate(TMOnlineMangaSeleccion.this, nombreManga, sm);
+        paginasSQL.validarUpdateEstadoSiguiendo(TMOnlineMangaSeleccion.this, nombreManga, sm);
+    }
+
+    private void actualizarAutomaticamenteCantidadCapitulos(Context actividad){
+        PaginasSQL paginasSQL = new PaginasSQL(actividad);
+        SeguirManga sm = new SeguirManga();
+        sm.setContador(cont+"");
+        paginasSQL.actualizadorDeCapitulos(nombreManga, sm);
     }
 
     private class Content extends AsyncTask<Void,Void, ArrayList<TMODatosSeleccion>> {
@@ -155,13 +157,14 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
                     if(e1.select("div.col-10.text-truncate").size() > 0){
                         numeroCap = e1.select("a").get(0).text();
                         numeroCap = numeroCap.replaceAll("\\<.*?\\>", "").trim();
+                        numero_capitulo = numeroCap;
                         if(e1.select("div.col-2.col-sm-1.text-right").size() > 0 ){
                             urlMan = e1.select("a.btn.btn-default.btn-sm").get(0).attr("href");
                             if(urlMan.contains("/paginated")){
                                 urlMan.replace("/paginated", "/cascade");
-                                tmoDatosSeleccions.add(new TMODatosSeleccion(numeroCap, urlMan, "urlImagen"));
+                                tmoDatosSeleccions.add(new TMODatosSeleccion(numeroCap, urlMan, nombreManga));
                             }else{
-                                tmoDatosSeleccions.add(new TMODatosSeleccion(numeroCap, urlMan, "urlImagen"));
+                                tmoDatosSeleccions.add(new TMODatosSeleccion(numeroCap, urlMan, nombreManga));
                             }
                         }
                     }

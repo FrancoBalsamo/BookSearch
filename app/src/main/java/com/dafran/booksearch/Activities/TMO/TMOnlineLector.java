@@ -20,12 +20,14 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 public class TMOnlineLector extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TMOnlineLectorAdaptador adapter;
     private ArrayList<TMOLectorClase> tmoLectorClases = new ArrayList<>();
     private String url = "";
+    private TimerTask _timerTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,17 @@ public class TMOnlineLector extends AppCompatActivity {
 
         Content content = new Content();
         content.execute();
+
+//        _timerTask = new TimerTask() {
+//            int count = 0;
+//            @Override
+//            public void run() {
+//                if (count == 5) {
+//                    cancel();
+//                }
+//                System.out.println(count++);
+//            }
+//        };
     }
 
     private class Content extends AsyncTask<Void,Void, ArrayList<TMOLectorClase>> {

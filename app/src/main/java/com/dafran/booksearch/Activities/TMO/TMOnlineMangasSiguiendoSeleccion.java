@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnlineMangaSeleccionAdaptador;
 import com.dafran.booksearch.Clases.SeguirManga;
@@ -32,6 +31,7 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
     private TextView tu, manga, online, tvTituloSeleccion;
     private int cont;
     private String nombreManga;
+    private String capitulo_manga;
     private String tipo = "";
     private String url = "";
     private Button seguirDato, dejarDato;
@@ -92,15 +92,17 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TMOnlineMangaSeleccionAdaptador(tmoDatosSeleccions, TMOnlineMangasSiguiendoSeleccion.this);
+        adapter = new TMOnlineMangaSeleccionAdaptador(tmoDatosSeleccions, TMOnlineMangasSiguiendoSeleccion.this, nombreManga, capitulo_manga);
         recyclerView.setAdapter(adapter);
 
         CargarRecyclerViewConDatosDeLaLista cargarRecyclerViewConDatosDeLaLista = new CargarRecyclerViewConDatosDeLaLista();
         cargarRecyclerViewConDatosDeLaLista.execute();
+
+        actualizarAutomaticamenteCantidadCapitulos(TMOnlineMangasSiguiendoSeleccion.this);
     }
 
     private void seguirMetodoDato(Context actividad, String imagen, String direccion){
-        PaginasSQL psql = new PaginasSQL(TMOnlineMangasSiguiendoSeleccion.this);
+        PaginasSQL psql = new PaginasSQL(actividad);
         SeguirManga sm = new SeguirManga();
         sm.setNombre(nombreManga);
         sm.setUrl(direccion);
@@ -115,7 +117,14 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
         PaginasSQL paginasSQL = new PaginasSQL(TMOnlineMangasSiguiendoSeleccion.this);
         SeguirManga sm = new SeguirManga();
         sm.setValorSeguir(0);
-        paginasSQL.validarUpdate(TMOnlineMangasSiguiendoSeleccion.this, nombreManga, sm);
+        paginasSQL.validarUpdateEstadoSiguiendo(TMOnlineMangasSiguiendoSeleccion.this, nombreManga, sm);
+    }
+
+    private void actualizarAutomaticamenteCantidadCapitulos(Context actividad){
+        PaginasSQL paginasSQL = new PaginasSQL(actividad);
+        SeguirManga sm = new SeguirManga();
+        sm.setContador(cont+"");
+        paginasSQL.actualizadorDeCapitulos(nombreManga, sm);
     }
 
     private void titulo(){
@@ -169,13 +178,14 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
                     if(e1.select("div.col-10.text-truncate").size() > 0){
                         numeroCap = e1.select("a").get(0).text();
                         numeroCap = numeroCap.replaceAll("\\<.*?\\>", "").trim();
+                        capitulo_manga = numeroCap;
                         if(e1.select("div.col-2.col-sm-1.text-right").size() > 0 ){
                             urlMan = e1.select("a.btn.btn-default.btn-sm").get(0).attr("href");
                             if(urlMan.contains("/paginated")){
                                 urlMan.replace("/paginated", "/cascade");
-                                tmoDatosSeleccions.add(new TMODatosSeleccion(numeroCap, urlMan, "urlImagen"));
+                                tmoDatosSeleccions.add(new TMODatosSeleccion(numeroCap, urlMan, nombreManga));
                             }else{
-                                tmoDatosSeleccions.add(new TMODatosSeleccion(numeroCap, urlMan, "urlImagen"));
+                                tmoDatosSeleccions.add(new TMODatosSeleccion(numeroCap, urlMan, nombreManga));
                             }
                         }
                     }

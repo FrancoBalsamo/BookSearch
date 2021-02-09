@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     AdView adView;
-    ImageView ivLogoBookShearch, ivTMO;
+    ImageView logobook, ivTMO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        logobook = (ImageView)findViewById(R.id.logobook);
         ivTMO = (ImageView)findViewById(R.id.ivTMO);
         ivTMO.setOnClickListener(new View.OnClickListener() {
             @Override

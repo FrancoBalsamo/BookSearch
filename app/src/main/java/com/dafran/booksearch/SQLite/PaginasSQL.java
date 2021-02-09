@@ -6,11 +6,16 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dafran.booksearch.Clases.Paginas;
 import com.dafran.booksearch.Clases.SeguirManga;
+import com.dafran.booksearch.R;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -85,18 +90,21 @@ public class PaginasSQL implements Serializable {
         if(cursor.getCount() <= 0){
             cursor.close();
             guardar(sm);
-            Toast.makeText(actividad, "Has comenzado a seguir este manga, aparecerá en tu lista.", Toast.LENGTH_SHORT).show();
+            String mensaje = "Has comenzado a seguir este manga, aparecerá en tu lista.";
+            toastVerde(actividad, mensaje);
             return false;
         }else if(cursor1.getCount() > 0){
             cursor1.close();
-            Toast.makeText(actividad, "Ya estas siguiendo este manga.", Toast.LENGTH_SHORT).show();
+            String mensaje = "Ya estas siguiendo este manga.";
+            toastAzul(actividad, mensaje);
             return false;
         }else if(cursor3.getCount() > 0){
             cursor3.close();
             if(cursor4.moveToFirst()){
                 String id = cursor4.getString(cursor4.getColumnIndex(PaginasTabla.ID_ELEMENTO));
                 actualizarCero(id);
-                Toast.makeText(actividad, "Añadido nuevamente a tu lista.", Toast.LENGTH_SHORT).show();
+                String mensaje = "Añadido nuevamente a tu lista.";
+                toastVerde(actividad, mensaje);
                 return false;
             }
         }
@@ -110,21 +118,28 @@ public class PaginasSQL implements Serializable {
         String consulta = "SELECT * FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + " = ?" ;
         String consulta2 = "SELECT * FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + " = ? " + "AND " + PaginasTabla.BIT_SEGUIR_NO + " = 1";
         String consulta3 = "SELECT " + PaginasTabla.ID_ELEMENTO + " FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + " = ? " + "AND " + PaginasTabla.BIT_SEGUIR_NO + " = 1";
+        String consulta4 = "SELECT 0 FROM " + PaginasTabla.TABLA_SEGUIR + " WHERE " + PaginasTabla.NOMBRE_MANGA + " = ? " + "AND " + PaginasTabla.BIT_SEGUIR_NO + " = 0";
         Cursor cursor = db.rawQuery(consulta, nom);
         Cursor cursor1 = db.rawQuery(consulta2, nom);
         Cursor cursor2 = db.rawQuery(consulta3, nom);
+        Cursor cursor3 = db.rawQuery(consulta4, nom);
         if(cursor.getCount() <= 0){
             cursor.close();
-            Toast.makeText(actividad, "No sigues este manga.", Toast.LENGTH_SHORT).show();
+            String mensaje = "No sigues este manga.";
+            toastAzul(actividad, mensaje);
             return false;
         }else if(cursor1.getCount() > 0){
             cursor1.close();
             if(cursor2.moveToFirst()){
                 String id = cursor2.getString(cursor2.getColumnIndex(PaginasTabla.ID_ELEMENTO));
                 actualizar(sm, id);
-                Toast.makeText(actividad, "Has dejado de seguir este manga.", Toast.LENGTH_SHORT).show();
+                String mensaje = "Has dejado de seguir este manga.";
+                toastRojo(actividad, mensaje);
                 return false;
             }
+        }else if(cursor3.getCount() > 0){
+            String mensaje = "Ya dejaste de seguir este manga.";
+            toastAzul(actividad, mensaje);
         }
         cursor.close();
         return true;
@@ -151,6 +166,30 @@ public class PaginasSQL implements Serializable {
         } finally { c.close(); }
         this.closeDB();
         return list;
+    }
+
+    private void toastAzul(Context actividad, String mensaje){
+        Toast toast = Toast.makeText(actividad, mensaje, Toast.LENGTH_LONG);
+        View view = toast.getView();
+        view.getBackground().setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN);
+        TextView toastTextView = view.findViewById(R.id.toastTextView);
+        toast.show();
+    }
+
+    private void toastRojo(Context actividad, String mensaje){
+        Toast toast = Toast.makeText(actividad, mensaje, Toast.LENGTH_LONG);
+        View view = toast.getView();
+        view.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+        TextView toastTextView = view.findViewById(R.id.toastTextView);
+        toast.show();
+    }
+
+    private void toastVerde(Context actividad, String mensaje){
+        Toast toast = Toast.makeText(actividad, mensaje, Toast.LENGTH_LONG);
+        View view = toast.getView();
+        view.getBackground().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
+        TextView toastTextView = view.findViewById(R.id.toastTextView);
+        toast.show();
     }
 
     private static class DBHelper extends SQLiteOpenHelper {

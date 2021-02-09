@@ -8,6 +8,7 @@ public class SeguirManga {
     private String contador;
     private int valorSeguir;
     private String tipo;
+    private String ultimoCapituloLeido;
 
     public int getId() {
         return id;
@@ -65,14 +66,23 @@ public class SeguirManga {
         this.tipo = tipo;
     }
 
+    public String getUltimoCapituloLeido() {
+        return ultimoCapituloLeido;
+    }
+
+    public void setUltimoCapituloLeido(String ultimoCapituloLeido) {
+        this.ultimoCapituloLeido = ultimoCapituloLeido;
+    }
+
     public SeguirManga(){}
 
-    public SeguirManga(String nombre, String url, String urlImagen,String contador, int valorSeguir, String tipo) {
+    public SeguirManga(String nombre, String url, String urlImagen,String contador, int valorSeguir, String tipo, String ultimoCapituloLeido) {
         this.nombre = nombre;
         this.url = url;
         this.urlImagen = urlImagen;
         this.contador = contador;
         this.valorSeguir = valorSeguir;
         this.tipo = tipo;
+        this.ultimoCapituloLeido = ultimoCapituloLeido;
     }
 }

@@ -3,17 +3,13 @@ package com.dafran.booksearch.SQLite;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.dafran.booksearch.Clases.Paginas;
 import com.dafran.booksearch.Clases.SeguirManga;
 import com.dafran.booksearch.R;
 
@@ -142,11 +138,6 @@ public class PaginasSQL implements Serializable {
             toastAzul(actividad, mensaje);
         }
         cursor.close();
-        return true;
-    }
-
-    public boolean controlarCantidadDeCapitulos(Context actividad, String nombreManga, SeguirManga seguirManga){
-
         return true;
     }
 

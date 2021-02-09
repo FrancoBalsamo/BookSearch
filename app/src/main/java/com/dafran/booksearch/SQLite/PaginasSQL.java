@@ -145,6 +145,11 @@ public class PaginasSQL implements Serializable {
         return true;
     }
 
+    public boolean controlarCantidadDeCapitulos(Context actividad, String nombreManga, SeguirManga seguirManga){
+
+        return true;
+    }
+
     public ArrayList llenarListaMangas() {
         ArrayList list = new ArrayList<>();
         this.openReadableDB();

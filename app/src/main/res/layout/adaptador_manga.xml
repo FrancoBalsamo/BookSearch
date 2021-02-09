@@ -8,20 +8,32 @@
     android:layout_height="wrap_content"
     android:layout_margin="3dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="@color/blanco">
         <TextView
+            android:layout_marginTop="10dp"
             android:id="@+id/tvCap"
+            android:text="Capítulo 120"
             android:layout_width="200dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:textSize="20sp"
+            android:paddingLeft="20dp"
             android:paddingStart="20dp"
-            android:textColor="@color/tmoTitulo"
-            tools:ignore="MissingConstraints"
-            android:paddingLeft="20dp" />
+            android:textColor="@color/tmoTitulo"/>
+
+        <TextView
+            android:id="@+id/tvParaUltimoYNuevo"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/tvCap"
+            android:text="Último capítulo leído"
+            android:textColor="@color/negro"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingStart="20dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,5 +56,5 @@
             </LinearLayout>
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

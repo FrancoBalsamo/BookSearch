@@ -106,7 +106,7 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
     }
 
     private void seguirMetodoDato(Context actividad, String imagen, String direccion){
-        PaginasSQL psql = new PaginasSQL(TMOnlineMangaSeleccion.this);
+        PaginasSQL psql = new PaginasSQL(actividad);
         SeguirManga sm = new SeguirManga();
         sm.setNombre(nombreManga);
         sm.setUrl(direccion);

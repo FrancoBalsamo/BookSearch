@@ -16,16 +16,17 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".Activities.TMO.TMOnlineMangasSiguiendoSeleccion"></activity>
-        <activity android:name=".Activities.TMO.TMOnlineMangasSiguiendo" />
+        <activity android:name=".Activities.TMO.TMOnlineMangaSeleccionadoDeLista"></activity>
+        <activity android:name=".Activities.TMO.TMOnlineListaMangasSiguiendo" />
         <activity android:name=".Activities.Lectulandia.LectulandiaSeleccion" />
         <activity android:name=".Activities.Lectulandia.LectulandiaInicio" />
         <activity android:name=".Activities.Trantor.TrantorLector" />
         <activity android:name=".Activities.Trantor.TrantorDetalleLibro" />
         <activity android:name=".Activities.TMO.TMOnlineLector" />
-        <activity android:name=".Activities.TMO.TMOnlineMangaSeleccion" />
-        <activity android:name=".Activities.TMO.TMOnline" />
+        <activity android:name=".Activities.TMO.TMOnlineMangaSeleccionado" />
+        <activity android:name=".Activities.TMO.TMOnlinePrincipal" />
         <activity android:name=".Activities.Trantor.TrantorActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

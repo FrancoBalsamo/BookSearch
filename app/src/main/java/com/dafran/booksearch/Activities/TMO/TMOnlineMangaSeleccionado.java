@@ -27,22 +27,22 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class TMOnlineMangaSeleccion extends AppCompatActivity {
+public class TMOnlineMangaSeleccionado extends AppCompatActivity {
     private TextView tu, manga, online, tvTituloSeleccion;
     private int cont;
     private String nombreManga;
     private String numero_capitulo;
     private String url = "";
     private String coloresSeleccion = "";
-    private Button seguirDato, dejarDato;
-    private RecyclerView recyclerView;
-    private TMOnlineMangaSeleccionAdaptador adapter;
-    private ArrayList<TMODatosSeleccion> tmoDatosSeleccions = new ArrayList<>();
+    private Button mangaElegidoSeguir, mangaElegidoDejar;
+    private RecyclerView rvMangaSeleccionadoCapitulos;
+    private TMOnlineMangaSeleccionAdaptador tmOnlineMangaSeleccionAdaptador;
+    private ArrayList<TMODatosSeleccion> tmoDatosSeleccionArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tmonline_manga_seleccion);
+        setContentView(R.layout.tmonline_manga_elegido);
         nombreManga = getIntent().getStringExtra("nombre");
         coloresSeleccion = getIntent().getStringExtra("tipo");
         url = getIntent().getStringExtra("valor");
@@ -50,8 +50,8 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
 
         LinearLayout ll = (LinearLayout)findViewById(R.id.linearColores);
 
-        seguirDato = (Button)findViewById(R.id.seguirDato);
-        dejarDato = (Button)findViewById(R.id.dejarDato);
+        mangaElegidoSeguir = (Button)findViewById(R.id.mangaElegidoSeguir);
+        mangaElegidoDejar = (Button)findViewById(R.id.mangaElegidoDejar);
 
         if(coloresSeleccion.contains("MANGA")){
             ll.setBackgroundColor(getResources().getColor(R.color.tmoManga));
@@ -69,14 +69,14 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
             ll.setBackgroundColor(getResources().getColor(R.color.tmoOel));
         }
 
-        seguirDato.setOnClickListener(new View.OnClickListener() {
+        mangaElegidoSeguir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                seguirMetodoDato(TMOnlineMangaSeleccion.this, urlImagen, url);
+                seguirMetodoDato(TMOnlineMangaSeleccionado.this, urlImagen, url);
             }
         });
 
-        dejarDato.setOnClickListener(new View.OnClickListener() {
+        mangaElegidoDejar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dejarMetodoDaato();
@@ -86,18 +86,18 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         tvTituloSeleccion = (TextView)findViewById(R.id.tvTituloSeleccion);
         tvTituloSeleccion.setText(nombreManga);
 
-        recyclerView = findViewById(R.id.rvCapitulosSeleccion);
+        rvMangaSeleccionadoCapitulos = findViewById(R.id.rvMangaSeleccionadoCapitulos);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TMOnlineMangaSeleccionAdaptador(tmoDatosSeleccions, TMOnlineMangaSeleccion.this, nombreManga, numero_capitulo);
-        recyclerView.setAdapter(adapter);
+        rvMangaSeleccionadoCapitulos.setHasFixedSize(true);
+        rvMangaSeleccionadoCapitulos.setLayoutManager(new LinearLayoutManager(this));
+        tmOnlineMangaSeleccionAdaptador = new TMOnlineMangaSeleccionAdaptador(tmoDatosSeleccionArrayList, TMOnlineMangaSeleccionado.this, nombreManga, numero_capitulo);
+        rvMangaSeleccionadoCapitulos.setAdapter(tmOnlineMangaSeleccionAdaptador);
 
-        Content content = new Content();
-        content.execute();
+        CapitulosPorMangaSeleccionado capitulosPorMangaSeleccionado = new CapitulosPorMangaSeleccionado();
+        capitulosPorMangaSeleccionado.execute();
 
         titulo();
-        actualizarAutomaticamenteCantidadCapitulos(TMOnlineMangaSeleccion.this);
+        actualizarAutomaticamenteCantidadCapitulos(TMOnlineMangaSeleccionado.this);
     }
 
     private void seguirMetodoDato(Context actividad, String imagen, String direccion){
@@ -113,10 +113,10 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
     }
 
     private void dejarMetodoDaato(){
-        PaginasSQL paginasSQL = new PaginasSQL(TMOnlineMangaSeleccion.this);
+        PaginasSQL paginasSQL = new PaginasSQL(TMOnlineMangaSeleccionado.this);
         SeguirManga sm = new SeguirManga();
         sm.setValorSeguir(0);
-        paginasSQL.validarUpdateEstadoSiguiendo(TMOnlineMangaSeleccion.this, nombreManga, sm);
+        paginasSQL.validarUpdateEstadoSiguiendo(TMOnlineMangaSeleccionado.this, nombreManga, sm);
     }
 
     private void actualizarAutomaticamenteCantidadCapitulos(Context actividad){
@@ -126,7 +126,7 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         paginasSQL.actualizadorDeCapitulos(nombreManga, sm);
     }
 
-    private class Content extends AsyncTask<Void,Void, ArrayList<TMODatosSeleccion>> {
+    private class CapitulosPorMangaSeleccionado extends AsyncTask<Void,Void, ArrayList<TMODatosSeleccion>> {
 
         @Override
         protected void onPreExecute() {
@@ -137,8 +137,8 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         protected void onPostExecute(ArrayList<TMODatosSeleccion> items) {
             super.onPostExecute(items);
             //Actualizar información
-            adapter.updateData(items);
-            adapter.notifyDataSetChanged();
+            tmOnlineMangaSeleccionAdaptador.updateData(items);
+            tmOnlineMangaSeleccionAdaptador.notifyDataSetChanged();
 
             items.size();
             cont = items.size();
@@ -147,7 +147,7 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         @Override
         protected ArrayList<TMODatosSeleccion> doInBackground(Void... voids) {
             String url = getIntent().getStringExtra("valor");
-            tmoDatosSeleccions.clear();
+            tmoDatosSeleccionArrayList.clear();
             try {
                 Document doc = Jsoup.connect(url).get();
                 Elements data = doc.select("li.list-group-item.p-0.bg-light.upload-link");
@@ -162,9 +162,9 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
                             urlMan = e1.select("a.btn.btn-default.btn-sm").get(0).attr("href");
                             if(urlMan.contains("/paginated")){
                                 urlMan.replace("/paginated", "/cascade");
-                                tmoDatosSeleccions.add(new TMODatosSeleccion(numeroCap, urlMan, nombreManga));
+                                tmoDatosSeleccionArrayList.add(new TMODatosSeleccion(numeroCap, urlMan, nombreManga));
                             }else{
-                                tmoDatosSeleccions.add(new TMODatosSeleccion(numeroCap, urlMan, nombreManga));
+                                tmoDatosSeleccionArrayList.add(new TMODatosSeleccion(numeroCap, urlMan, nombreManga));
                             }
                         }
                     }
@@ -172,7 +172,7 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
             }  catch (IOException e) {
                 e.printStackTrace();
             }
-            return tmoDatosSeleccions;
+            return tmoDatosSeleccionArrayList;
         }
     }
 
@@ -185,14 +185,14 @@ public class TMOnlineMangaSeleccion extends AppCompatActivity {
         manga.setText("MANGA");
         online.setText("ONLINE");
 
-        tu.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccion.this, R.color.tmoTitulo));
-        manga.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccion.this, R.color.tmoTitulo));
-        online.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccion.this, R.color.tmoTitulo));
+        tu.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccionado.this, R.color.tmoTitulo));
+        manga.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccionado.this, R.color.tmoTitulo));
+        online.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccionado.this, R.color.tmoTitulo));
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        TMOnlineMangaSeleccion.this.finish();
+        TMOnlineMangaSeleccionado.this.finish();
     }
 }

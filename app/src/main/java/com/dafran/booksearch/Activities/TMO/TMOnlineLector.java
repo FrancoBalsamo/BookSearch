@@ -11,7 +11,6 @@ import android.util.Log;
 import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnlineLectorAdaptador;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
 import com.dafran.booksearch.R;
-import com.github.chrisbanes.photoview.PhotoViewAttacher;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -23,42 +22,31 @@ import java.util.ArrayList;
 import java.util.TimerTask;
 
 public class TMOnlineLector extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private TMOnlineLectorAdaptador adapter;
-    private ArrayList<TMOLectorClase> tmoLectorClases = new ArrayList<>();
+    private RecyclerView rvLector;
+    private TMOnlineLectorAdaptador tmOnlineLectorAdaptador;
+    private ArrayList<TMOLectorClase> tmoLectorClaseArrayList = new ArrayList<>();
     private String url = "";
     private TimerTask _timerTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tmonline_lector);
+        setContentView(R.layout.tmonline_lector_actividad);
 
         url = getIntent().getStringExtra("url");
 
-        recyclerView = findViewById(R.id.rvCapitulosSeleccion);
+        rvLector = findViewById(R.id.rvLector);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TMOnlineLectorAdaptador(tmoLectorClases, TMOnlineLector.this);
-        recyclerView.setAdapter(adapter);
+        ImagenesParaCargarElRecycler imagenesParaCargarElRecycler = new ImagenesParaCargarElRecycler();
+        imagenesParaCargarElRecycler.execute();
 
-        Content content = new Content();
-        content.execute();
-
-//        _timerTask = new TimerTask() {
-//            int count = 0;
-//            @Override
-//            public void run() {
-//                if (count == 5) {
-//                    cancel();
-//                }
-//                System.out.println(count++);
-//            }
-//        };
+        rvLector.setHasFixedSize(true);
+        rvLector.setLayoutManager(new LinearLayoutManager(this));
+        tmOnlineLectorAdaptador = new TMOnlineLectorAdaptador(tmoLectorClaseArrayList, TMOnlineLector.this);
+        rvLector.setAdapter(tmOnlineLectorAdaptador);
     }
 
-    private class Content extends AsyncTask<Void,Void, ArrayList<TMOLectorClase>> {
+    private class ImagenesParaCargarElRecycler extends AsyncTask<Void,Void, ArrayList<TMOLectorClase>> {
 
         @Override
         protected void onPreExecute() {
@@ -69,21 +57,21 @@ public class TMOnlineLector extends AppCompatActivity {
         protected void onPostExecute(ArrayList<TMOLectorClase> items) {
             super.onPostExecute(items);
             //Actualizar información
-            adapter.updateData(items);
-            adapter.notifyDataSetChanged();
+            tmOnlineLectorAdaptador.updateData(items);
+            tmOnlineLectorAdaptador.notifyDataSetChanged();
         }
 
         @Override
         protected ArrayList<TMOLectorClase> doInBackground(Void... voids) {
 
-            tmoLectorClases.clear();
+            tmoLectorClaseArrayList.clear();
             try {
                 String nuevaUrl = Jsoup.connect(url).followRedirects(true).execute().url().toExternalForm();
                 Log.d("Items", "Url: " + nuevaUrl);
 
                 if(nuevaUrl.contains("/paginated")){
                     nuevaUrl = nuevaUrl.replaceAll("/paginated", "/cascade");
-                    Log.d("items", "doInBackground: " + nuevaUrl);
+                    Log.d("URLS", "doInBackground: " + nuevaUrl);
 
                     Document doc = Jsoup.connect(nuevaUrl).get();
                     Log.d("Items", "Url: " + doc);
@@ -93,9 +81,9 @@ public class TMOnlineLector extends AppCompatActivity {
                         String imgUrl = "";
                         if(e.select("div.img-container.text-center").size() > 0)
                         imgUrl = e.select("img").get(0).attr("data-src");
-                        Log.d("TAG", "doInBackground: " + imgUrl);
+                        Log.d("finalurl", "url nueva:" + nuevaUrl + "\nimagenes: " + imgUrl);
                         //String imgUrl = e.select("img").attr("data-src");
-                        tmoLectorClases.add(new TMOLectorClase(imgUrl));
+                        tmoLectorClaseArrayList.add(new TMOLectorClase(imgUrl));
                     }
                 }else{
                     Document doc = Jsoup.connect(nuevaUrl).get();
@@ -103,14 +91,14 @@ public class TMOnlineLector extends AppCompatActivity {
                     Elements data = doc.select("div.img-container.text-center");
                     for (Element e : data){
                         String imgUrl = e.select("img").attr("data-src");
-                        Log.d("items", "doInBackground: "+ imgUrl);
-                        tmoLectorClases.add(new TMOLectorClase(imgUrl));
+                        Log.d("finalurl", "url nueva:" + nuevaUrl + "\nimagenes: " + imgUrl);
+                        tmoLectorClaseArrayList.add(new TMOLectorClase(imgUrl));
                     }
                 }
             }  catch (IOException e) {
                 e.printStackTrace();
             }
-            return tmoLectorClases;
+            return tmoLectorClaseArrayList;
         }
     }
 

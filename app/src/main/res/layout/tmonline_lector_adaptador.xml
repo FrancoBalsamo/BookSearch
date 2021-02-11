@@ -18,7 +18,7 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
         android:background="@color/blanco">
-        <com.github.chrisbanes.photoview.PhotoView
+        <ImageView
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
             android:id="@+id/ivPaginas"

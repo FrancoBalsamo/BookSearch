@@ -4,18 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.TMO.TMOnline"
+    tools:context=".Activities.TMO.TMOnlineMangaSeleccionado"
+    android:orientation="vertical"
     android:background="@color/tmoBg">
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/linearColores"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/tmoBg">
+            android:background="@color/blanco">
 
             <LinearLayout
                 android:layout_marginTop="15dp"
@@ -28,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:textSize="25sp"
-                    android:id="@+id/tvMangaListaTu"
+                    android:id="@+id/tvMangaSeleccionTu"
                     android:fontFamily="@font/tu"/>
                 <TextView
                     android:layout_marginTop="10dp"
@@ -36,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:textSize="25sp"
-                    android:id="@+id/tvMangaListaManga"
+                    android:id="@+id/tvMangaSeleccionManga"
                     android:fontFamily="@font/manga"/>
                 <TextView
                     android:layout_marginTop="10dp"
@@ -44,34 +47,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:textSize="25sp"
-                    android:id="@+id/tvMangaListaOnline"
+                    android:id="@+id/tvMangaSeleccionOnline"
                     android:fontFamily="@font/online"/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_gravity="center_horizontal">
-                <EditText
-                    android:layout_marginRight="5dp"
-                    android:paddingStart="15sp"
-                    android:textColor="@color/blanco"
-                    android:hint="Buscar..."
-                    android:textColorHint="@color/tmoGris"
-                    android:layout_width="180dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/tmo_sinfoco"
-                    android:id="@+id/etBuscar"
-                    android:paddingLeft="15sp" />
-                <Button
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:textColor="@color/blanco"
-                    android:id="@+id/btnBusqueda"
-                    android:background="@drawable/tmo_boton"
-                    android:foreground="@drawable/ic_search"/>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/manga"
+                    android:id="@+id/tvTituloSeleccion"
+                    android:textColor="@color/blanco"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -81,24 +76,34 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
             <Button
                 android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:id="@+id/btnAbrirLista"
-                android:text="SIGUIENDO"
+                android:id="@+id/mangaElegidoSeguir"
+                android:text="SEGUIR"
                 android:fontFamily="@font/manga"
                 android:textColor="@color/tmoAzul"
+                android:background="@color/tmoBg"/>
+            <Button
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:id="@+id/mangaElegidoDejar"
+                android:text="DEJAR"
+                android:fontFamily="@font/manga"
+                android:textColor="@color/tmoRojo"
                 android:background="@color/tmoBg"/>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp">
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCapitulosSeleccion"
+                android:id="@+id/rvMangaSeleccionadoCapitulos"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>

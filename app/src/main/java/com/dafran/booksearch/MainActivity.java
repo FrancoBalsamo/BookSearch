@@ -1,29 +1,20 @@
 package com.dafran.booksearch;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.dafran.booksearch.Activities.Lectulandia.LectulandiaInicio;
-import com.dafran.booksearch.Activities.TMO.TMOnline;
+import com.dafran.booksearch.Activities.TMO.TMOnlinePrincipal;
 import com.dafran.booksearch.Activities.Trantor.TrantorActivity;
-import com.dafran.booksearch.Clases.Paginas;
-import com.dafran.booksearch.SQLite.PaginasSQL;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     AdView adView;
@@ -62,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void aTMOnline(){
         //Toast.makeText(getApplicationContext(), "Próximamente.", Toast.LENGTH_LONG).show();
-        Intent tmo = new Intent(MainActivity.this, TMOnline.class);
+        Intent tmo = new Intent(MainActivity.this, TMOnlinePrincipal.class);
         startActivity(tmo);
     }
 

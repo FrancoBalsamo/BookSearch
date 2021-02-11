@@ -14,18 +14,13 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnlinePrincipalAdaptador;
 import com.dafran.booksearch.Clases.Conexion;
 import com.dafran.booksearch.Clases.TMOClases.TMOItems;
 import com.dafran.booksearch.R;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,42 +30,38 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class TMOnline extends AppCompatActivity {
+public class TMOnlinePrincipal extends AppCompatActivity {
     private Button buscar;
     private EditText textoBusqueda;
-    private AdView adView;
     private TextView tu, manga, online;
     private Button lista;
-    private RecyclerView rvCapitulosSeleccion;
-    private com.dafran.booksearch.Adaptador.TMOAdapters.TMOnline adapter;
-    private ArrayList<TMOItems> tmoItems = new ArrayList<>();
+    private RecyclerView rvTMOPrincipal;
+    private TMOnlinePrincipalAdaptador principalAdaptador;
+    private ArrayList<TMOItems> tmoItemsArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_t_m_online);
+        setContentView(R.layout.tmonline_pincipal);
 
         titulo();
 
-        rvCapitulosSeleccion = findViewById(R.id.rvCapitulosSeleccion);
-        lista = (Button)findViewById(R.id.btnAbrirLista);
+        textoBusqueda = (EditText)findViewById(R.id.etBuscarTMOPrincipal);
+        buscar = (Button)findViewById(R.id.btnBusquedaTMOPrincipal);
+        lista = (Button)findViewById(R.id.btnAbrirListaTMOPrincipal);
+        rvTMOPrincipal = findViewById(R.id.rvTMOPrincipal);
 
-        rvCapitulosSeleccion.setHasFixedSize(true);
-        rvCapitulosSeleccion.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new com.dafran.booksearch.Adaptador.TMOAdapters.TMOnline(tmoItems, TMOnline.this);
-        rvCapitulosSeleccion.setAdapter(adapter);
-
-        textoBusqueda = (EditText)findViewById(R.id.etBuscar);
-        buscar = (Button)findViewById(R.id.btnBusqueda);
-
+        rvTMOPrincipal.setHasFixedSize(true);
+        rvTMOPrincipal.setLayoutManager(new LinearLayoutManager(this));
+        principalAdaptador = new TMOnlinePrincipalAdaptador(tmoItemsArrayList, TMOnlinePrincipal.this);
+        rvTMOPrincipal.setAdapter(principalAdaptador);
         textoBusqueda.clearFocus();
-
         textoBusqueda.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(textoBusqueda.requestFocus()){
                     textoBusqueda.setBackgroundResource(R.drawable.tmo_confoco);
-                    textoBusqueda.setTextColor(ContextCompat.getColor(TMOnline.this, R.color.negro));
+                    textoBusqueda.setTextColor(ContextCompat.getColor(TMOnlinePrincipal.this, R.color.negro));
                 }else{
                     textoBusqueda.setBackgroundResource(R.drawable.tmo_sinfoco);
                 }
@@ -82,16 +73,16 @@ public class TMOnline extends AppCompatActivity {
             public void onClick(View v) {
                 hideKeyboardFrom(getApplicationContext(), textoBusqueda);
 
-                if(new Conexion().isOnline(TMOnline.this)){
+                if(new Conexion().isOnline(TMOnlinePrincipal.this)){
                     if(TextUtils.isEmpty(textoBusqueda.getText())){
-                        Toast.makeText(TMOnline.this, "Debe ingresar el nombre del libro.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(TMOnlinePrincipal.this, "El campo no puede estar vacío.", Toast.LENGTH_LONG).show();
                         textoBusqueda.setFocusable(true);
                     }else{
-                        Content content = new Content();
-                        content.execute();
+                        TMOPrincipalCargarBuscador TMOPrincipalCargarBuscador = new TMOPrincipalCargarBuscador();
+                        TMOPrincipalCargarBuscador.execute();
                     }
                 }else {
-                    Toast.makeText(TMOnline.this, "Se requiere conexión a internet.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(TMOnlinePrincipal.this, "Se requiere conexión a internet.", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -104,7 +95,7 @@ public class TMOnline extends AppCompatActivity {
         });
     }
 
-    private class Content extends AsyncTask<Void,Void, ArrayList<TMOItems>> {
+    private class TMOPrincipalCargarBuscador extends AsyncTask<Void,Void, ArrayList<TMOItems>> {
 
         @Override
         protected void onPreExecute() {
@@ -115,20 +106,19 @@ public class TMOnline extends AppCompatActivity {
         protected void onPostExecute(ArrayList<TMOItems> items) {
             super.onPostExecute(items);
             //Actualizar información
-            adapter.updateData(items);
-            adapter.notifyDataSetChanged();
+            principalAdaptador.updateData(items);
+            principalAdaptador.notifyDataSetChanged();
         }
 
         @Override
         protected ArrayList<TMOItems> doInBackground(Void... voids) {
-            tmoItems.clear();
+            tmoItemsArrayList.clear();
 
             String texto = textoBusqueda.getText().toString();
             String arreglo = texto.replace(' ', '+');
             String url = "https://lectortmo.com/library?_page=1&title=" + arreglo;
             try {
                 Document doc = Jsoup.connect(url).get();
-
                 Elements data = doc.select("div.row>.element");
                 for (Element e : data) {
                     String title = e.select("h4").attr("title"); // nombre del manhwa
@@ -136,12 +126,12 @@ public class TMOnline extends AppCompatActivity {
                     String detailUrl = e.select("a").attr("href").trim();
                     String tipo = e.select("span.book-type.badge").text();
 
-                    tmoItems.add(new TMOItems(imgUrl, title, detailUrl, tipo));
+                    tmoItemsArrayList.add(new TMOItems(imgUrl, title, detailUrl, tipo));
                 }
             }  catch (IOException e) {
                 e.printStackTrace();
             }
-            return tmoItems;
+            return tmoItemsArrayList;
         }
     }
 
@@ -151,21 +141,27 @@ public class TMOnline extends AppCompatActivity {
     }
 
     private void titulo(){
-        tu = (TextView)findViewById(R.id.tvMangaListaTu);
-        manga = (TextView)findViewById(R.id.tvMangaListaManga);
-        online = (TextView)findViewById(R.id.tvMangaListaOnline);
+        tu = (TextView)findViewById(R.id.tvTuPrincipal);
+        manga = (TextView)findViewById(R.id.tvMangaPrincipal);
+        online = (TextView)findViewById(R.id.tvOnlinePrincipal);
 
         tu.setText("TU");
         manga.setText("MANGA");
         online.setText("ONLINE");
 
-        tu.setTextColor(ContextCompat.getColor(TMOnline.this, R.color.tmoTitulo));
-        manga.setTextColor(ContextCompat.getColor(TMOnline.this, R.color.tmoTitulo));
-        online.setTextColor(ContextCompat.getColor(TMOnline.this, R.color.tmoTitulo));
+        tu.setTextColor(ContextCompat.getColor(TMOnlinePrincipal.this, R.color.tmoTitulo));
+        manga.setTextColor(ContextCompat.getColor(TMOnlinePrincipal.this, R.color.tmoTitulo));
+        online.setTextColor(ContextCompat.getColor(TMOnlinePrincipal.this, R.color.tmoTitulo));
     }
 
     private void abrirLista(){
-        Intent abrir = new Intent(TMOnline.this, TMOnlineMangasSiguiendo.class);
+        Intent abrir = new Intent(TMOnlinePrincipal.this, TMOnlineListaMangasSiguiendo.class);
         startActivity(abrir);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        TMOnlinePrincipal.this.finish();
     }
 }

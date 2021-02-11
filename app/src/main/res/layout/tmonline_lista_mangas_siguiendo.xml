@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/tmoBg"
-    tools:context=".Activities.TMO.TMOnlineMangasSiguiendoSeleccion">
+    tools:context=".Activities.TMO.TMOnlineMangaSeleccionadoDeLista">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

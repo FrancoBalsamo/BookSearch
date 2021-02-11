@@ -27,22 +27,22 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
+public class TMOnlineMangaSeleccionadoDeLista extends AppCompatActivity {
     private TextView tu, manga, online, tvTituloSeleccion;
     private int cont;
     private String nombreManga;
     private String capitulo_manga;
     private String tipo = "";
     private String url = "";
-    private Button seguirDato, dejarDato;
-    private RecyclerView recyclerView;
-    private TMOnlineMangaSeleccionAdaptador adapter;
-    private ArrayList<TMODatosSeleccion> tmoDatosSeleccions = new ArrayList<>();
+    private Button listaSeguir, listaDejar;
+    private RecyclerView rvListaCapitulosDeLista;
+    private TMOnlineMangaSeleccionAdaptador tmOnlineMangaSeleccionAdaptador;
+    private ArrayList<TMODatosSeleccion> tmoDatosSeleccionArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_t_m_online_mangas_siguiendo_seleccion);
+        setContentView(R.layout.tmonline_lista_mangas_siguiendo);
 
         titulo();
         nombreManga = getIntent().getStringExtra("nombre");
@@ -52,8 +52,8 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
 
         LinearLayout ll = (LinearLayout)findViewById(R.id.linearColoresDeSeleccion);
 
-        seguirDato = (Button)findViewById(R.id.seguirDatoListaSeleccion);
-        dejarDato = (Button)findViewById(R.id.dejarDatoListaSeleccion);
+        listaSeguir = (Button)findViewById(R.id.seguirDatoListaSeleccion);
+        listaDejar = (Button)findViewById(R.id.dejarDatoListaSeleccion);
 
         if(tipo.contains("MANGA")){
             ll.setBackgroundColor(getResources().getColor(R.color.tmoManga));
@@ -71,14 +71,14 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
             ll.setBackgroundColor(getResources().getColor(R.color.tmoOel));
         }
 
-        seguirDato.setOnClickListener(new View.OnClickListener() {
+        listaSeguir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                seguirMetodoDato(TMOnlineMangasSiguiendoSeleccion.this, imgUrl, url);
+                seguirMetodoDato(TMOnlineMangaSeleccionadoDeLista.this, imgUrl, url);
             }
         });
 
-        dejarDato.setOnClickListener(new View.OnClickListener() {
+        listaDejar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dejarMetodoDaato();
@@ -88,17 +88,17 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
         tvTituloSeleccion = (TextView)findViewById(R.id.tvTituloSeleccionLista);
         tvTituloSeleccion.setText(nombreManga);
 
-        recyclerView = findViewById(R.id.rvCapitulosListaSeleccion);
+        rvListaCapitulosDeLista = findViewById(R.id.rvCapitulosListaSeleccion);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TMOnlineMangaSeleccionAdaptador(tmoDatosSeleccions, TMOnlineMangasSiguiendoSeleccion.this, nombreManga, capitulo_manga);
-        recyclerView.setAdapter(adapter);
+        rvListaCapitulosDeLista.setHasFixedSize(true);
+        rvListaCapitulosDeLista.setLayoutManager(new LinearLayoutManager(this));
+        tmOnlineMangaSeleccionAdaptador = new TMOnlineMangaSeleccionAdaptador(tmoDatosSeleccionArrayList, TMOnlineMangaSeleccionadoDeLista.this, nombreManga, capitulo_manga);
+        rvListaCapitulosDeLista.setAdapter(tmOnlineMangaSeleccionAdaptador);
 
         CargarRecyclerViewConDatosDeLaLista cargarRecyclerViewConDatosDeLaLista = new CargarRecyclerViewConDatosDeLaLista();
         cargarRecyclerViewConDatosDeLaLista.execute();
 
-        actualizarAutomaticamenteCantidadCapitulos(TMOnlineMangasSiguiendoSeleccion.this);
+        actualizarAutomaticamenteCantidadCapitulos(TMOnlineMangaSeleccionadoDeLista.this);
     }
 
     private void seguirMetodoDato(Context actividad, String imagen, String direccion){
@@ -114,10 +114,10 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
     }
 
     private void dejarMetodoDaato(){
-        PaginasSQL paginasSQL = new PaginasSQL(TMOnlineMangasSiguiendoSeleccion.this);
+        PaginasSQL paginasSQL = new PaginasSQL(TMOnlineMangaSeleccionadoDeLista.this);
         SeguirManga sm = new SeguirManga();
         sm.setValorSeguir(0);
-        paginasSQL.validarUpdateEstadoSiguiendo(TMOnlineMangasSiguiendoSeleccion.this, nombreManga, sm);
+        paginasSQL.validarUpdateEstadoSiguiendo(TMOnlineMangaSeleccionadoDeLista.this, nombreManga, sm);
     }
 
     private void actualizarAutomaticamenteCantidadCapitulos(Context actividad){
@@ -136,15 +136,15 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
         manga.setText("MANGA");
         online.setText("ONLINE");
 
-        tu.setTextColor(ContextCompat.getColor(TMOnlineMangasSiguiendoSeleccion.this, R.color.tmoTitulo));
-        manga.setTextColor(ContextCompat.getColor(TMOnlineMangasSiguiendoSeleccion.this, R.color.tmoTitulo));
-        online.setTextColor(ContextCompat.getColor(TMOnlineMangasSiguiendoSeleccion.this, R.color.tmoTitulo));
+        tu.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccionadoDeLista.this, R.color.tmoTitulo));
+        manga.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccionadoDeLista.this, R.color.tmoTitulo));
+        online.setTextColor(ContextCompat.getColor(TMOnlineMangaSeleccionadoDeLista.this, R.color.tmoTitulo));
     }
 
     @Override
     public void onBackPressed(){
         super.onBackPressed();
-        TMOnlineMangasSiguiendoSeleccion.this.finish();
+        TMOnlineMangaSeleccionadoDeLista.this.finish();
     }
 
     private class CargarRecyclerViewConDatosDeLaLista extends AsyncTask<Void,Void, ArrayList<TMODatosSeleccion>> {
@@ -158,8 +158,8 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
         protected void onPostExecute(ArrayList<TMODatosSeleccion> items) {
             super.onPostExecute(items);
             //Actualizar información
-            adapter.updateData(items);
-            adapter.notifyDataSetChanged();
+            tmOnlineMangaSeleccionAdaptador.updateData(items);
+            tmOnlineMangaSeleccionAdaptador.notifyDataSetChanged();
 
             items.size();
             cont = items.size();
@@ -168,7 +168,7 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
         @Override
         protected ArrayList<TMODatosSeleccion> doInBackground(Void... voids) {
             String url = getIntent().getStringExtra("url");
-            tmoDatosSeleccions.clear();
+            tmoDatosSeleccionArrayList.clear();
             try {
                 Document doc = Jsoup.connect(url).get();
                 Elements data = doc.select("li.list-group-item.p-0.bg-light.upload-link");
@@ -183,9 +183,9 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
                             urlMan = e1.select("a.btn.btn-default.btn-sm").get(0).attr("href");
                             if(urlMan.contains("/paginated")){
                                 urlMan.replace("/paginated", "/cascade");
-                                tmoDatosSeleccions.add(new TMODatosSeleccion(numeroCap, urlMan, nombreManga));
+                                tmoDatosSeleccionArrayList.add(new TMODatosSeleccion(numeroCap, urlMan, nombreManga));
                             }else{
-                                tmoDatosSeleccions.add(new TMODatosSeleccion(numeroCap, urlMan, nombreManga));
+                                tmoDatosSeleccionArrayList.add(new TMODatosSeleccion(numeroCap, urlMan, nombreManga));
                             }
                         }
                     }
@@ -193,7 +193,7 @@ public class TMOnlineMangasSiguiendoSeleccion extends AppCompatActivity {
             }  catch (IOException e) {
                 e.printStackTrace();
             }
-            return tmoDatosSeleccions;
+            return tmoDatosSeleccionArrayList;
         }
     }
 }

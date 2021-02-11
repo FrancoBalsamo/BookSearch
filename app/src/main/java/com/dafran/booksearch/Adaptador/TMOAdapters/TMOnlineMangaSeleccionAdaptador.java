@@ -22,14 +22,14 @@ import com.dafran.booksearch.SQLite.PaginasSQL;
 import java.util.ArrayList;
 
 public class TMOnlineMangaSeleccionAdaptador extends RecyclerView.Adapter<TMOnlineMangaSeleccionAdaptador.ViewHolder> {
-    private ArrayList<TMODatosSeleccion> tmoItems;
-    private Context context;
+    private ArrayList<TMODatosSeleccion> tmoDatosSeleccionArrayList;
+    private Context actividad;
     private String manga;
     private String numero_capitulo;
 
-    public TMOnlineMangaSeleccionAdaptador(ArrayList<TMODatosSeleccion> tmoItems, Context context, String manga, String numero_capitulo) {
-        this.tmoItems = tmoItems;
-        this.context = context;
+    public TMOnlineMangaSeleccionAdaptador(ArrayList<TMODatosSeleccion> tmoDatosSeleccionArrayList, Context actividad, String manga, String numero_capitulo) {
+        this.tmoDatosSeleccionArrayList = tmoDatosSeleccionArrayList;
+        this.actividad = actividad;
         this.manga = manga;
         this.numero_capitulo = numero_capitulo;
     }
@@ -37,20 +37,20 @@ public class TMOnlineMangaSeleccionAdaptador extends RecyclerView.Adapter<TMOnli
     @NonNull
     @Override
     public TMOnlineMangaSeleccionAdaptador.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adaptador_manga, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tmonline_manga_vista_capitulos, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TMOnlineMangaSeleccionAdaptador.ViewHolder holder, int position) {
-        TMODatosSeleccion tmoDatosSeleccion = this.tmoItems.get(position);
+        TMODatosSeleccion tmoDatosSeleccion = this.tmoDatosSeleccionArrayList.get(position);
         holder.capitulo.setText(tmoDatosSeleccion.getNumeroCapitulo());
 
-        final PaginasSQL paginasSQL = new PaginasSQL(context);
+        final PaginasSQL paginasSQL = new PaginasSQL(actividad);
         String nom = tmoDatosSeleccion.getNombreManga();
         String caps = tmoDatosSeleccion.getNumeroCapitulo();
 
-        if(paginasSQL.textoLeido(context, nom, caps) == false){
+        if(paginasSQL.textoLeido(actividad, nom, caps) == false){
             holder.check_uncheck.setBackgroundResource(R.drawable.checked);
         }else{
             holder.check_uncheck.setBackgroundResource(R.drawable.unchecked);
@@ -59,7 +59,7 @@ public class TMOnlineMangaSeleccionAdaptador extends RecyclerView.Adapter<TMOnli
 
     @Override
     public int getItemCount() {
-        return tmoItems.size();
+        return tmoDatosSeleccionArrayList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -69,12 +69,12 @@ public class TMOnlineMangaSeleccionAdaptador extends RecyclerView.Adapter<TMOnli
 
         public ViewHolder(@NonNull View view) {
             super(view);
-            capitulo = view.findViewById(R.id.tvCap);
+            capitulo = view.findViewById(R.id.tvCapituloNumeroLista);
             leer = view.findViewById(R.id.btnLeerTmo);
             check_uncheck = view.findViewById(R.id.leido);
 
             view.setOnClickListener(this);
-            final PaginasSQL paginasSQL = new PaginasSQL(context);
+            final PaginasSQL paginasSQL = new PaginasSQL(actividad);
 
             leer.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -83,26 +83,26 @@ public class TMOnlineMangaSeleccionAdaptador extends RecyclerView.Adapter<TMOnli
                     int itemPosition = getAdapterPosition();
 
                     //Para pasar los datos
-                    String url = String.valueOf(Uri.parse(tmoItems.get(itemPosition).getUrlCapitulo()));
-                    Intent lectorTmo = new Intent(context, TMOnlineLector.class);
+                    String url = String.valueOf(Uri.parse(tmoDatosSeleccionArrayList.get(itemPosition).getUrlCapitulo()));
+                    Intent lectorTmo = new Intent(actividad, TMOnlineLector.class);
                     lectorTmo.putExtra("url", url);
 
                     //Para controlar los leídos - no leídos
-                    String nombre_manga = String.valueOf(Uri.parse(tmoItems.get(itemPosition).getNombreManga()));
-                    String nombre_capitulo = String.valueOf(Uri.parse(tmoItems.get(itemPosition).getNumeroCapitulo()));
+                    String nombre_manga = String.valueOf(Uri.parse(tmoDatosSeleccionArrayList.get(itemPosition).getNombreManga()));
+                    String nombre_capitulo = String.valueOf(Uri.parse(tmoDatosSeleccionArrayList.get(itemPosition).getNumeroCapitulo()));
                     int valor_leido = 1;
 
                     CapitulosLeidos capitulosLeidos = new CapitulosLeidos();
                     capitulosLeidos.setNombre_manga(nombre_manga);
                     capitulosLeidos.setLeido(valor_leido);
                     capitulosLeidos.setNombre_capitulo_leido(nombre_capitulo);
-                    paginasSQL.consultarSiguiendoYGuardarLeido(context, nombre_manga, nombre_capitulo, capitulosLeidos);
+                    paginasSQL.consultarSiguiendoYGuardarLeido(actividad, nombre_manga, nombre_capitulo, capitulosLeidos);
 
-                    if(paginasSQL.textoLeido(context, nombre_manga, nombre_capitulo) == false){
+                    if(paginasSQL.textoLeido(actividad, nombre_manga, nombre_capitulo) == false){
                         check_uncheck.setBackgroundResource(R.drawable.checked);
                     }
 
-                    context.startActivity(lectorTmo);
+                    actividad.startActivity(lectorTmo);
                 }
             });
         }
@@ -112,12 +112,12 @@ public class TMOnlineMangaSeleccionAdaptador extends RecyclerView.Adapter<TMOnli
     }
 
     public void setFilter(ArrayList<TMODatosSeleccion> newList) {
-        tmoItems = new ArrayList<>();
-        tmoItems.addAll(newList);
+        tmoDatosSeleccionArrayList = new ArrayList<>();
+        tmoDatosSeleccionArrayList.addAll(newList);
         notifyDataSetChanged();
     }
 
     public void updateData(ArrayList<TMODatosSeleccion> items) {
-        this.tmoItems = items;
+        this.tmoDatosSeleccionArrayList = items;
     }
 }

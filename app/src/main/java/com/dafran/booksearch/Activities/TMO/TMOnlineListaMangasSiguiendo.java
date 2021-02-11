@@ -18,26 +18,26 @@ import com.dafran.booksearch.SQLite.PaginasSQL;
 
 import java.util.ArrayList;
 
-public class TMOnlineMangasSiguiendo extends AppCompatActivity {
-    private ArrayList<SeguirManga>seguirMangaArrayList;
-    ListView lv;
+public class TMOnlineListaMangasSiguiendo extends AppCompatActivity {
+    private ArrayList<SeguirManga> seguirMangaArrayList;
+    ListView lvMangaLista;
     TextView tu, manga, online;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tmonline_mangas_siguiendo);
+        setContentView(R.layout.tmonline_manga_lista_seleccionado);
 
         titulo();
 
-        lv = (ListView)findViewById(R.id.lvListaMangas);
-        seguirMangaArrayList = new PaginasSQL(TMOnlineMangasSiguiendo.this).llenarListaMangas();
-        lv.setAdapter(new TMOnlineListaSeleccionAdaptador(seguirMangaArrayList, TMOnlineMangasSiguiendo.this));
+        lvMangaLista = (ListView)findViewById(R.id.lvListaMangas);
+        seguirMangaArrayList = new PaginasSQL(TMOnlineListaMangasSiguiendo.this).llenarListaMangas();
+        lvMangaLista.setAdapter(new TMOnlineListaSeleccionAdaptador(seguirMangaArrayList, TMOnlineListaMangasSiguiendo.this));
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvMangaLista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(TMOnlineMangasSiguiendo.this, TMOnlineMangasSiguiendoSeleccion.class);
+                Intent intent = new Intent(TMOnlineListaMangasSiguiendo.this, TMOnlineMangaSeleccionadoDeLista.class);
                 intent.putExtra("nombre", seguirMangaArrayList.get(position).getNombre());
                 intent.putExtra("url", seguirMangaArrayList.get(position).getUrl());
                 intent.putExtra("tipo", seguirMangaArrayList.get(position).getTipo());
@@ -56,15 +56,15 @@ public class TMOnlineMangasSiguiendo extends AppCompatActivity {
         manga.setText("MANGA");
         online.setText("ONLINE");
 
-        tu.setTextColor(ContextCompat.getColor(TMOnlineMangasSiguiendo.this, R.color.tmoTitulo));
-        manga.setTextColor(ContextCompat.getColor(TMOnlineMangasSiguiendo.this, R.color.tmoTitulo));
-        online.setTextColor(ContextCompat.getColor(TMOnlineMangasSiguiendo.this, R.color.tmoTitulo));
+        tu.setTextColor(ContextCompat.getColor(TMOnlineListaMangasSiguiendo.this, R.color.tmoTitulo));
+        manga.setTextColor(ContextCompat.getColor(TMOnlineListaMangasSiguiendo.this, R.color.tmoTitulo));
+        online.setTextColor(ContextCompat.getColor(TMOnlineListaMangasSiguiendo.this, R.color.tmoTitulo));
     }
 
     @Override
     public void onBackPressed(){
         super.onBackPressed();
-        TMOnlineMangasSiguiendo.this.finish();
+        TMOnlineListaMangasSiguiendo.this.finish();
         Toast.makeText(getApplicationContext(),"Vuelvas prontos...", Toast.LENGTH_SHORT).show();
     }
 }

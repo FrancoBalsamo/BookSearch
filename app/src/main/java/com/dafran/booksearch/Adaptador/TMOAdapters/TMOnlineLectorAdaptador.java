@@ -8,8 +8,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
 import com.dafran.booksearch.R;
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
@@ -38,8 +36,8 @@ public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLector
     public void onBindViewHolder(@NonNull final TMOnlineLectorAdaptador.ViewHolder holder, int position) {
         TMOLectorClase tmoLectorClase = this.tmoLectorClaseArrayList.get(position);
         //Picasso.get().load(tmoLectorClase.getImg()).into(holder.ivPaginas);
+
         Picasso.get().load("https://img1.japanreader.com/uploads/5f7372e84ee51421610959ba003445b4/8a2d1157.jpg").resize(100,100).into(holder.ivPaginas);
-        //Glide.with(actividad).load("https://img1.japanreader.com/uploads/5f7372e84ee51421610959ba003445b4/8a2d1157.jpg").into(holder.ivPaginas);
     }
 
     @Override

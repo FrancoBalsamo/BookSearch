@@ -18,13 +18,9 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
         android:background="@color/blanco">
-        <ImageView
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/ivPaginas"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"/>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

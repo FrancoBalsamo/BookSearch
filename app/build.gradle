@@ -10,7 +10,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -49,4 +49,7 @@ dependencies {
 
     //Ads de Google
     implementation 'com.google.android.gms:play-services-ads:19.3.0'
+
+    //Fresco
+    implementation 'com.facebook.fresco:fresco:2.4.0'
 }

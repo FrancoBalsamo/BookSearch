@@ -11,6 +11,7 @@ import android.util.Log;
 import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnlineLectorAdaptador;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
 import com.dafran.booksearch.R;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,7 +27,6 @@ public class TMOnlineLector extends AppCompatActivity {
     private TMOnlineLectorAdaptador tmOnlineLectorAdaptador;
     private ArrayList<TMOLectorClase> tmoLectorClaseArrayList = new ArrayList<>();
     private String url = "";
-    private TimerTask _timerTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,6 +1,7 @@
 package com.dafran.booksearch.Adaptador.TMOAdapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
 import com.dafran.booksearch.R;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.squareup.picasso.Picasso;
 
@@ -35,9 +38,9 @@ public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLector
     @Override
     public void onBindViewHolder(@NonNull final TMOnlineLectorAdaptador.ViewHolder holder, int position) {
         TMOLectorClase tmoLectorClase = this.tmoLectorClaseArrayList.get(position);
-        Picasso.get().load(tmoLectorClase.getImg()).into(holder.ivPaginas);
 
-        //Picasso.get().load("https://img1.japanreader.com/uploads/5f7372e84ee51421610959ba003445b4/8a2d1157.jpg").resize(100,100).into(holder.ivPaginas);
+        //Carga con Picasso
+        Picasso.get().load(tmoLectorClase.getImg()).into(holder.ivPaginas);
     }
 
     @Override
@@ -46,11 +49,13 @@ public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLector
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView ivPaginas;
+        SimpleDraweeView  ivPaginas;
+        //ImageView ivPaginas;
 
         public ViewHolder(@NonNull View view) {
             super(view);
             ivPaginas = view.findViewById(R.id.ivPaginas);
+            //ivPaginas = view.findViewById(R.id.ivPaginas);
             view.setOnClickListener(this);
         }
         @Override

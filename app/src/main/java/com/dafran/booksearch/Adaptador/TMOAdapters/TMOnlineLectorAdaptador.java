@@ -35,9 +35,9 @@ public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLector
     @Override
     public void onBindViewHolder(@NonNull final TMOnlineLectorAdaptador.ViewHolder holder, int position) {
         TMOLectorClase tmoLectorClase = this.tmoLectorClaseArrayList.get(position);
-        //Picasso.get().load(tmoLectorClase.getImg()).into(holder.ivPaginas);
+        Picasso.get().load(tmoLectorClase.getImg()).into(holder.ivPaginas);
 
-        Picasso.get().load("https://img1.japanreader.com/uploads/5f7372e84ee51421610959ba003445b4/8a2d1157.jpg").resize(100,100).into(holder.ivPaginas);
+        //Picasso.get().load("https://img1.japanreader.com/uploads/5f7372e84ee51421610959ba003445b4/8a2d1157.jpg").resize(100,100).into(holder.ivPaginas);
     }
 
     @Override

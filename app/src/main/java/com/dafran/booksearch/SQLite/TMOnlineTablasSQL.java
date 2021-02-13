@@ -2,7 +2,7 @@ package com.dafran.booksearch.SQLite;
 
 import java.net.URL;
 
-public class PaginasTabla {
+public class TMOnlineTablasSQL {
    // public static final String DB_NAME = "bd_Final.db";
     public static final String DB_NAME = "bd_001.db";
     public static final int DB_VERSION = 1;//version

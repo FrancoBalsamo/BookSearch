@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dafran.booksearch.Clases.SeguirManga;
+import com.dafran.booksearch.Clases.TMOClases.TMOnlineSeguirManga;
 import com.dafran.booksearch.R;
 import com.squareup.picasso.Picasso;
 
@@ -16,21 +16,21 @@ import java.util.ArrayList;
 
 public class TMOnlineListaSeleccionAdaptador extends BaseAdapter {
     private Context context;
-    ArrayList<SeguirManga> seguirMangaArrayList;
+    ArrayList<TMOnlineSeguirManga> TMOnlineSeguirMangaArrayList;
 
-    public TMOnlineListaSeleccionAdaptador(ArrayList<SeguirManga> seguirMangaArrayList, Context context){
-        this.seguirMangaArrayList = seguirMangaArrayList;
+    public TMOnlineListaSeleccionAdaptador(ArrayList<TMOnlineSeguirManga> TMOnlineSeguirMangaArrayList, Context context){
+        this.TMOnlineSeguirMangaArrayList = TMOnlineSeguirMangaArrayList;
         this.context = context;
     }
 
     @Override
     public int getCount(){
-        return this.seguirMangaArrayList.size();
+        return this.TMOnlineSeguirMangaArrayList.size();
     }
 
     @Override
     public Object getItem(int position){
-        return this.seguirMangaArrayList.get(position);
+        return this.TMOnlineSeguirMangaArrayList.get(position);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class TMOnlineListaSeleccionAdaptador extends BaseAdapter {
         }
         TextView nombreManga = rowView.findViewById(R.id.tvMangaLista);
         ImageView caratula = rowView.findViewById(R.id.ivListaMangas);
-        SeguirManga sm  = this.seguirMangaArrayList.get(position);
+        TMOnlineSeguirManga sm  = this.TMOnlineSeguirMangaArrayList.get(position);
         Picasso.get().load(sm.getUrlImagen()).into(caratula);
         nombreManga.setText(sm.getNombre());
         return rowView;

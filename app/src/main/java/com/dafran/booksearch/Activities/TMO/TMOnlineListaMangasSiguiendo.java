@@ -12,14 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnlineListaSeleccionAdaptador;
-import com.dafran.booksearch.Clases.SeguirManga;
+import com.dafran.booksearch.Clases.TMOClases.TMOnlineSeguirManga;
 import com.dafran.booksearch.R;
-import com.dafran.booksearch.SQLite.PaginasSQL;
+import com.dafran.booksearch.SQLite.TMOnlineMetodosSQL;
 
 import java.util.ArrayList;
 
 public class TMOnlineListaMangasSiguiendo extends AppCompatActivity {
-    private ArrayList<SeguirManga> seguirMangaArrayList;
+    private ArrayList<TMOnlineSeguirManga> TMOnlineSeguirMangaArrayList;
     ListView lvMangaLista;
     TextView tu, manga, online;
 
@@ -31,17 +31,17 @@ public class TMOnlineListaMangasSiguiendo extends AppCompatActivity {
         titulo();
 
         lvMangaLista = (ListView)findViewById(R.id.lvListaMangas);
-        seguirMangaArrayList = new PaginasSQL(TMOnlineListaMangasSiguiendo.this).llenarListaMangas();
-        lvMangaLista.setAdapter(new TMOnlineListaSeleccionAdaptador(seguirMangaArrayList, TMOnlineListaMangasSiguiendo.this));
+        TMOnlineSeguirMangaArrayList = new TMOnlineMetodosSQL(TMOnlineListaMangasSiguiendo.this).llenarListaMangas();
+        lvMangaLista.setAdapter(new TMOnlineListaSeleccionAdaptador(TMOnlineSeguirMangaArrayList, TMOnlineListaMangasSiguiendo.this));
 
         lvMangaLista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(TMOnlineListaMangasSiguiendo.this, TMOnlineMangaSeleccionadoDeLista.class);
-                intent.putExtra("nombre", seguirMangaArrayList.get(position).getNombre());
-                intent.putExtra("url", seguirMangaArrayList.get(position).getUrl());
-                intent.putExtra("tipo", seguirMangaArrayList.get(position).getTipo());
-                intent.putExtra("urlImagen", seguirMangaArrayList.get(position).getUrlImagen());
+                intent.putExtra("nombre", TMOnlineSeguirMangaArrayList.get(position).getNombre());
+                intent.putExtra("url", TMOnlineSeguirMangaArrayList.get(position).getUrl());
+                intent.putExtra("tipo", TMOnlineSeguirMangaArrayList.get(position).getTipo());
+                intent.putExtra("urlImagen", TMOnlineSeguirMangaArrayList.get(position).getUrlImagen());
                 startActivity(intent);
             }
         });

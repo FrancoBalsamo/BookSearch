@@ -1,6 +1,6 @@
-package com.dafran.booksearch.Clases;
+package com.dafran.booksearch.Clases.TMOClases;
 
-public class SeguirManga {
+public class TMOnlineSeguirManga {
     private int id;
     private String nombre;
     private String url;
@@ -74,9 +74,9 @@ public class SeguirManga {
         this.ultimoCapituloLeido = ultimoCapituloLeido;
     }
 
-    public SeguirManga(){}
+    public TMOnlineSeguirManga(){}
 
-    public SeguirManga(String nombre, String url, String urlImagen,String contador, int valorSeguir, String tipo, String ultimoCapituloLeido) {
+    public TMOnlineSeguirManga(String nombre, String url, String urlImagen, String contador, int valorSeguir, String tipo, String ultimoCapituloLeido) {
         this.nombre = nombre;
         this.url = url;
         this.urlImagen = urlImagen;

@@ -14,10 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dafran.booksearch.Activities.TMO.TMOnlineLector;
-import com.dafran.booksearch.Clases.CapitulosLeidos;
+import com.dafran.booksearch.Clases.TMOClases.TMOnlineCapitulosLeidos;
 import com.dafran.booksearch.Clases.TMOClases.TMODatosSeleccion;
 import com.dafran.booksearch.R;
-import com.dafran.booksearch.SQLite.PaginasSQL;
+import com.dafran.booksearch.SQLite.TMOnlineMetodosSQL;
 
 import java.util.ArrayList;
 
@@ -46,11 +46,11 @@ public class TMOnlineMangaSeleccionAdaptador extends RecyclerView.Adapter<TMOnli
         TMODatosSeleccion tmoDatosSeleccion = this.tmoDatosSeleccionArrayList.get(position);
         holder.capitulo.setText(tmoDatosSeleccion.getNumeroCapitulo());
 
-        final PaginasSQL paginasSQL = new PaginasSQL(actividad);
+        final TMOnlineMetodosSQL TMOnlineMetodosSQL = new TMOnlineMetodosSQL(actividad);
         String nom = tmoDatosSeleccion.getNombreManga();
         String caps = tmoDatosSeleccion.getNumeroCapitulo();
 
-        if(paginasSQL.textoLeido(actividad, nom, caps) == false){
+        if(TMOnlineMetodosSQL.textoLeido(actividad, nom, caps) == false){
             holder.check_uncheck.setBackgroundResource(R.drawable.checked);
         }else{
             holder.check_uncheck.setBackgroundResource(R.drawable.unchecked);
@@ -74,7 +74,7 @@ public class TMOnlineMangaSeleccionAdaptador extends RecyclerView.Adapter<TMOnli
             check_uncheck = view.findViewById(R.id.leido);
 
             view.setOnClickListener(this);
-            final PaginasSQL paginasSQL = new PaginasSQL(actividad);
+            final TMOnlineMetodosSQL TMOnlineMetodosSQL = new TMOnlineMetodosSQL(actividad);
 
             leer.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -92,13 +92,13 @@ public class TMOnlineMangaSeleccionAdaptador extends RecyclerView.Adapter<TMOnli
                     String nombre_capitulo = String.valueOf(Uri.parse(tmoDatosSeleccionArrayList.get(itemPosition).getNumeroCapitulo()));
                     int valor_leido = 1;
 
-                    CapitulosLeidos capitulosLeidos = new CapitulosLeidos();
-                    capitulosLeidos.setNombre_manga(nombre_manga);
-                    capitulosLeidos.setLeido(valor_leido);
-                    capitulosLeidos.setNombre_capitulo_leido(nombre_capitulo);
-                    paginasSQL.consultarSiguiendoYGuardarLeido(actividad, nombre_manga, nombre_capitulo, capitulosLeidos);
+                    TMOnlineCapitulosLeidos TMOnlineCapitulosLeidos = new TMOnlineCapitulosLeidos();
+                    TMOnlineCapitulosLeidos.setNombre_manga(nombre_manga);
+                    TMOnlineCapitulosLeidos.setLeido(valor_leido);
+                    TMOnlineCapitulosLeidos.setNombre_capitulo_leido(nombre_capitulo);
+                    TMOnlineMetodosSQL.consultarSiguiendoYGuardarLeido(actividad, nombre_manga, nombre_capitulo, TMOnlineCapitulosLeidos);
 
-                    if(paginasSQL.textoLeido(actividad, nombre_manga, nombre_capitulo) == false){
+                    if(TMOnlineMetodosSQL.textoLeido(actividad, nombre_manga, nombre_capitulo) == false){
                         check_uncheck.setBackgroundResource(R.drawable.checked);
                     }
 

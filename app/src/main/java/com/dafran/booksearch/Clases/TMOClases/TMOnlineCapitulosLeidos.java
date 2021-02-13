@@ -1,6 +1,6 @@
-package com.dafran.booksearch.Clases;
+package com.dafran.booksearch.Clases.TMOClases;
 
-public class CapitulosLeidos {
+public class TMOnlineCapitulosLeidos {
     private int id;
     private String nombre_manga;
     private int leido;
@@ -38,11 +38,11 @@ public class CapitulosLeidos {
         this.nombre_capitulo_leido = nombre_capitulo_leido;
     }
 
-    public CapitulosLeidos(String nombre_manga, int leido, String nombre_capitulo_leido) {
+    public TMOnlineCapitulosLeidos(String nombre_manga, int leido, String nombre_capitulo_leido) {
         this.nombre_manga = nombre_manga;
         this.leido = leido;
         this.nombre_capitulo_leido = nombre_capitulo_leido;
     }
 
-    public CapitulosLeidos(){}
+    public TMOnlineCapitulosLeidos(){}
 }

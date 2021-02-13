@@ -14,10 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnlineMangaSeleccionAdaptador;
-import com.dafran.booksearch.Clases.SeguirManga;
+import com.dafran.booksearch.Clases.TMOClases.TMOnlineSeguirManga;
 import com.dafran.booksearch.Clases.TMOClases.TMODatosSeleccion;
 import com.dafran.booksearch.R;
-import com.dafran.booksearch.SQLite.PaginasSQL;
+import com.dafran.booksearch.SQLite.TMOnlineMetodosSQL;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -101,8 +101,8 @@ public class TMOnlineMangaSeleccionado extends AppCompatActivity {
     }
 
     private void seguirMetodoDato(Context actividad, String imagen, String direccion){
-        PaginasSQL psql = new PaginasSQL(actividad);
-        SeguirManga sm = new SeguirManga();
+        TMOnlineMetodosSQL psql = new TMOnlineMetodosSQL(actividad);
+        TMOnlineSeguirManga sm = new TMOnlineSeguirManga();
         sm.setNombre(nombreManga);
         sm.setUrl(direccion);
         sm.setUrlImagen(imagen);
@@ -113,17 +113,17 @@ public class TMOnlineMangaSeleccionado extends AppCompatActivity {
     }
 
     private void dejarMetodoDaato(){
-        PaginasSQL paginasSQL = new PaginasSQL(TMOnlineMangaSeleccionado.this);
-        SeguirManga sm = new SeguirManga();
+        TMOnlineMetodosSQL TMOnlineMetodosSQL = new TMOnlineMetodosSQL(TMOnlineMangaSeleccionado.this);
+        TMOnlineSeguirManga sm = new TMOnlineSeguirManga();
         sm.setValorSeguir(0);
-        paginasSQL.validarUpdateEstadoSiguiendo(TMOnlineMangaSeleccionado.this, nombreManga, sm);
+        TMOnlineMetodosSQL.validarUpdateEstadoSiguiendo(TMOnlineMangaSeleccionado.this, nombreManga, sm);
     }
 
     private void actualizarAutomaticamenteCantidadCapitulos(Context actividad){
-        PaginasSQL paginasSQL = new PaginasSQL(actividad);
-        SeguirManga sm = new SeguirManga();
+        TMOnlineMetodosSQL TMOnlineMetodosSQL = new TMOnlineMetodosSQL(actividad);
+        TMOnlineSeguirManga sm = new TMOnlineSeguirManga();
         sm.setContador(cont+"");
-        paginasSQL.actualizadorDeCapitulos(nombreManga, sm);
+        TMOnlineMetodosSQL.actualizadorDeCapitulos(nombreManga, sm);
     }
 
     private class CapitulosPorMangaSeleccionado extends AsyncTask<Void,Void, ArrayList<TMODatosSeleccion>> {

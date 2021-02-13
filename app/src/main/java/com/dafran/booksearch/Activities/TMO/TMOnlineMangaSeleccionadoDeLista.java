@@ -42,7 +42,7 @@ public class TMOnlineMangaSeleccionadoDeLista extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tmonline_lista_mangas_siguiendo);
+        setContentView(R.layout.tmonline_lista_mangas_seleccionado);
 
         titulo();
         nombreManga = getIntent().getStringExtra("nombre");

@@ -186,7 +186,8 @@ public class TMOnlineMetodosSQL implements Serializable {
         this.openReadableDB();
         String[] campos = new String[]{TMOnlineTablasSQL.ID_ELEMENTO, TMOnlineTablasSQL.NOMBRE_MANGA, TMOnlineTablasSQL.URL_MANGA, TMOnlineTablasSQL.URL_IMAGEN, TMOnlineTablasSQL.CONTADOR_CAPITULOS, TMOnlineTablasSQL.BIT_SEGUIR_NO, TMOnlineTablasSQL.TIPO_MANGA};
         String where = TMOnlineTablasSQL.BIT_SEGUIR_NO + " = 1";
-        Cursor c = db.query(TMOnlineTablasSQL.TABLA_SEGUIR, campos, where, null, null, null, null);
+        String orderBy = TMOnlineTablasSQL.NOMBRE_MANGA + " ASC";
+        Cursor c = db.query(TMOnlineTablasSQL.TABLA_SEGUIR, campos, where, null, null, null, orderBy);
         try {
             while (c.moveToNext()) {
                 TMOnlineSeguirManga sm = new TMOnlineSeguirManga();

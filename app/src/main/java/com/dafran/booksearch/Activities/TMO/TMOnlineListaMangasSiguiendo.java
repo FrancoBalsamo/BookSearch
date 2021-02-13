@@ -26,7 +26,7 @@ public class TMOnlineListaMangasSiguiendo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tmonline_manga_lista_seleccionado);
+        setContentView(R.layout.tmonline_manga_lista_siguiendo);
 
         titulo();
 

@@ -49,7 +49,4 @@ dependencies {
 
     //Ads de Google
     implementation 'com.google.android.gms:play-services-ads:19.3.0'
-
-    //Fresco
-    implementation 'com.facebook.fresco:fresco:2.4.0'
 }

@@ -11,7 +11,6 @@ import android.util.Log;
 import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnlineLectorAdaptador;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
 import com.dafran.booksearch.R;
-import com.facebook.drawee.backends.pipeline.Fresco;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

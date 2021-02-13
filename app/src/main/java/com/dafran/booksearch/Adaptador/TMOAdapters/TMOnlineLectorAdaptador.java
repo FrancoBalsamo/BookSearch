@@ -11,8 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
 import com.dafran.booksearch.R;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.squareup.picasso.Picasso;
 
@@ -49,13 +47,11 @@ public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLector
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        SimpleDraweeView  ivPaginas;
-        //ImageView ivPaginas;
+        ImageView ivPaginas;
 
         public ViewHolder(@NonNull View view) {
             super(view);
             ivPaginas = view.findViewById(R.id.ivPaginas);
-            //ivPaginas = view.findViewById(R.id.ivPaginas);
             view.setOnClickListener(this);
         }
         @Override

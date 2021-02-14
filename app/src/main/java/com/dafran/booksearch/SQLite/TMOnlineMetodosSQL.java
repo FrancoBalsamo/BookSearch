@@ -7,20 +7,30 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Build;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dafran.booksearch.Activities.TMO.TMOnlineListaMangasSiguiendo;
+import com.dafran.booksearch.Clases.CSVOpenOffice.CSVWriter;
 import com.dafran.booksearch.Clases.TMOClases.TMOnlineCapitulosLeidos;
 import com.dafran.booksearch.Clases.TMOClases.TMOnlineSeguirManga;
 import com.dafran.booksearch.R;
+import com.google.android.gms.measurement.api.AppMeasurementSdk;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class TMOnlineMetodosSQL implements Serializable {
     private SQLiteDatabase db;
     private DBHelper dbHelper;
+    static String direccion;
+    static File fich;
 
     public TMOnlineMetodosSQL(Context context) {
         dbHelper = new DBHelper(context);
@@ -292,6 +302,54 @@ public class TMOnlineMetodosSQL implements Serializable {
         long filaID = db.insert(TMOnlineTablasSQL.TABLA_CAPITULO_LEIDO, null, mapaLeidos(TMOnlineCapitulosLeidos));
         this.closeDB();
         return filaID;
+    }
+
+    public void descargarLista(Context actividad) {
+        if(Build.VERSION.SDK_INT >= 29){
+            //para targetSDK >= 29
+            File directorio = new File(actividad.getExternalFilesDir(null), "TMO_Descarga");
+            if(!directorio.exists()){
+                directorio.mkdirs();
+            }
+            File archivo = new File(directorio, "Lista.csv");
+            try{
+                archivo.createNewFile();
+                CSVWriter csvWriter = new CSVWriter(new FileWriter(archivo));
+                this.openReadableDB();
+                Cursor cursorCSV = db.rawQuery("SELECT " + TMOnlineTablasSQL.NOMBRE_MANGA + ", "+ TMOnlineTablasSQL.TIPO_MANGA + " FROM " + TMOnlineTablasSQL.TABLA_SEGUIR + " ORDER BY " + TMOnlineTablasSQL.NOMBRE_MANGA + " ASC", null);
+                csvWriter.writeNext(cursorCSV.getColumnNames());
+                while (cursorCSV.moveToNext()){
+                    String[] columnas = {cursorCSV.getString(0), cursorCSV.getString(1)};
+                    csvWriter.writeNext(columnas);
+                }
+                csvWriter.close();
+                cursorCSV.close();
+            }catch (Exception sqlException){
+                Log.e("TMODescargaError", sqlException.getMessage(), sqlException);
+            }
+        }else{
+            //para targetSDK < 29
+            File directorio = new File(Environment.getExternalStorageDirectory(), "TMO_Descarga");
+            if(!directorio.exists()){
+                directorio.mkdirs();
+            }
+            File archivo = new File(directorio, "Lista.csv");
+            try{
+                archivo.createNewFile();
+                CSVWriter csvWriter = new CSVWriter(new FileWriter(archivo));
+                this.openReadableDB();
+                Cursor cursorCSV = db.rawQuery("SELECT " + TMOnlineTablasSQL.NOMBRE_MANGA + ", "+ TMOnlineTablasSQL.TIPO_MANGA + " FROM " + TMOnlineTablasSQL.TABLA_SEGUIR + " ORDER BY " + TMOnlineTablasSQL.NOMBRE_MANGA + " ASC", null);
+                csvWriter.writeNext(cursorCSV.getColumnNames());
+                while (cursorCSV.moveToNext()){
+                    String[] columnas = {cursorCSV.getString(0), cursorCSV.getString(1)};
+                    csvWriter.writeNext(columnas);
+                }
+                csvWriter.close();
+                cursorCSV.close();
+            }catch (Exception sqlException){
+                Log.e("TMODescargaError", sqlException.getMessage(), sqlException);
+            }
+        }
     }
 
     private static class DBHelper extends SQLiteOpenHelper {

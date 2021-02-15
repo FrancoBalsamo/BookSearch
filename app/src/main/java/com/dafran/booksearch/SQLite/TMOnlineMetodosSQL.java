@@ -316,7 +316,11 @@ public class TMOnlineMetodosSQL implements Serializable {
                 archivo.createNewFile();
                 CSVWriter csvWriter = new CSVWriter(new FileWriter(archivo));
                 this.openReadableDB();
-                Cursor cursorCSV = db.rawQuery("SELECT " + TMOnlineTablasSQL.NOMBRE_MANGA + ", "+ TMOnlineTablasSQL.TIPO_MANGA + " FROM " + TMOnlineTablasSQL.TABLA_SEGUIR + " ORDER BY " + TMOnlineTablasSQL.NOMBRE_MANGA + " ASC", null);
+                Cursor cursorCSV = db.rawQuery("SELECT "
+                        + TMOnlineTablasSQL.NOMBRE_MANGA + ", "+ TMOnlineTablasSQL.TIPO_MANGA
+                        + " FROM " + TMOnlineTablasSQL.TABLA_SEGUIR
+                        + " ORDER BY " + TMOnlineTablasSQL.NOMBRE_MANGA
+                        + " ASC", null);
                 csvWriter.writeNext(cursorCSV.getColumnNames());
                 while (cursorCSV.moveToNext()){
                     String[] columnas = {cursorCSV.getString(0), cursorCSV.getString(1)};
@@ -338,7 +342,11 @@ public class TMOnlineMetodosSQL implements Serializable {
                 archivo.createNewFile();
                 CSVWriter csvWriter = new CSVWriter(new FileWriter(archivo));
                 this.openReadableDB();
-                Cursor cursorCSV = db.rawQuery("SELECT " + TMOnlineTablasSQL.NOMBRE_MANGA + ", "+ TMOnlineTablasSQL.TIPO_MANGA + " FROM " + TMOnlineTablasSQL.TABLA_SEGUIR + " ORDER BY " + TMOnlineTablasSQL.NOMBRE_MANGA + " ASC", null);
+                Cursor cursorCSV = db.rawQuery("SELECT "
+                        + TMOnlineTablasSQL.NOMBRE_MANGA + ", "+ TMOnlineTablasSQL.TIPO_MANGA
+                        + " FROM " + TMOnlineTablasSQL.TABLA_SEGUIR
+                        + " ORDER BY " + TMOnlineTablasSQL.NOMBRE_MANGA
+                        + " ASC", null);
                 csvWriter.writeNext(cursorCSV.getColumnNames());
                 while (cursorCSV.moveToNext()){
                     String[] columnas = {cursorCSV.getString(0), cursorCSV.getString(1)};

@@ -50,8 +50,7 @@ public class TMOnlineListaMangasSiguiendo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(pedirPermisoAlmacenamiento()){
-                    TMOnlineMetodosSQL tmOnlineMetodosSQL = new TMOnlineMetodosSQL(TMOnlineListaMangasSiguiendo.this);
-                    tmOnlineMetodosSQL.descargarLista(TMOnlineListaMangasSiguiendo.this);
+
                 }else {
                     toastRojo("Debe aceptar los permisos de almacenamiento.");
                 }
@@ -77,9 +76,13 @@ public class TMOnlineListaMangasSiguiendo extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 23) {//Corrobora el permiso
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
+                TMOnlineMetodosSQL tmOnlineMetodosSQL = new TMOnlineMetodosSQL(TMOnlineListaMangasSiguiendo.this);
+                tmOnlineMetodosSQL.descargarLista(TMOnlineListaMangasSiguiendo.this);
                 return true;
             } else {//Al no tenerlo, lo pide
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                TMOnlineMetodosSQL tmOnlineMetodosSQL = new TMOnlineMetodosSQL(TMOnlineListaMangasSiguiendo.this);
+                tmOnlineMetodosSQL.descargarLista(TMOnlineListaMangasSiguiendo.this);
                 return false;
             }
         }

@@ -316,18 +316,27 @@ public class TMOnlineMetodosSQL implements Serializable {
                 archivo.createNewFile();
                 CSVWriter csvWriter = new CSVWriter(new FileWriter(archivo));
                 this.openReadableDB();
-                Cursor cursorCSV = db.rawQuery("SELECT "
-                        + TMOnlineTablasSQL.NOMBRE_MANGA + ", "+ TMOnlineTablasSQL.TIPO_MANGA
-                        + " FROM " + TMOnlineTablasSQL.TABLA_SEGUIR
-                        + " ORDER BY " + TMOnlineTablasSQL.NOMBRE_MANGA
-                        + " ASC", null);
-                csvWriter.writeNext(cursorCSV.getColumnNames());
-                while (cursorCSV.moveToNext()){
-                    String[] columnas = {cursorCSV.getString(0), cursorCSV.getString(1)};
-                    csvWriter.writeNext(columnas);
+                Cursor buscarDatos = db.rawQuery("SELECT * FROM " + TMOnlineTablasSQL.TABLA_SEGUIR, null);
+                if(buscarDatos.getCount() > 0){
+                    buscarDatos.close();
+                    Cursor cursorCSV = db.rawQuery("SELECT "
+                            + TMOnlineTablasSQL.NOMBRE_MANGA + " AS Nombre, "
+                            + TMOnlineTablasSQL.TIPO_MANGA + " AS Tipo "
+                            + " FROM " + TMOnlineTablasSQL.TABLA_SEGUIR
+                            + " ORDER BY " + TMOnlineTablasSQL.NOMBRE_MANGA
+                            + " ASC", null);
+                    csvWriter.writeNext(cursorCSV.getColumnNames());
+                    while (cursorCSV.moveToNext()){
+                        String[] columnas = {cursorCSV.getString(0), cursorCSV.getString(1)};
+                        csvWriter.writeNext(columnas);
+                    }
+                    csvWriter.close();
+                    cursorCSV.close();
+                    toastVerde(actividad, "¡Has descargado con éxito tu lista! (La descarga no consume datos).");
                 }
-                csvWriter.close();
-                cursorCSV.close();
+                else {
+                    toastAzul(actividad, "¡Ups! Actualmente no tienes ningún elemento en tu lista.");
+                }
             }catch (Exception sqlException){
                 Log.e("TMODescargaError", sqlException.getMessage(), sqlException);
             }
@@ -342,18 +351,23 @@ public class TMOnlineMetodosSQL implements Serializable {
                 archivo.createNewFile();
                 CSVWriter csvWriter = new CSVWriter(new FileWriter(archivo));
                 this.openReadableDB();
-                Cursor cursorCSV = db.rawQuery("SELECT "
-                        + TMOnlineTablasSQL.NOMBRE_MANGA + ", "+ TMOnlineTablasSQL.TIPO_MANGA
-                        + " FROM " + TMOnlineTablasSQL.TABLA_SEGUIR
-                        + " ORDER BY " + TMOnlineTablasSQL.NOMBRE_MANGA
-                        + " ASC", null);
-                csvWriter.writeNext(cursorCSV.getColumnNames());
-                while (cursorCSV.moveToNext()){
-                    String[] columnas = {cursorCSV.getString(0), cursorCSV.getString(1)};
-                    csvWriter.writeNext(columnas);
+                Cursor buscarDatos = db.rawQuery("SELECT * FROM " + TMOnlineTablasSQL.TABLA_SEGUIR, null);
+                if(buscarDatos.getCount() > 0){
+                    Cursor cursorCSV = db.rawQuery("SELECT "
+                            + TMOnlineTablasSQL.NOMBRE_MANGA + ", "+ TMOnlineTablasSQL.TIPO_MANGA
+                            + " FROM " + TMOnlineTablasSQL.TABLA_SEGUIR
+                            + " ORDER BY " + TMOnlineTablasSQL.NOMBRE_MANGA
+                            + " ASC", null);
+                    csvWriter.writeNext(cursorCSV.getColumnNames());
+                    while (cursorCSV.moveToNext()){
+                        String[] columnas = {cursorCSV.getString(0), cursorCSV.getString(1)};
+                        csvWriter.writeNext(columnas);
+                    }
+                    csvWriter.close();
+                    cursorCSV.close();
+                }else{
+                    toastAzul(actividad, "¡Ups! Actualmente no tienes ningún elemento en tu lista.");
                 }
-                csvWriter.close();
-                cursorCSV.close();
             }catch (Exception sqlException){
                 Log.e("TMODescargaError", sqlException.getMessage(), sqlException);
             }

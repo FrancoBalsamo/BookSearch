@@ -6,12 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
 import com.dafran.booksearch.R;
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -35,10 +38,20 @@ public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLector
 
     @Override
     public void onBindViewHolder(@NonNull final TMOnlineLectorAdaptador.ViewHolder holder, int position) {
-        TMOLectorClase tmoLectorClase = this.tmoLectorClaseArrayList.get(position);
-
+        final TMOLectorClase tmoLectorClase = this.tmoLectorClaseArrayList.get(position);
         //Carga con Picasso
-        Picasso.get().load(tmoLectorClase.getImg()).into(holder.ivPaginas);
+        Picasso.get().load(tmoLectorClase.getImg()).into(holder.ivPaginas, new Callback() {
+            @Override
+            public void onSuccess() {
+                holder.progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Toast.makeText(actividad,"Ocurrió un error cargando la imagen : " + tmoLectorClase.getImg(), Toast.LENGTH_LONG).show();
+            }
+
+        });
     }
 
     @Override
@@ -48,10 +61,12 @@ public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLector
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView ivPaginas;
+        ProgressBar progressBar;
 
         public ViewHolder(@NonNull View view) {
             super(view);
             ivPaginas = view.findViewById(R.id.ivPaginas);
+            progressBar = view.findViewById(R.id.progressbar);
             view.setOnClickListener(this);
         }
         @Override

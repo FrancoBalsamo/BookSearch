@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnlineLectorAdaptador;
 import com.dafran.booksearch.Clases.TMOClases.TMOLectorClase;
@@ -58,6 +59,7 @@ public class TMOnlineLector extends AppCompatActivity {
             //Actualizar información
             tmOnlineLectorAdaptador.updateData(items);
             tmOnlineLectorAdaptador.notifyDataSetChanged();
+            findViewById(R.id.progressbar).setVisibility(View.GONE);
         }
 
         @Override

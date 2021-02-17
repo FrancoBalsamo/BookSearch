@@ -1,30 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/CardView.Light"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_centerHorizontal="true"
     android:gravity="center_horizontal"
     android:layout_gravity="center_horizontal"
     android:background="@color/blanco">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+    <ImageView
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
-        android:background="@color/blanco">
-        <ImageView
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:id="@+id/ivPaginas"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"/>
-    </LinearLayout>
+        android:id="@+id/ivPaginas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"/>
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="match_parent" />
 </androidx.cardview.widget.CardView>

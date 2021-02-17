@@ -321,14 +321,24 @@ public class TMOnlineMetodosSQL implements Serializable {
                     buscarDatos.close();
                     Cursor cursorCSV = db.rawQuery("SELECT "
                             + TMOnlineTablasSQL.NOMBRE_MANGA + " AS Nombre, "
-                            + TMOnlineTablasSQL.TIPO_MANGA + " AS Tipo "
+                            + TMOnlineTablasSQL.TIPO_MANGA + " AS Tipo, "
+                            + TMOnlineTablasSQL.BIT_SEGUIR_NO + " AS Siguiendo "
                             + " FROM " + TMOnlineTablasSQL.TABLA_SEGUIR
                             + " ORDER BY " + TMOnlineTablasSQL.NOMBRE_MANGA
                             + " ASC", null);
                     csvWriter.writeNext(cursorCSV.getColumnNames());
                     while (cursorCSV.moveToNext()){
-                        String[] columnas = {cursorCSV.getString(0), cursorCSV.getString(1)};
-                        csvWriter.writeNext(columnas);
+                        if(cursorCSV.getString(2).equals(String.valueOf(1))){
+                            String siguiendo = cursorCSV.getString(2);
+                            siguiendo = siguiendo.replaceAll(String.valueOf(1), "Sí");
+                            String[] columnas = {cursorCSV.getString(0), cursorCSV.getString(1), siguiendo};
+                            csvWriter.writeNext(columnas);
+                        }else{
+                            String siguiendo = cursorCSV.getString(2);
+                            siguiendo = siguiendo.replaceAll(String.valueOf(0), "No");
+                            String[] columnas = {cursorCSV.getString(0), cursorCSV.getString(1), siguiendo};
+                            csvWriter.writeNext(columnas);
+                        }
                     }
                     csvWriter.close();
                     cursorCSV.close();

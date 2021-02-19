@@ -29,8 +29,6 @@ import java.util.ArrayList;
 public class TMOnlineMetodosSQL implements Serializable {
     private SQLiteDatabase db;
     private DBHelper dbHelper;
-    static String direccion;
-    static File fich;
 
     public TMOnlineMetodosSQL(Context context) {
         dbHelper = new DBHelper(context);
@@ -362,20 +360,34 @@ public class TMOnlineMetodosSQL implements Serializable {
                 CSVWriter csvWriter = new CSVWriter(new FileWriter(archivo));
                 this.openReadableDB();
                 Cursor buscarDatos = db.rawQuery("SELECT * FROM " + TMOnlineTablasSQL.TABLA_SEGUIR, null);
-                if(buscarDatos.getCount() > 0){
+                if(buscarDatos.getCount() > 0) {
+                    buscarDatos.close();
                     Cursor cursorCSV = db.rawQuery("SELECT "
-                            + TMOnlineTablasSQL.NOMBRE_MANGA + ", "+ TMOnlineTablasSQL.TIPO_MANGA
+                            + TMOnlineTablasSQL.NOMBRE_MANGA + " AS Nombre, "
+                            + TMOnlineTablasSQL.TIPO_MANGA + " AS Tipo, "
+                            + TMOnlineTablasSQL.BIT_SEGUIR_NO + " AS Siguiendo "
                             + " FROM " + TMOnlineTablasSQL.TABLA_SEGUIR
                             + " ORDER BY " + TMOnlineTablasSQL.NOMBRE_MANGA
                             + " ASC", null);
                     csvWriter.writeNext(cursorCSV.getColumnNames());
-                    while (cursorCSV.moveToNext()){
-                        String[] columnas = {cursorCSV.getString(0), cursorCSV.getString(1)};
-                        csvWriter.writeNext(columnas);
+                    while (cursorCSV.moveToNext()) {
+                        if (cursorCSV.getString(2).equals(String.valueOf(1))) {
+                            String siguiendo = cursorCSV.getString(2);
+                            siguiendo = siguiendo.replaceAll(String.valueOf(1), "Sí");
+                            String[] columnas = {cursorCSV.getString(0), cursorCSV.getString(1), siguiendo};
+                            csvWriter.writeNext(columnas);
+                        } else {
+                            String siguiendo = cursorCSV.getString(2);
+                            siguiendo = siguiendo.replaceAll(String.valueOf(0), "No");
+                            String[] columnas = {cursorCSV.getString(0), cursorCSV.getString(1), siguiendo};
+                            csvWriter.writeNext(columnas);
+                        }
                     }
                     csvWriter.close();
                     cursorCSV.close();
-                }else{
+                    toastVerde(actividad, "¡Has descargado con éxito tu lista! (La descarga no consume datos).");
+                }
+                else {
                     toastAzul(actividad, "¡Ups! Actualmente no tienes ningún elemento en tu lista.");
                 }
             }catch (Exception sqlException){

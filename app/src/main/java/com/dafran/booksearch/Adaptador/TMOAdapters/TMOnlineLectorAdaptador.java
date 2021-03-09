@@ -68,7 +68,10 @@ public class TMOnlineLectorAdaptador extends RecyclerView.Adapter<TMOnlineLector
         public ViewHolder(@NonNull View view) {
             super(view);
             ivPaginas = view.findViewById(R.id.ivPaginas);
+
+            mAttacher = new PhotoViewAttacher(ivPaginas);
             progressBar = view.findViewById(R.id.progressbar);
+            mAttacher.update();
             view.setOnClickListener(this);
         }
         @Override

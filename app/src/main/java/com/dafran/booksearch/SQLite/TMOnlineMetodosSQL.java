@@ -239,7 +239,7 @@ public class TMOnlineMetodosSQL implements Serializable {
 
     public boolean consultarSiguiendoYGuardarLeido(Context actividad, String nombreManga, String capitulos, TMOnlineCapitulosLeidos TMOnlineCapitulosLeidos){
         this.openWriteableDB();
-        String[] nombre = {String.valueOf(nombreManga)}; //para el nombre del manga
+        String[] nombre = {String.valueOf(nombreManga)}; //para el nombre
         String[] capitulos_leidos = {String.valueOf(capitulos)}; //para el capítulo leído
         String consultaSiguiendoActivo = "SELECT * FROM " + TMOnlineTablasSQL.TABLA_SEGUIR + " WHERE " + TMOnlineTablasSQL.NOMBRE_MANGA + " = ? AND " + TMOnlineTablasSQL.BIT_SEGUIR_NO + " = 1";
         String consultaSiguiendoInactivo = "SELECT * FROM " + TMOnlineTablasSQL.TABLA_SEGUIR + " WHERE " + TMOnlineTablasSQL.NOMBRE_MANGA + " = ? AND " + TMOnlineTablasSQL.BIT_SEGUIR_NO + " = 0";

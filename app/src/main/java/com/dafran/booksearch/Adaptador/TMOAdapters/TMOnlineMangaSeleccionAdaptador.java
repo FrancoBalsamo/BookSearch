@@ -17,7 +17,7 @@ import com.dafran.booksearch.Activities.TMO.TMOnlineLector;
 import com.dafran.booksearch.Clases.TMOClases.TMOnlineCapitulosLeidos;
 import com.dafran.booksearch.Clases.TMOClases.TMODatosSeleccion;
 import com.dafran.booksearch.R;
-import com.dafran.booksearch.SQLite.TMOnlineMetodosSQL;
+import com.dafran.booksearch.SQLite.TMOSQL.TMOnlineMetodosSQL;
 
 import java.util.ArrayList;
 

@@ -17,7 +17,7 @@ import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnlineMangaSeleccionAdaptad
 import com.dafran.booksearch.Clases.TMOClases.TMOnlineSeguirManga;
 import com.dafran.booksearch.Clases.TMOClases.TMODatosSeleccion;
 import com.dafran.booksearch.R;
-import com.dafran.booksearch.SQLite.TMOnlineMetodosSQL;
+import com.dafran.booksearch.SQLite.TMOSQL.TMOnlineMetodosSQL;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

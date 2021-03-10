@@ -1,4 +1,4 @@
-package com.dafran.booksearch.SQLite;
+package com.dafran.booksearch.SQLite.TMOSQL;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,12 +14,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dafran.booksearch.Activities.TMO.TMOnlineListaMangasSiguiendo;
 import com.dafran.booksearch.Clases.CSVOpenOffice.CSVWriter;
 import com.dafran.booksearch.Clases.TMOClases.TMOnlineCapitulosLeidos;
 import com.dafran.booksearch.Clases.TMOClases.TMOnlineSeguirManga;
 import com.dafran.booksearch.R;
-import com.google.android.gms.measurement.api.AppMeasurementSdk;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -5,15 +5,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -22,13 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dafran.booksearch.Adaptador.TMOAdapters.TMOnlineListaSeleccionAdaptador;
-import com.dafran.booksearch.Clases.CSVOpenOffice.CSVWriter;
 import com.dafran.booksearch.Clases.TMOClases.TMOnlineSeguirManga;
 import com.dafran.booksearch.R;
-import com.dafran.booksearch.SQLite.TMOnlineMetodosSQL;
+import com.dafran.booksearch.SQLite.TMOSQL.TMOnlineMetodosSQL;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class TMOnlineListaMangasSiguiendo extends AppCompatActivity {

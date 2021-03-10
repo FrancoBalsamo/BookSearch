@@ -1,4 +1,4 @@
-package com.dafran.booksearch.SQLite;
+package com.dafran.booksearch.SQLite.TMOSQL;
 
 import java.net.URL;
 

@@ -18,7 +18,7 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 
 public class MainActivity extends AppCompatActivity {
     AdView adView;
-    ImageView logobook, ivTMO;
+    ImageView logobook, ivTMO, trantorIS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +33,17 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         logobook = (ImageView)findViewById(R.id.logobook);
         ivTMO = (ImageView)findViewById(R.id.ivTMO);
+        trantorIS = (ImageView)findViewById(R.id.ivTRANTOR);
         ivTMO.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 aTMOnline();
+            }
+        });
+        trantorIS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                aTrantorIs();
             }
         });
     }

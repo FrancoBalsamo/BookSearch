@@ -38,8 +38,6 @@ public class TrantorActivity extends AppCompatActivity {
     Button buscar;
     EditText textoBusqueda;
 
-    AdView adView;
-
     private RecyclerView recyclerView;
     private TrantorAdapter adapter;
     private ArrayList<TrantorItems> trantorItems = new ArrayList<>();
@@ -94,8 +92,6 @@ public class TrantorActivity extends AppCompatActivity {
                 }
             }
         });
-
-        bannerBookSearh();
     }
 
     private class BuscandoDato extends AsyncTask<Void,Void, ArrayList<TrantorItems>> {
@@ -126,16 +122,16 @@ public class TrantorActivity extends AppCompatActivity {
                 Elements data = doc.select("div.row");
                 for (Element e : data) {
                     String title = e.select("div.span1").select("img").attr("alt");
-                    String imgUrl = e.select("div.span1").select("img").attr("src");
-                    String detailUrl = e.select("div.span1").select("a").attr("href");
+                    String urlImagen = e.select("div.span1").select("img").attr("src");
+                    String urlDireccionLibro = e.select("div.span1").select("a").attr("href");
                     String urlDescarga = e.select("div.span3").select("a").attr("href");
 
-                    if(!isNullorEmpty(title) && !isNullorEmpty(imgUrl)){
-                        imgUrl = "https://trantor.is" + imgUrl; //Add basepath
-                        detailUrl =  "https://trantor.is" + detailUrl; //Add basepath
+                    if(!isNullorEmpty(title) && !isNullorEmpty(urlImagen)){
+                        urlImagen = "https://trantor.is" + urlImagen; //Add basepath
+                        urlDireccionLibro =  "https://trantor.is" + urlDireccionLibro; //Add basepath
                         urlDescarga =  "https://trantor.is" + urlDescarga; //Add basepath
-                        trantorItems.add(new TrantorItems(imgUrl, title, detailUrl, urlDescarga));
-                        Log.d("items", "title: " + title + " img: " + imgUrl  + " urlDescarga: " + urlDescarga);
+                        trantorItems.add(new TrantorItems(urlImagen, title, urlDireccionLibro, urlDescarga));
+                        Log.d("items", "title: " + title + " img: " + urlImagen  + " urlDescarga: " + urlDescarga);
                     }
                 }
             }  catch (IOException e) {
@@ -152,16 +148,6 @@ public class TrantorActivity extends AppCompatActivity {
 
     public static boolean isNullorEmpty(String s ) {
         return s == null || s.trim().isEmpty();
-    }
-
-    private void bannerBookSearh(){
-        MobileAds.initialize(TrantorActivity.this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) { }
-        });
-        adView = (AdView)findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
     }
 
     @Override

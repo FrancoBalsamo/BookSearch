@@ -67,11 +67,12 @@ public class TrantorAdapter extends RecyclerView.Adapter<TrantorAdapter.ViewHold
             String url = String.valueOf(Uri.parse(trantorItems.get(itemPosition).getDetailUrl()));
             String descarga = String.valueOf(Uri.parse(trantorItems.get(itemPosition).getUrlDescarga()));
             String titulo = String.valueOf(Uri.parse(trantorItems.get(itemPosition).getTitle()));
+            String imagen = String.valueOf(Uri.parse(trantorItems.get(itemPosition).getImgUrl()));
             Intent pasarDato = new Intent(context, TrantorDetalleLibro.class);
             pasarDato.putExtra("urlLibro", url);
             pasarDato.putExtra("descarga", descarga);
             pasarDato.putExtra("titulo", titulo);
-
+            pasarDato.putExtra("urlImagen", imagen);
             context.startActivity(pasarDato);
         }
     }

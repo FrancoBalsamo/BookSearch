@@ -44,6 +44,7 @@ public class TrantorDetalleLibro extends AppCompatActivity {
     Button descargar, leer;
     private String urlDescarga = "";
     private String titulo = "";
+    private String imagen = "";
 
     private RecyclerView recyclerView;
     private TrantorBookAdapter adapter;
@@ -62,6 +63,7 @@ public class TrantorDetalleLibro extends AppCompatActivity {
 
         urlDescarga = getIntent().getStringExtra("descarga");
         titulo = getIntent().getStringExtra("titulo");
+        imagen = getIntent().getStringExtra("urlImagen");
 
         descargar = (Button) findViewById(R.id.btnDescargaTrantor);
 
@@ -108,23 +110,21 @@ public class TrantorDetalleLibro extends AppCompatActivity {
 
                 for (Element e : tit) {
                     String titulo = e.select("div").select("h1").text();
-                    Log.d("Items", "Descripcion: " + titulo);
+                    Log.d("Items", "Descripcion: " + titulo + "imagen:" + imagen);
 
                     Elements datos = doc.select("div.row");
                     for (Element e1 : datos) {
-                        String imgUrl = e1.select("div.span4").select("img").attr("src");
                         String descripcion = e1.select("div.span8").select("p").text();
                         String descargaUrl = e1.select("div.span3").select("a.btn.btn-large.btn-inverse").attr("href");
                         final String lectorUrl = e1.select("div.span3").select("a.btn.btn-large.btn-warning").attr("href");
-                        if (!isNullorEmpty(imgUrl) && !isNullorEmpty(descargaUrl) && !isNullorEmpty(lectorUrl)) {
+                        if (!isNullorEmpty(imagen) && !isNullorEmpty(descargaUrl) && !isNullorEmpty(lectorUrl)) {
                             String autor = ""; //valor por defecto
                             String idioma = "";
                             Log.d("Items", "Descripcion: " + autor + "" + idioma);
-                            imgUrl = "https://trantor.is" + imgUrl;
                             Element primero = e1.select("div.span8").select("dd").select("a").first();
                             Element ultimo = e1.select("div.span8").select("dd").select("a").last();
-                            autor = primero.text();
-                            idioma = ultimo.text();
+//                            autor = primero.text();
+//                            idioma = ultimo.text();
                             leer.setOnClickListener(new View.OnClickListener() {
                                 @SuppressLint("WrongThread")
                                 @Override
@@ -134,7 +134,7 @@ public class TrantorDetalleLibro extends AppCompatActivity {
                                     startActivity(alLector);
                                 }
                             });
-                            trantorDetalleLibros.add(new TrantorBookDetail(titulo, imgUrl, "Autor/a: " + autor, "Idioma: [" + idioma + "]", descripcion,lectorUrl));
+                            trantorDetalleLibros.add(new TrantorBookDetail(titulo, imagen, "Autor/a: " + "autor", "Idioma: [" + "idioma" + "]", descripcion,lectorUrl));
                         }
                     }
                 }
